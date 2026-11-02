@@ -63,53 +63,42 @@ function openCatalog() {
     showScreen('screen-catalog');
 }
 
-function openModal(code, name, price, stock) {
-    if(stock <= 0) return;
-    selectedCountry = code;
-    selectedPrice = price;
-    document.getElementById('modal-title').innerText = name;
-    document.getElementById('modal-price').innerText = `Цена: ${price} ₽`;
-    document.getElementById('modal-buy').style.display = 'flex';
-}
-
-function closeModal() { document.getElementById('modal-buy').style.display = 'none'; }
-
-async function buyItem(method) {
-    closeModal();
-    if (method === 'stars') {
-        try {
-            const res = await fetch(`${API_URL}/api/buy_stars`, {
-                method: 'POST',
-                headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                body: JSON.stringify({ country: selectedCountry })
-            });
-            const data = await res.json();
-            if (data.status === 'ok') {
-                tg.openInvoice(data.url, (status) => {
-                    if (status === 'paid') {
-                        tg.showAlert("✅ Оплачено! Товар будет выдан вручную. Напишите в поддержку.");
-                        loadData();
-                    }
+        async function buyItem(method) {
+            closeModal();
+            if (method === 'stars') {
+                try {
+                    const res = await fetch(`${API_URL}/api/buy_stars`, {
+                        method: 'POST',
+                        headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+                        body: JSON.stringify({ country: selectedCountry })
+                    });
+                    const data = await res.json();
+                    if (data.status === 'ok') {
+                        tg.openInvoice(data.url, (status) => {
+                            if (status === 'paid') {
+                                tg.showAlert("✅ Оплачено звездами! Номер скоро выдадут. Если долго — напишите в поддержку.");
+                                loadData();
+                            }
+                        });
+                    } else { tg.showAlert(`❌ ${data.error}`); }
+                } catch(e) { tg.showAlert("Ошибка сервера"); }
+                return;
+            }
+            
+            tg.showAlert("Списываем средства...");
+            try {
+                const res = await fetch(`${API_URL}/api/buy`, {
+                    method: 'POST',
+                    headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+                    body: JSON.stringify({ country: selectedCountry, method: "balance" })
                 });
-            } else { tg.showAlert(`❌ ${data.error}`); }
-        } catch(e) { tg.showAlert("Ошибка сервера"); }
-        return;
-    }
-    
-    tg.showAlert("Списываем средства...");
-    try {
-        const res = await fetch(`${API_URL}/api/buy`, {
-            method: 'POST',
-            headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-            body: JSON.stringify({ country: selectedCountry, method: "balance" })
-        });
-        const data = await res.json();
-        if (data.status === 'ok') {
-            tg.showAlert(`✅ ${data.message}\nТовар: ${data.item}`);
-            loadData();
-        } else { tg.showAlert(`❌ ${data.error}`); }
-    } catch(e) { tg.showAlert("Ошибка сервера"); }
-}
+                const data = await res.json();
+                if (data.status === 'ok') {
+                    tg.showAlert(`✅ Деньги списаны! Номер скоро выдадут.\nЕсли долго — напишите в поддержку.`);
+                    loadData();
+                } else { tg.showAlert(`❌ ${data.error}`); }
+            } catch(e) { tg.showAlert("Ошибка сервера"); }
+        }
 
 let isSpinning = false;
 async function spinWheel() {
