@@ -9,6 +9,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Unbounded', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidden; position: relative; }
+        
         .space-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: #000; }
         .nebula { position: absolute; width: 150vw; height: 150vw; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: rotateNebula 30s linear infinite; }
         .nebula-1 { top: -50%; left: -50%; background: radial-gradient(circle, rgba(0, 210, 255, 0.4) 0%, transparent 60%); }
@@ -16,21 +17,37 @@
         @keyframes rotateNebula { 0% { transform: rotate(0deg) scale(1); } 100% { transform: rotate(360deg) scale(1.2); } }
         .stars { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 10% 20%, white, transparent), radial-gradient(2px 2px at 40% 70%, white, transparent); background-size: 200px 200px; animation: twinkle 4s infinite alternate; opacity: 0.5; }
         @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.8; } }
-        .screen { display: none; padding: 30px 20px; min-height: 100vh; animation: fadeIn 0.5s ease; }
-        .screen.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .glow-title { font-size: 46px; line-height: 1.1; font-weight: 900; text-align: center; margin-top: 20px; margin-bottom: 25px; background: linear-gradient(90deg, #ffffff, #00d2ff, #8a2be2, #ffffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer 8s linear infinite; position: relative; z-index: 2; }
-        @keyframes textShimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
+
+        .halloween-decor { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .decor-web { position: absolute; top: -20px; left: -20px; width: 120px; height: 120px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.15)" fill="none" stroke-width="1"/></svg>'); background-size: cover; transform: rotate(180deg); opacity: 0.6; animation: floatWeb 8s ease-in-out infinite alternate; }
+        .decor-spider { position: absolute; top: 0; left: 40px; font-size: 24px; animation: spiderDrop 4s ease-in-out infinite; z-index: 1; }
+        .decor-pumpkin { position: absolute; bottom: 10px; right: 20px; font-size: 30px; opacity: 0.3; animation: floatPumpkin 6s ease-in-out infinite; }
+        @keyframes floatWeb { 0% { transform: rotate(170deg) scale(1); } 100% { transform: rotate(190deg) scale(1.1); } }
+        @keyframes spiderDrop { 0%, 100% { transform: translateY(10px); } 50% { transform: translateY(25px); } }
+        @keyframes floatPumpkin { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .mini-banner { position: relative; width: 100%; border-radius: 15px; overflow: hidden; margin-bottom: 20px; padding: 15px 20px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; background: #111; transition: transform 0.2s; z-index: 2; }
+        .mini-banner:active { transform: scale(0.97); }
+        .mini-banner-glow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #2a0845, #6441A5, #ff416c, #2a0845); background-size: 300% 300%; animation: bannerGradient 6s ease infinite; z-index: 0; opacity: 0.6; }
+        .mini-banner-content { position: relative; z-index: 3; width: 100%; display: flex; align-items: center; gap: 10px; }
+        .mini-banner-title { font-size: 14px; font-weight: 800; color: #fff; }
+        .mini-banner-subtitle { font-size: 10px; color: #eee; }
+
         .halloween-banner { position: relative; width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 25px; padding: 25px 20px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; background: #111; transition: transform 0.2s; z-index: 2; }
         .halloween-banner:active { transform: scale(0.97); }
         .banner-glow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #2a0845, #6441A5, #ff416c, #2a0845); background-size: 300% 300%; animation: bannerGradient 6s ease infinite; z-index: 0; opacity: 0.8; }
         @keyframes bannerGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .banner-spiderweb { position: absolute; top: -50%; left: -20%; width: 200px; height: 200px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.15)" fill="none" stroke-width="1"/></svg>'); background-size: cover; z-index: 1; }
         .banner-spider { position: absolute; top: 0; right: 25px; font-size: 28px; z-index: 2; animation: spiderDrop 4s ease-in-out infinite; }
-        @keyframes spiderDrop { 0%, 100% { transform: translateY(10px); } 50% { transform: translateY(25px); } }
         .banner-content { position: relative; z-index: 3; width: 100%; }
         .banner-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; }
         .banner-subtitle { font-size: 11px; color: #eee; }
+
+        .screen { display: none; padding: 30px 20px; min-height: 100vh; animation: fadeIn 0.5s ease; position: relative; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .glow-title { font-size: 46px; line-height: 1.1; font-weight: 900; text-align: center; margin-top: 20px; margin-bottom: 25px; background: linear-gradient(90deg, #ffffff, #00d2ff, #8a2be2, #ffffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer 8s linear infinite; position: relative; z-index: 2; }
+        @keyframes textShimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
         .main-menu-grid { display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
         .menu-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; text-align: center; cursor: pointer; transition: 0.3s; }
         .menu-btn:active { transform: scale(0.96); background: rgba(0, 210, 255, 0.15); border-color: #00d2ff; }
@@ -65,13 +82,15 @@
 <body>
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
 
+    <!-- ГЛАВНЫЙ ЭКРАН -->
     <div id="screen-main" class="screen active">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
         <div class="halloween-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
             <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
             <div class="banner-content">
-                <span style="font-size:10px; font-weight:800; color:#ffd700; background:rgba(0,0,0,0.5); padding:4px 8px; border-radius:8px;">🔥 ХЭЛЛОУИН</span>
-                <h3 class="banner-title">Telegram Канал</h3>
+                <span style="font-size:10px; font-weight:800; color:#ffd700; background:rgba(0,0,0,0.5); padding:4px 8px; border-radius:8px;">🔥 ХЭЛЛОУИН СКИДКИ</span>
+                <h3 class="banner-title">Наш Telegram Канал</h3>
                 <p class="banner-subtitle">Перейти 👉 @sciptyystore</p>
             </div>
         </div>
@@ -83,25 +102,47 @@
             <div class="menu-btn" onclick="showScreen('screen-cases')"><span class="btn-text">📦 Кейсы</span></div>
             <div class="menu-btn" onclick="openInfo('promo')"><span class="btn-text">🎁 Промокод</span></div>
             <div class="menu-btn" onclick="openInfo('ref')"><span class="btn-text">👥 Рефералка</span></div>
+            <div class="menu-btn" onclick="openInfo('reviews')"><span class="btn-text">⭐ Отзывы</span></div>
             <div class="menu-btn" onclick="showScreen('screen-support')"><span class="btn-text">🆘 Поддержка</span></div>
+            <div class="menu-btn" onclick="openInfo('about')"><span class="btn-text">ℹ️ О нас</span></div>
+            <div class="menu-btn" onclick="openInfo('terms')"><span class="btn-text">📜 Соглашение</span></div>
+            <div class="menu-btn" onclick="openInfo('privacy')"><span class="btn-text">📄 Политика</span></div>
             <div class="menu-btn" id="admin-btn" style="display: none; background: rgba(255, 0, 0, 0.1); border-color: rgba(255, 0, 0, 0.3);" onclick="showScreen('screen-admin')"><span class="btn-text" style="color: #ff4444;">⚙️ Админ-панель</span></div>
-            <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')"><span class="btn-text" style="color: #00d2ff;">📩 Тикеты (Техподдержка)</span></div>
+            <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')"><span class="btn-text" style="color: #00d2ff;">📩 Тикеты</span></div>
         </div>
     </div>
 
+    <!-- КАТАЛОГ -->
     <div id="screen-catalog" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
+        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+            <div class="mini-banner-glow"></div>
+            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
+        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Аккаунты</h2></div>
         <div class="catalog-grid" id="catalog-grid"><div style="grid-column:span 2;">Загрузка...</div></div>
     </div>
 
+    <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
+        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+            <div class="mini-banner-glow"></div>
+            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
+        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Профиль</h2></div>
         <div class="balance-card"><div style="font-size: 14px; opacity: 0.8;">Ваш баланс</div><div class="balance-amount" id="profile-balance">0 ₽</div></div>
         <h3 style="position: relative; z-index: 2; margin-bottom: 10px;">История:</h3>
         <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
     </div>
 
+    <!-- РУЛЕТКА -->
     <div id="screen-roll" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
+        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+            <div class="mini-banner-glow"></div>
+            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
+        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Рулетка</h2></div>
         <div class="wheel-container">
             <div class="wheel-wrapper">
@@ -118,7 +159,13 @@
         </div>
     </div>
 
+    <!-- КЕЙСЫ -->
     <div id="screen-cases" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
+        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+            <div class="mini-banner-glow"></div>
+            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
+        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Кейсы</h2></div>
         <div class="main-menu-grid" id="case-buttons">
             <div class="menu-btn" onclick="buyCase('normal')"><span class="btn-text">📦 Купить Обычный (99 ₽)</span></div>
@@ -135,7 +182,13 @@
         </div>
     </div>
 
+    <!-- ПОДДЕРЖКА -->
     <div id="screen-support" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
+        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+            <div class="mini-banner-glow"></div>
+            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
+        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Поддержка</h2></div>
         <div class="info-container">
             <p>Работаем 24/7. Напишите свой вопрос, и мы ответим в ближайшее время.</p>
@@ -145,12 +198,24 @@
         </div>
     </div>
 
+    <!-- ТИКЕТЫ (АДМИН) -->
     <div id="screen-admin-tickets" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
+        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+            <div class="mini-banner-glow"></div>
+            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
+        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color:#00d2ff;">Тикеты</h2></div>
         <div id="admin-ticket-list" style="position:relative; z-index:2;"></div>
     </div>
 
+    <!-- АДМИНКА -->
     <div id="screen-admin" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
+        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+            <div class="mini-banner-glow"></div>
+            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
+        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color: #ff4444;">Админка</h2></div>
         <div class="main-menu-grid">
             <div class="menu-btn" onclick="adminAction('money')"><span class="btn-text">💰 Выдать себе рубли</span></div>
@@ -160,11 +225,18 @@
         <div id="admin-result" style="margin-top: 20px; text-align:center; color: #00d2ff; font-weight: 800; position:relative; z-index:2;"></div>
     </div>
 
+    <!-- ИНФО -->
     <div id="screen-info" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
+        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+            <div class="mini-banner-glow"></div>
+            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
+        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 id="info-title" style="font-size:20px; font-weight:800;">Инфо</h2></div>
         <div class="info-container" id="info-content"></div>
     </div>
 
+    <!-- МОДАЛКИ -->
     <div id="modal-buy" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 999; padding:20px; flex-direction:column; justify-content:center;">
         <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; text-align:center;">
             <h2 id="modal-title" style="font-size:22px; margin-bottom:10px;">Покупка</h2>
@@ -184,399 +256,8 @@
             <button style="width:100%; padding:12px; border-radius:12px; background:transparent; border:1px solid #555; color:#aaa; font-weight:800;" onclick="closeTopup()">Отмена</button>
         </div>
     </div>
-        <script>
-        const tg = window.Telegram?.WebApp;
-        if (tg) tg.expand();
-        const API_URL = "https://sciptyy-api.onrender.com";
-        
-        let userProfile = { balance: 0, last_roll: 0, cases: 0, vip_cases: 0 };
-        let accountsData = [];
-        let selectedCountry = null;
-        let selectedPrice = 0;
-        let isAdmin = false;
 
-        async function loadData() {
-            try {
-                const res = await fetch(`${API_URL}/api/profile`, { headers: { "X-Telegram-Init-Data": tg.initData } });
-                const data = await res.json();
-                if (data.status === "ok") {
-                    userProfile = data.profile;
-                    accountsData = data.shop;
-                    isAdmin = data.is_admin;
-                    
-                    if (isAdmin) {
-                        document.getElementById('admin-btn').style.display = 'block';
-                        document.getElementById('admin-tickets-btn').style.display = 'block';
-                    }
-                    
-                    if (userProfile.cases > 0) document.getElementById('open-normal-case').style.display = 'block';
-                    if (userProfile.vip_cases > 0) document.getElementById('open-vip-case').style.display = 'block';
-                    
-                    document.getElementById('profile-balance').innerText = `${userProfile.balance.toFixed(2)} ₽`;
-                    
-                    const pDiv = document.getElementById('profile-purchases');
-                    pDiv.innerHTML = data.purchases.length > 0 ? data.purchases.map(p => `
-                        <div class="purchase-item">
-                            <div style="font-weight: bold; color: #00d2ff;">${p.name}</div>
-                            <div style="color: #888;">${p.price} ₽ • ${p.date.split(' ')[0]}</div>
-                        </div>`).join('') : '<div style="color:#888;">Покупок нет</div>';
-                        
-                    renderTickets(data.tickets);
-                }
-            } catch(e) { console.log(e); }
-        }
-
-        function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(id === 'screen-profile' || id === 'screen-main' || id === 'screen-admin-tickets') loadData();
-        }
-
-        function openCatalog() {
-            const grid = document.getElementById('catalog-grid');
-            grid.innerHTML = '';
-            accountsData.forEach(item => {
-                const stockColor = item.stock > 0 ? '#00d2ff' : '#ff4444';
-                const stockText = item.stock > 0 ? `В наличии: ${item.stock}` : 'Нет в наличии';
-                grid.innerHTML += `
-                    <div class="product-card">
-                        <div class="product-name">${item.name}</div>
-                        <div class="product-price">${item.price} ₽</div>
-                        <div style="color:${stockColor}; font-size:11px; margin-bottom:5px;">${stockText}</div>
-                        <button class="buy-btn" ${item.stock <= 0 ? 'disabled' : ''} onclick="openModal('${item.code}', '${item.name}', ${item.price}, ${item.stock})">Купить</button>
-                    </div>
-                `;
-            });
-            showScreen('screen-catalog');
-        }
-
-        function openModal(code, name, price, stock) {
-            if(stock <= 0) return;
-            selectedCountry = code;
-            selectedPrice = price;
-            document.getElementById('modal-title').innerText = name;
-            document.getElementById('modal-price').innerText = `Цена: ${price} ₽`;
-            document.getElementById('modal-buy').style.display = 'flex';
-        }
-
-        function closeModal() { document.getElementById('modal-buy').style.display = 'none'; }
-
-        async function buyItem(method) {
-            closeModal();
-            if (method === 'stars') {
-                try {
-                    const res = await fetch(`${API_URL}/api/buy_stars`, {
-                        method: 'POST',
-                        headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                        body: JSON.stringify({ country: selectedCountry })
-                    });
-                    const data = await res.json();
-                    if (data.status === 'ok') {
-                        tg.openInvoice(data.url, (status) => {
-                            if (status === 'paid') {
-                                tg.showAlert("✅ Оплачено! Товар будет выдан вручную. Напишите в поддержку.");
-                                loadData();
-                            }
-                        });
-                    } else { tg.showAlert(`❌ ${data.error}`); }
-                } catch(e) { tg.showAlert("Ошибка сервера"); }
-                return;
-            }
-            
-            tg.showAlert("Списываем средства...");
-            try {
-                const res = await fetch(`${API_URL}/api/buy`, {
-                    method: 'POST',
-                    headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                    body: JSON.stringify({ country: selectedCountry, method: "balance" })
-                });
-                const data = await res.json();
-                if (data.status === 'ok') {
-                    tg.showAlert(`✅ ${data.message}\nТовар: ${data.item}`);
-                    loadData();
-                } else { tg.showAlert(`❌ ${data.error}`); }
-            } catch(e) { tg.showAlert("Ошибка сервера"); }
-        }
-
-        let isSpinning = false;
-        async function spinWheel() {
-            if (isSpinning) return;
-            isSpinning = true;
-            const wheel = document.getElementById('wheel');
-            const btn = document.getElementById('roll-btn');
-            const resDiv = document.getElementById('roll-result');
-            
-            btn.innerText = "Крутим...";
-            resDiv.innerText = "";
-            
-            try {
-                const res = await fetch(`${API_URL}/api/roll`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData } });
-                const data = await res.json();
-                
-                if (data.status === 'ok') {
-                    let targetDeg = 0;
-                    if (data.amount === 1) targetDeg = 360 - 45;
-                    if (data.amount === 2) targetDeg = 360 - 225;
-                    if (data.amount === 3) targetDeg = 360 - 135;
-                    
-                    const randomOffset = Math.floor(Math.random() * 40) - 20;
-                    wheel.style.transform = `rotate(${1440 + targetDeg + randomOffset}deg)`;
-                    
-                    setTimeout(() => {
-                        resDiv.innerText = `🎉 Вы выиграли: ${data.prize}`;
-                        resDiv.style.color = "#ffd700";
-                        btn.innerText = "Крутить";
-                        isSpinning = false;
-                        loadData();
-                    }, 4000);
-                } else {
-                    resDiv.innerText = `❌ ${data.error}`;
-                    resDiv.style.color = "#ff4444";
-                    btn.innerText = "Крутить";
-                    isSpinning = false;
-                }
-            } catch(e) {
-                resDiv.innerText = "Ошибка сервера";
-                btn.innerText = "Крутить";
-                isSpinning = false;
-            }
-        }
-
-        async function buyCase(type) {
-            const price = type === 'normal' ? 99 : 249;
-            tg.showConfirm(`Купить ${type === 'normal' ? 'обычный' : 'VIP'} кейс за ${price} ₽?`, async (confirmed) => {
-                if (!confirmed) return;
-                try {
-                    const res = await fetch(`${API_URL}/api/case/buy`, {
-                        method: 'POST',
-                        headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                        body: JSON.stringify({ type: type })
-                    });
-                    const data = await res.json();
-                    tg.showAlert(data.message || data.error);
-                    loadData();
-                } catch(e) { tg.showAlert("Ошибка сервера"); }
-            });
-        }
-
-        async function openCase(type) {
-            const animDiv = document.getElementById('case-animation');
-            const itemsContainer = document.getElementById('case-items-container');
-            const prizeText = document.getElementById('case-prize-text');
-            
-            animDiv.style.display = 'flex';
-            prizeText.innerText = "";
-            itemsContainer.innerHTML = "";
-            itemsContainer.style.transition = "none";
-            itemsContainer.style.transform = "translateX(0)";
-            
-            const icons = ['🇺🇸', '🇨🇦', '💰', '🎁', '🇬🇧', '🇩🇪', '🇫🇷', '🇵🇱'];
-            for (let i = 0; i < 40; i++) {
-                const el = document.createElement('div');
-                el.className = 'case-item';
-                el.innerText = icons[Math.floor(Math.random() * icons.length)];
-                itemsContainer.appendChild(el);
-            }
-
-            try {
-                const res = await fetch(`${API_URL}/api/case/open`, {
-                    method: 'POST',
-                    headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                    body: JSON.stringify({ type: type })
-                });
-                const data = await res.json();
-                
-                if (data.status === 'ok') {
-                    setTimeout(() => {
-                        const randomStop = Math.floor(Math.random() * (30 - 10) + 10);
-                        const moveX = -(randomStop * 90) + 150; 
-                        itemsContainer.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)";
-                        itemsContainer.style.transform = `translateX(${moveX}px)`;
-                        
-                        setTimeout(() => {
-                            let prizeStr = "";
-                            if (data.prize.type === 'money') prizeStr = `🎉 Вы выиграли: ${data.prize.value}`;
-                            if (data.prize.type === 'promo') prizeStr = `🎉 Выиграли: ${data.prize.value}\nКод: ${data.prize.code}`;
-                            if (data.prize.type === 'account') prizeStr = `🎉 Выиграли: ${data.prize.value}\n\nНапишите в поддержку!`;
-                            
-                            prizeText.innerText = prizeStr;
-                            tg.showAlert(prizeStr);
-                            loadData();
-                            
-                            setTimeout(() => {
-                                animDiv.style.display = 'none';
-                            }, 3000);
-                        }, 4200);
-                    }, 100);
-                } else {
-                    tg.showAlert(data.error);
-                    animDiv.style.display = 'none';
-                }
-            } catch(e) {
-                tg.showAlert("Ошибка сервера");
-                animDiv.style.display = 'none';
-            }
-        }
-
-        async function createTicket() {
-            const text = document.getElementById('ticket-input').value.trim();
-            if(!text) return tg.showAlert("Напишите вопрос!");
-            
-            const res = await fetch(`${API_URL}/api/ticket/create`, {
-                method: 'POST',
-                headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                body: JSON.stringify({ question: text })
-            });
-            const data = await res.json();
-            tg.showAlert(data.message || data.error);
-            if(data.status === 'ok') {
-                document.getElementById('ticket-input').value = "";
-                loadData();
-            }
-        }
-
-        function renderTickets(tickets) {
-            const list = document.getElementById('ticket-list');
-            const adminList = document.getElementById('admin-ticket-list');
-            
-            if (isAdmin) {
-                adminList.innerHTML = tickets.length > 0 ? tickets.map(t => `
-                    <div class="purchase-item" style="background:rgba(0,210,255,0.1); border-color:#00d2ff;">
-                        <div style="font-weight:bold; color:#fff; margin-bottom:5px;">От: @${t.username} (ID: ${t.user_id})</div>
-                        <div style="color:#ddd; margin-bottom:10px;">${t.question}</div>
-                        <button class="buy-btn" style="padding:5px; background:#00d2ff; animation:none;" onclick="replyTicket(${t.id})">Ответить</button>
-                    </div>
-                `).join('') : '<div style="color:#888;">Нет новых тикетов.</div>';
-            } else {
-                list.innerHTML = tickets.length > 0 ? tickets.map(t => `
-                    <div class="purchase-item">
-                        <div style="color:#888; font-size:11px; margin-bottom:5px;">Ваш вопрос: ${t.question}</div>
-                        <div style="font-weight:bold; color:${t.answer ? '#00d2ff' : '#ffd700'};">
-                            ${t.answer ? `Ответ: ${t.answer}` : 'Ожидает ответа...'}
-                        </div>
-                    </div>
-                `).join('') : '';
-            }
-        }
-
-        async function replyTicket(id) {
-            const answer = prompt("Введите ответ для пользователя:");
-            if(!answer) return;
-            const res = await fetch(`${API_URL}/api/ticket/reply`, {
-                method: 'POST',
-                headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                body: JSON.stringify({ ticket_id: id, answer: answer })
-            });
-            const data = await res.json();
-            tg.showAlert(data.message || data.error);
-            loadData();
-        }
-
-        async function adminAction(action) {
-            const resDiv = document.getElementById('admin-result');
-            resDiv.innerText = "Загрузка...";
-            
-            if (action === 'money') {
-                const amount = prompt("Сколько рублей выдать?");
-                if (!amount) { resDiv.innerText = ""; return; }
-                const res = await fetch(`${API_URL}/api/admin/money`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ amount: parseFloat(amount) }) });
-                const data = await res.json();
-                resDiv.innerText = data.message || data.error;
-                loadData();
-            }
-            if (action === 'promo') {
-                const code = prompt("Название промокода (например, HALLOWEEN):");
-                if (!code) { resDiv.innerText = ""; return; }
-                const disc = prompt("Скидка от 5 до 80 (%):");
-                const limit = prompt("Лимит активаций:");
-                const res = await fetch(`${API_URL}/api/admin/promo`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ code: code, discount: parseInt(disc), limit: parseInt(limit) }) });
-                const data = await res.json();
-                resDiv.innerText = data.message || data.error;
-            }
-            if (action === 'stock') {
-                let list = "Введите код страны:\n";
-                accountsData.forEach(i => list += `${i.code} - ${i.name}\n`);
-                const country = prompt(list);
-                if (!country) { resDiv.innerText = ""; return; }
-                const amount = prompt(`Сколько штук добавить для ${country}?`);
-                const res = await fetch(`${API_URL}/api/admin/stock`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ country: country.toLowerCase(), amount: parseInt(amount) }) });
-                const data = await res.json();
-                resDiv.innerText = data.message || data.error;
-                loadData();
-            }
-        }
-
-        function openInfo(type) {
-            if (type === 'promo') {
-                document.getElementById('info-title').innerText = "🎁 Промокод";
-                const contentDiv = document.getElementById('info-content');
-                contentDiv.innerHTML = `
-                    <p>Введите ваш промокод ниже, чтобы получить скидку:</p>
-                    <input type="text" id="promo-input" placeholder="Ваш код..." style="width:100%; padding:15px; border-radius:10px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; margin-bottom:15px; text-transform: uppercase;">
-                    <button class="info-btn" onclick="activatePromo()">Активировать</button>
-                `;
-                showScreen('screen-info');
-                return;
-            }
-            
-            const infoTexts = {
-                ref: { title: "👥 Рефералка", text: "<p>Приглашай друзей и получай 10%!</p><p>Твоя ссылка находится в боте. Нажми кнопку ниже, чтобы скопировать её.</p>", btn: "Скопировать ссылку", action: "ref_menu" }
-            };
-            const data = infoTexts[type];
-            document.getElementById('info-title').innerText = data.title;
-            const contentDiv = document.getElementById('info-content');
-            contentDiv.innerHTML = data.text;
-            const btn = document.createElement('button');
-            btn.className = 'info-btn';
-            btn.innerText = data.btn;
-            btn.onclick = () => {
-                tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=${data.action}`);
-                tg.close();
-            };
-            contentDiv.appendChild(btn);
-            showScreen('screen-info');
-        }
-
-        async function activatePromo() {
-            const code = document.getElementById('promo-input').value.trim().toUpperCase();
-            if (!code) return tg.showAlert("Введите код!");
-            try {
-                const res = await fetch(`${API_URL}/api/promo`, {
-                    method: 'POST',
-                    headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                    body: JSON.stringify({ code: code })
-                });
-                const data = await res.json();
-                if (data.status === 'ok') {
-                    tg.showAlert(`✅ ${data.message}`);
-                    loadData();
-                } else {
-                    tg.showAlert(`❌ ${data.error}`);
-                }
-            } catch(e) { tg.showAlert("Ошибка сервера"); }
-        }
-
-        function showTopupModal() { document.getElementById('modal-topup').style.display = 'flex'; }
-        function closeTopup() { document.getElementById('modal-topup').style.display = 'none'; }
-        
-        async function topupBalance() {
-            const amount = parseFloat(document.getElementById('topup-amount').value);
-            if (!amount || amount < 50) return tg.showAlert("Минимум 50 ₽");
-            closeTopup();
-            tg.showAlert("Создаем счет...");
-            try {
-                const res = await fetch(`${API_URL}/api/topup`, {
-                    method: 'POST',
-                    headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                    body: JSON.stringify({ amount: amount })
-                });
-                const data = await res.json();
-                if (data.url) tg.openLink(data.url);
-                else tg.showAlert("Ошибка: " + data.error);
-            } catch(e) { tg.showAlert("Ошибка сервера"); }
-        }
-
-        loadData();
-    </script>
+    <!-- ПОДКЛЮЧАЕМ СКРИПТ -->
+    <script src="script.js"></script>
 </body>
 </html>
