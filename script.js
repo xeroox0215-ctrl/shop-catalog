@@ -63,42 +63,53 @@ function openCatalog() {
     showScreen('screen-catalog');
 }
 
-        async function buyItem(method) {
-            closeModal();
-            if (method === 'stars') {
-                try {
-                    const res = await fetch(`${API_URL}/api/buy_stars`, {
-                        method: 'POST',
-                        headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                        body: JSON.stringify({ country: selectedCountry })
-                    });
-                    const data = await res.json();
-                    if (data.status === 'ok') {
-                        tg.openInvoice(data.url, (status) => {
-                            if (status === 'paid') {
-                                tg.showAlert("✅ Оплачено звездами! Номер скоро выдадут. Если долго — напишите в поддержку.");
-                                loadData();
-                            }
-                        });
-                    } else { tg.showAlert(`❌ ${data.error}`); }
-                } catch(e) { tg.showAlert("Ошибка сервера"); }
-                return;
-            }
-            
-            tg.showAlert("Списываем средства...");
-            try {
-                const res = await fetch(`${API_URL}/api/buy`, {
-                    method: 'POST',
-                    headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                    body: JSON.stringify({ country: selectedCountry, method: "balance" })
+function openModal(code, name, price, stock) {
+    if(stock <= 0) return;
+    selectedCountry = code;
+    selectedPrice = price;
+    document.getElementById('modal-title').innerText = name;
+    document.getElementById('modal-price').innerText = `Цена: ${price} ₽`;
+    document.getElementById('modal-buy').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('modal-buy').style.display = 'none'; }
+
+async function buyItem(method) {
+    closeModal();
+    if (method === 'stars') {
+        try {
+            const res = await fetch(`${API_URL}/api/buy_stars`, {
+                method: 'POST',
+                headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+                body: JSON.stringify({ country: selectedCountry })
+            });
+            const data = await res.json();
+            if (data.status === 'ok') {
+                tg.openInvoice(data.url, (status) => {
+                    if (status === 'paid') {
+                        tg.showAlert("✅ Оплачено звездами! Номер скоро выдадут. Если долго — напишите в поддержку.");
+                        loadData();
+                    }
                 });
-                const data = await res.json();
-                if (data.status === 'ok') {
-                    tg.showAlert(`✅ Деньги списаны! Номер скоро выдадут.\nЕсли долго — напишите в поддержку.`);
-                    loadData();
-                } else { tg.showAlert(`❌ ${data.error}`); }
-            } catch(e) { tg.showAlert("Ошибка сервера"); }
-        }
+            } else { tg.showAlert(`❌ ${data.error}`); }
+        } catch(e) { tg.showAlert("Ошибка сервера"); }
+        return;
+    }
+    
+    tg.showAlert("Списываем средства...");
+    try {
+        const res = await fetch(`${API_URL}/api/buy`, {
+            method: 'POST',
+            headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+            body: JSON.stringify({ country: selectedCountry, method: "balance" })
+        });
+        const data = await res.json();
+        if (data.status === 'ok') {
+            tg.showAlert(`✅ Деньги списаны! Номер скоро выдадут.\nЕсли долго — напишите в поддержку.`);
+            loadData();
+        } else { tg.showAlert(`❌ ${data.error}`); }
+    } catch(e) { tg.showAlert("Ошибка сервера"); }
+}
 
 let isSpinning = false;
 async function spinWheel() {
@@ -322,8 +333,7 @@ function openInfo(type) {
     }
     
     const infoTexts = {
-        ref: { title: "👥 Рефералка", text: "<p>Приглашай друзей и получай 10%!</p><p>Твоя ссылка находится в боте. Нажми кнопку ниже, чтобы скопировать её.</p>", btn: "Скопировать ссылку", action: "ref_menu" },
-        reviews: { title: "⭐ Отзывы", text: "<p>Почитай отзывы наших клиентов или оставь свой в нашем канале!</p>", btn: "Перейти в отзывы", action: "reviews" },
+        reviews: { title: "⭐ Отзывы", text: "<p>Почитай отзывы наших клиентов или оставь свой в нашем канале!</p>", btn: "Перейти в канал", action: "https://t.me/sciptyyrewievs" },
         about: { title: "ℹ️ О нас", text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выдача.<br>✅ Работаем без обмана и скрытых комиссий.</p><p>Нам доверяют сотни клиентов!</p>", btn: "Назад", action: "back" },
         terms: { title: "📜 Соглашение", text: "<p>Покупая товар в нашем магазине, вы автоматически соглашаетесь со всеми правилами Telegram и нашего бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Мы гарантируем качество товара, но не несем ответственности за дальнейшее использование аккаунтов.</p><p>Мы ничего не нарушаем и работаем строго по правилам.</p>", btn: "Назад", action: "back" },
         privacy: { title: "📄 Политика", text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ваш ID и username для выдачи товаров и работы реферальной системы.</p><p>Ваши данные <b>защищены</b> и никогда не передаются третьим лицам. Мы не нарушаем законы и правила Telegram.</p>", btn: "Назад", action: "back" }
@@ -337,8 +347,11 @@ function openInfo(type) {
     btn.innerText = data.btn;
     if(data.action === 'back') btn.onclick = () => showScreen('screen-main');
     else btn.onclick = () => {
-        tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=${data.action}`);
-        tg.close();
+        if (data.action.startsWith('http')) window.open(data.action, '_blank');
+        else {
+            tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=${data.action}`);
+            tg.close();
+        }
     };
     contentDiv.appendChild(btn);
     showScreen('screen-info');
