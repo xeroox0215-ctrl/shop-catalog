@@ -25,13 +25,9 @@
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Заголовок и Меню */
+        /* Заголовок */
         .glow-title { font-size: 46px; line-height: 1.1; font-weight: 900; text-align: center; margin-top: 20px; margin-bottom: 25px; background: linear-gradient(90deg, #ffffff, #00d2ff, #8a2be2, #ffffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer 8s linear infinite; position: relative; z-index: 2; }
         @keyframes textShimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
-        .main-menu-grid { display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
-        .menu-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .menu-btn:active { transform: scale(0.96); background: rgba(0, 210, 255, 0.15); border-color: #00d2ff; }
-        .btn-text { font-size: 16px; font-weight: 800; color: white; }
 
         /* Баннер */
         .halloween-banner { position: relative; width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 25px; padding: 25px 20px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; background: #111; transition: transform 0.2s; z-index: 2; }
@@ -44,6 +40,12 @@
         .banner-content { position: relative; z-index: 3; width: 100%; }
         .banner-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; }
         .banner-subtitle { font-size: 11px; color: #eee; }
+
+        /* Меню */
+        .main-menu-grid { display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
+        .menu-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .menu-btn:active { transform: scale(0.96); background: rgba(0, 210, 255, 0.15); border-color: #00d2ff; }
+        .btn-text { font-size: 16px; font-weight: 800; color: white; }
 
         /* Каталог */
         .catalog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: relative; z-index: 2; }
@@ -69,11 +71,7 @@
         .roll-btn { margin-top: 40px; background: linear-gradient(90deg, #ff416c, #ff4b2b); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-size: 18px; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(255, 65, 108, 0.5); z-index: 10; }
         .roll-btn:active { transform: scale(0.95); }
 
-        /* Инфо */
-        .info-container { background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px 20px; font-size: 14px; line-height: 1.6; color: #ddd; display: flex; flex-direction: column; min-height: 250px; position: relative; z-index: 2; }
-        .info-btn { display: block; width: 100%; background: linear-gradient(90deg, #00d2ff, #8a2be2); color: white; text-align: center; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 16px; margin-top: auto; border: none; cursor: pointer; }
-
-        /* Кейсы (Анимация) */
+        /* Кейсы */
         .case-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 40px; position: relative; z-index: 2; height: 300px; }
         .chest { width: 150px; height: 120px; background: linear-gradient(135deg, #5d4037, #3e2723); border-radius: 10px; position: relative; box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(0,0,0,0.8); transition: 0.5s; display: flex; align-items: center; justify-content: center; font-size: 50px; border: 2px solid #8d6e63; }
         .chest-lid { position: absolute; top: -10px; left: -2px; width: 150px; height: 30px; background: #4e342e; border-radius: 10px 10px 0 0; border: 2px solid #8d6e63; transition: 0.5s; }
@@ -81,11 +79,14 @@
         .chest-opened .chest-lid { transform: rotateX(90deg) translateY(-20px); opacity: 0; }
         .chest-opened { transform: scale(1.5); opacity: 0; }
         @keyframes chestShake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+
+        /* Инфо */
+        .info-container { background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px 20px; font-size: 14px; line-height: 1.6; color: #ddd; display: flex; flex-direction: column; min-height: 250px; position: relative; z-index: 2; }
+        .info-btn { display: block; width: 100%; background: linear-gradient(90deg, #00d2ff, #8a2be2); color: white; text-align: center; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 16px; margin-top: auto; border: none; cursor: pointer; }
     </style>
 </head><body>
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
 
-    <!-- ГЛАВНЫЙ ЭКРАН -->
     <div id="screen-main" class="screen active">
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
         <div class="halloween-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -114,7 +115,6 @@
         </div>
     </div>
 
-    <!-- КАТАЛОГ -->
     <div id="screen-catalog" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -123,7 +123,6 @@
         <div class="catalog-grid" id="catalog-grid"><div style="grid-column:span 2;">Загрузка...</div></div>
     </div>
 
-    <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -137,7 +136,6 @@
         <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
     </div>
 
-    <!-- РУЛЕТКА -->
     <div id="screen-roll" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -158,7 +156,6 @@
         </div>
     </div>
 
-    <!-- КЕЙСЫ -->
     <div id="screen-cases" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -176,7 +173,6 @@
         </div>
     </div>
 
-    <!-- ПОДДЕРЖКА -->
     <div id="screen-support" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -190,7 +186,6 @@
         </div>
     </div>
 
-    <!-- ТИКЕТЫ АДМИН -->
     <div id="screen-admin-tickets" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -199,7 +194,6 @@
         <div id="admin-ticket-list" style="position:relative; z-index:2;"></div>
     </div>
 
-    <!-- АДМИНКА -->
     <div id="screen-admin" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -213,7 +207,6 @@
         <div id="admin-result" style="margin-top: 20px; text-align:center; color: #00d2ff; font-weight: 800; position:relative; z-index:2;"></div>
     </div>
 
-    <!-- ИНФО -->
     <div id="screen-info" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -222,7 +215,6 @@
         <div class="info-container" id="info-content"></div>
     </div>
 
-    <!-- МОДАЛКА ПОКУПКИ -->
     <div id="modal-buy" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 999; padding:20px; flex-direction:column; justify-content:center;">
         <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; text-align:center;">
             <h2 id="modal-title" style="font-size:22px; margin-bottom:10px;">Покупка</h2>
@@ -311,7 +303,7 @@
         async function buyItem(method) {
             closeModal();
             if (method === 'stars') {
-                const starsAmount = Math.round(selectedPrice); // Предполагаем 1 к 1
+                const starsAmount = Math.round(selectedPrice); 
                 tg.showConfirm(`Вы уверены, что хотите оплатить ${starsAmount} ⭐?`, (confirmed) => {
                     if (confirmed) {
                         tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=buy_${selectedCountry}`);
@@ -336,7 +328,6 @@
             } catch(e) { tg.showAlert("Ошибка сервера"); }
         }
 
-        // --- РУЛЕТКА ---
         let isSpinning = false;
         async function spinWheel() {
             if (isSpinning) return;
@@ -381,7 +372,6 @@
             }
         }
 
-        // --- КЕЙСЫ ---
         async function buyCase(type) {
             const price = type === 'normal' ? 99 : 249;
             tg.showConfirm(`Купить ${type === 'normal' ? 'обычный' : 'VIP'} кейс за ${price} ₽?`, async (confirmed) => {
@@ -397,9 +387,7 @@
                     loadData();
                 } catch(e) { tg.showAlert("Ошибка сервера"); }
             });
-        }
-
-        async function openCase(type) {
+        }        async function openCase(type) {
             const animDiv = document.getElementById('case-animation');
             const chest = document.getElementById('chest');
             const prizeText = document.getElementById('case-prize-text');
@@ -447,7 +435,6 @@
             }
         }
 
-        // --- ТЕХПОДДЕРЖКА ---
         async function createTicket() {
             const text = document.getElementById('ticket-input').value.trim();
             if(!text) return tg.showAlert("Напишите вопрос!");
@@ -502,7 +489,6 @@
             loadData();
         }
 
-        // --- АДМИНКА ---
         async function adminAction(action) {
             const resDiv = document.getElementById('admin-result');
             resDiv.innerText = "Загрузка...";
