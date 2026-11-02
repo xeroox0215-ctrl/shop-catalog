@@ -1,125 +1,229 @@
-body {
-    margin: 0;
-    padding: 15px;
-    background-color: #050505; /* Глубокий черный фон */
-    color: #ffffff;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    min-height: 100vh;
-    padding-bottom: 80px; /* Место для нижнего меню */
+:root {
+    --bg: #000000;
+    --card-bg: rgba(20, 20, 25, 0.7);
+    --text: #ffffff;
+    --accent: #00d2ff;
+    --accent-glow: rgba(0, 210, 255, 0.5);
 }
 
-/* Переливающийся заголовок */
-h1 {
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Космический переливающийся фон */
+.bg-glow {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 210, 255, 0.1), transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.1), transparent 50%);
+    z-index: -1;
+    animation: cosmicShift 15s ease-in-out infinite alternate;
+}
+
+@keyframes cosmicShift {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.2) translate(-5%, 5%); }
+}
+
+/* Паутина (Хэллоуин) */
+.spider-web {
+    position: fixed;
+    width: 150px;
+    height: 150px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.1)" fill="none" stroke-width="1"/></svg>');
+    background-size: cover;
+    z-index: 0;
+    pointer-events: none;
+}
+.spider-web.top-left { top: 0; left: 0; transform: rotate(180deg); }
+.spider-web.top-right { top: 0; right: 0; transform: rotate(270deg); }
+
+/* Экраны (Анимация переключения) */
+.screen {
+    display: none;
+    padding: 20px;
+    animation: fadeIn 0.4s ease;
+}
+.screen.active { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ЭКРАН ПРИВЕТСТВИЯ */
+#screen-welcome {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    font-size: 26px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    background: linear-gradient(90deg, #00c6ff, #0072ff, #00c6ff);
+}
+
+.glow-text {
+    font-size: 42px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #fff, #00d2ff, #8a2be2, #fff);
+    background-size: 300% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: glow 3s infinite alternate;
+    animation: textShimmer 6s linear infinite;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
 }
 
-@keyframes glow {
-    from { filter: drop-shadow(0 0 5px rgba(0, 198, 255, 0.4)); }
-    to { filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.8)); }
+@keyframes textShimmer {
+    to { background-position: 300% center; }
 }
 
-/* Сетка карточек */
-.grid {
+.subtitle {
+    color: #888;
+    font-size: 16px;
+    margin-bottom: 40px;
+    line-height: 1.5;
+}
+
+.main-btn {
+    background: linear-gradient(90deg, #0052ff, #00d2ff);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 20px var(--accent-glow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.main-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* МЕНЮ И КАТАЛОГ */
+.page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.menu-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    max-width: 600px;
-    margin: 0 auto;
+    gap: 15px;
 }
 
-.card {
-    background: linear-gradient(145deg, #111111, #0a0a0a); /* Черный градиент */
+.menu-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px 15px;
     border-radius: 16px;
-    padding: 20px 10px;
     text-align: center;
-    border: 1px solid #222;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
-    transition: transform 0.1s ease, border 0.3s;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.card:active {
-    transform: scale(0.96);
-    border-color: #444;
-}
-
-/* Убрали эмодзи, теперь тут красивое название */
-.name {
-    font-weight: 700;
-    font-size: 16px;
-    margin-bottom: 6px;
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.price {
-    color: #888; /* Серый цвет для цены */
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 15px;
-}
-
-/* Черная кнопка с переливом */
-.btn {
-    background: linear-gradient(90deg, #1a1a1a, #2a2a2a, #1a1a1a);
-    background-size: 200% auto;
-    color: #fff;
-    border: 1px solid #333;
-    padding: 10px 12px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    width: 100%;
     cursor: pointer;
-    transition: 0.3s;
-    animation: shimmer 3s infinite linear;
-}
-
-@keyframes shimmer {
-    to { background-position: 200% center; }
-}
-
-.btn:active {
-    background: #000;
-    border-color: #555;
-}
-
-/* Нижнее меню (панель как в телеграме) */
-.bottom-menu {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #0a0a0a;
-    border-top: 1px solid #1a1a1a;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    padding-bottom: env(safe-area-inset-bottom); /* Для айфонов */
-    z-index: 10;
-}
-
-.menu-item {
-    color: #888;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 500;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     transition: 0.2s;
 }
 
-.menu-item:active {
-    color: #00c6ff; /* Подсветка при нажатии */
+.menu-card:active { transform: scale(0.95); }
+
+.menu-card .icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 10px;
 }
+
+.menu-card .title {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.catalog-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.back-btn {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* КАРТОЧКИ ТОВАРОВ */
+.product-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Перелив на карточке */
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: skewX(-20deg);
+    animation: cardShimmer 4s infinite;
+}
+
+@keyframes cardShimmer {
+    0% { left: -100%; }
+    50%, 100% { left: 200%; }
+}
+
+.product-name { font-weight: 700; font-size: 15px; margin-bottom: 5px; }
+.product-price { color: var(--accent); font-weight: 600; font-size: 14px; margin-bottom: 15px; }
+
+.buy-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.buy-btn:active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: black;
+}
+
+/* Скрытие неактивных вкладок */
+.tab { display: none; animation: fadeIn 0.3s ease; }
+.tab.active { display: block; }
