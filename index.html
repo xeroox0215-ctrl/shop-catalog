@@ -11,271 +11,263 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Unbounded', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidden; position: relative; }
         
+        /* Космос */
         .space-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: #000; }
         .nebula { position: absolute; width: 150vw; height: 150vw; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: rotateNebula 30s linear infinite; }
-        .nebula-1 { top: -50%; left: -50%; background: radial-gradient(circle, rgba(0, 210, 255, 0.4) 0%, transparent 60%); animation-duration: 25s; }
-        .nebula-2 { bottom: -50%; right: -50%; background: radial-gradient(circle, rgba(138, 43, 226, 0.4) 0%, transparent 60%); animation-duration: 35s; animation-direction: reverse; }
-        @keyframes rotateNebula { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(360deg) scale(1); } }
-        .stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 10% 20%, white, transparent), radial-gradient(2px 2px at 40% 70%, white, transparent), radial-gradient(1px 1px at 80% 40%, white, transparent), radial-gradient(2px 2px at 60% 10%, white, transparent), radial-gradient(1px 1px at 90% 90%, white, transparent); background-size: 200px 200px; animation: twinkle 4s infinite alternate; opacity: 0.5; }
+        .nebula-1 { top: -50%; left: -50%; background: radial-gradient(circle, rgba(0, 210, 255, 0.4) 0%, transparent 60%); }
+        .nebula-2 { bottom: -50%; right: -50%; background: radial-gradient(circle, rgba(138, 43, 226, 0.4) 0%, transparent 60%); animation-direction: reverse; }
+        @keyframes rotateNebula { 0% { transform: rotate(0deg) scale(1); } 100% { transform: rotate(360deg) scale(1.2); } }
+        .stars { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 10% 20%, white, transparent), radial-gradient(2px 2px at 40% 70%, white, transparent); background-size: 200px 200px; animation: twinkle 4s infinite alternate; opacity: 0.5; }
         @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.8; } }
         
+        /* Экраны */
         .screen { display: none; padding: 30px 20px; min-height: 100vh; animation: fadeIn 0.5s ease; }
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .glow-title { font-size: 46px; line-height: 1.1; font-weight: 900; text-align: center; margin-top: 20px; margin-bottom: 25px; letter-spacing: 2px; background: linear-gradient(90deg, #ffffff, #00d2ff, #8a2be2, #ffffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer 8s linear infinite; position: relative; z-index: 2; }
+        /* Заголовок */
+        .glow-title { font-size: 46px; line-height: 1.1; font-weight: 900; text-align: center; margin-top: 20px; margin-bottom: 25px; background: linear-gradient(90deg, #ffffff, #00d2ff, #8a2be2, #ffffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer 8s linear infinite; position: relative; z-index: 2; }
         @keyframes textShimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
 
-        .halloween-decor { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 0; }
-        .decor-web { position: absolute; top: -20px; left: -20px; width: 120px; height: 120px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.15)" fill="none" stroke-width="1"/></svg>'); background-size: cover; transform: rotate(180deg); opacity: 0.6; animation: floatWeb 8s ease-in-out infinite alternate; }
-        .decor-spider { position: absolute; top: 0; left: 40px; font-size: 24px; animation: spiderDrop 4s ease-in-out infinite; z-index: 1; }
-        @keyframes floatWeb { 0% { transform: rotate(170deg) scale(1); } 100% { transform: rotate(190deg) scale(1.1); } }
-        @keyframes spiderDrop { 0%, 100% { transform: translateY(10px); } 50% { transform: translateY(25px); } }
-
-        .halloween-banner { position: relative; width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 25px; padding: 25px 20px; cursor: pointer; box-shadow: 0 10px 30px rgba(138, 43, 226, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; background: #111; transition: transform 0.2s; z-index: 2; }
-        .halloween-banner:active { transform: scale(0.97); }
-        .banner-glow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #2a0845, #6441A5, #ff416c, #2a0845); background-size: 300% 300%; animation: bannerGradient 6s ease infinite; z-index: 0; opacity: 0.8; }
-        @keyframes bannerGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .banner-spiderweb { position: absolute; top: -50%; left: -20%; width: 200px; height: 200px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.15)" fill="none" stroke-width="1"/></svg>'); background-size: cover; z-index: 1; animation: floatWeb 10s ease-in-out infinite alternate; }
-        .banner-spider { position: absolute; top: 0; right: 25px; font-size: 28px; z-index: 2; animation: spiderDrop 4s ease-in-out infinite; text-shadow: 0 0 10px rgba(0,0,0,0.8); }
-        .banner-content { position: relative; z-index: 3; width: 100%; }
-        .banner-tag { display: inline-block; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; color: #ffd700; }
-        .banner-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .banner-subtitle { font-size: 11px; color: #eee; font-weight: 500; }
-
-        .main-menu-grid { display: flex; flex-direction: column; gap: 15px; padding-bottom: 20px; position: relative; z-index: 2; }
+        /* Кнопки меню */
+        .main-menu-grid { display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
         .menu-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; text-align: center; cursor: pointer; transition: 0.3s; }
         .menu-btn:active { transform: scale(0.96); background: rgba(0, 210, 255, 0.15); border-color: #00d2ff; }
         .btn-text { font-size: 16px; font-weight: 800; color: white; }
 
-        .catalog-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; margin-top: 10px; position: relative; z-index: 2; }
-        .back-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 10px 18px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 16px; }
-        .back-btn:active { background: rgba(255,255,255,0.2); }
-        .catalog-title { font-size: 20px; font-weight: 800; }
+        /* Карточки */
         .catalog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: relative; z-index: 2; }
-        
-        .product-card { background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
-        .product-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0,210,255,0.15), transparent); transform: skewX(-20deg); animation: cardShimmer 5s infinite; }
-        @keyframes cardShimmer { 0% { left: -100%; } 40%, 100% { left: 200%; } }
+        .product-card { background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
         .product-name { font-size: 14px; font-weight: 800; margin-bottom: 5px; }
         .product-price { color: #aaa; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
-        .buy-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 10px; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
-        .buy-btn:active { background: #00d2ff; color: black; }
-
-        .info-container { background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px 20px; font-size: 14px; line-height: 1.6; color: #ddd; display: flex; flex-direction: column; min-height: 250px; position: relative; z-index: 2; }
-        .info-container p { margin-bottom: 15px; }
-        .info-btn { display: block; width: 100%; background: linear-gradient(90deg, #00d2ff, #8a2be2); color: white; text-align: center; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 16px; margin-top: auto; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3); }
-        .info-btn:active { opacity: 0.8; transform: scale(0.98); }
         
+        /* Переливающиеся кнопки покупки */
+        .buy-btn { background: linear-gradient(90deg, #0052ff, #00d2ff, #0052ff); background-size: 200% auto; border: none; color: white; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; animation: btnShimmer 3s linear infinite; margin-top: 10px; }
+        @keyframes btnShimmer { to { background-position: 200% center; } }
+        .buy-btn:active { transform: scale(0.95); }
+        .buy-btn:disabled { background: #333; animation: none; color: #777; cursor: not-allowed; }
+
+        /* Профиль */
         .balance-card { background: linear-gradient(135deg, #00d2ff, #8a2be2); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; position: relative; z-index: 2; }
-        .balance-amount { font-size: 28px; font-weight: 900; margin-top: 5px; }
+        .balance-amount { font-size: 28px; font-weight: 900; }
         .purchase-item { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 12px; border: 1px solid rgba(255,255,255,0.05); }
+
+        /* Рулетка (Колесо) */
+        .wheel-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 30px; position: relative; z-index: 2; }
+        .wheel { width: 280px; height: 280px; border-radius: 50%; border: 8px solid #222; position: relative; overflow: hidden; box-shadow: 0 0 30px rgba(0, 210, 255, 0.4); transition: transform 4s cubic-bezier(0.25, 0.1, 0.1, 1); background: conic-gradient(#00d2ff 0deg 90deg, #8a2be2 90deg 180deg, #ff416c 180deg 270deg, #ffd700 270deg 360deg); }
+        .wheel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: #111; border-radius: 50%; border: 4px solid #fff; }
+        .wheel-pointer { position: absolute; top: -15px; font-size: 40px; z-index: 10; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
+        .wheel-text { position: absolute; width: 100%; height: 100%; }
+        .wheel-text span { position: absolute; left: 50%; top: 50%; transform-origin: 0 0; font-weight: 900; font-size: 14px; color: #000; }
+        
+        .roll-btn { margin-top: 40px; background: linear-gradient(90deg, #ff416c, #ff4b2b); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-size: 18px; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(255, 65, 108, 0.5); }
+        .roll-btn:active { transform: scale(0.95); }
     </style>
 </head><body>
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
 
+    <!-- ГЛАВНЫЙ ЭКРАН -->
     <div id="screen-main" class="screen active">
-        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div></div>
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
-        
-        <div class="halloween-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
-            <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
-            <div class="banner-content">
-                <span class="banner-tag">🔥 ХЭЛЛОУИН СКИДКИ</span>
-                <h3 class="banner-title">Наш Telegram Канал</h3>
-                <p class="banner-subtitle">Перейти и подписаться 👉 @sciptyystore</p>
-            </div>
-        </div>
-
         <div class="main-menu-grid">
             <div class="menu-btn" onclick="openCatalog()"><span class="btn-text">🛒 Купить аккаунты</span></div>
-            <div class="menu-btn" onclick="openInfo('profile')"><span class="btn-text">👤 Профиль</span></div>
-            <div class="menu-btn" onclick="openInfo('topup')"><span class="btn-text">💳 Пополнить баланс</span></div>
-            <div class="menu-btn" onclick="openInfo('cases')"><span class="btn-text">📦 Кейсы</span></div>
-            <div class="menu-btn" onclick="openInfo('roll')"><span class="btn-text">🎰 Рулетка дня</span></div>
-            <div class="menu-btn" onclick="openInfo('promo')"><span class="btn-text">🎁 Промокод</span></div>
-            <div class="menu-btn" onclick="openInfo('ref')"><span class="btn-text">👥 Рефералка</span></div>
-            <div class="menu-btn" onclick="openInfo('support')"><span class="btn-text">🆘 Поддержка</span></div>
-            <div class="menu-btn" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')"><span class="btn-text">⭐ Отзывы</span></div>
-            <div class="menu-btn" onclick="openInfo('about')"><span class="btn-text">ℹ️ О нас</span></div>
-            <div class="menu-btn" onclick="openInfo('terms')"><span class="btn-text">📜 Соглашение</span></div>
-            <div class="menu-btn" onclick="openInfo('privacy')"><span class="btn-text">📄 Политика</span></div>
+            <div class="menu-btn" onclick="showScreen('screen-profile')"><span class="btn-text">👤 Профиль</span></div>
+            <div class="menu-btn" onclick="showScreen('screen-roll')"><span class="btn-text">🎰 Рулетка дня</span></div>
+            <div class="menu-btn" onclick="goToBot('cases_menu')"><span class="btn-text">📦 Кейсы</span></div>
+            <div class="menu-btn" onclick="goToBot('enter_promo')"><span class="btn-text">🎁 Промокод</span></div>
+            <div class="menu-btn" onclick="goToBot('ref_menu')"><span class="btn-text">👥 Рефералка</span></div>
+            <div class="menu-btn" onclick="goToBot('support')"><span class="btn-text">🆘 Поддержка</span></div>
         </div>
     </div>
 
+    <!-- КАТАЛОГ -->
+    <div id="screen-catalog" class="screen">
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
+            <button class="back-btn" onclick="showScreen('screen-main')" style="background:rgba(255,255,255,0.1); border:none; color:white; padding:10px 15px; border-radius:12px; font-weight:800; cursor:pointer;">← Назад</button>
+            <h2 style="font-size:20px; font-weight:800;">Аккаунты</h2>
+        </div>
+        <div class="catalog-grid" id="catalog-grid"><div style="grid-column:span 2;">Загрузка...</div></div>
+    </div>
+
+    <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen">
-        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div></div>
-        <div class="catalog-header">
-            <button class="back-btn" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 class="catalog-title">Профиль</h2>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
+            <button class="back-btn" onclick="showScreen('screen-main')" style="background:rgba(255,255,255,0.1); border:none; color:white; padding:10px 15px; border-radius:12px; font-weight:800; cursor:pointer;">← Назад</button>
+            <h2 style="font-size:20px; font-weight:800;">Профиль</h2>
         </div>
         <div class="balance-card">
             <div style="font-size: 14px; opacity: 0.8;">Ваш баланс</div>
-            <div class="balance-amount" id="profile-balance">Загрузка...</div>
+            <div class="balance-amount" id="profile-balance">0 ₽</div>
         </div>
-        <h3 style="position: relative; z-index: 2; margin-bottom: 10px;">Последние покупки:</h3>
-        <div id="profile-purchases" style="position: relative; z-index: 2;">
-            <div style="color: #888; font-size: 14px;">Загрузка...</div>
+        <h3 style="position: relative; z-index: 2; margin-bottom: 10px;">История:</h3>
+        <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
+    </div>
+
+    <!-- РУЛЕТКА -->
+    <div id="screen-roll" class="screen">
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
+            <button class="back-btn" onclick="showScreen('screen-main')" style="background:rgba(255,255,255,0.1); border:none; color:white; padding:10px 15px; border-radius:12px; font-weight:800; cursor:pointer;">← Назад</button>
+            <h2 style="font-size:20px; font-weight:800;">Рулетка дня</h2>
+        </div>
+        
+        <div class="wheel-container">
+            <div class="wheel-pointer">🔻</div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-text">
+                    <span style="transform: rotate(45deg) translate(80px, -20px);">1 ₽</span>
+                    <span style="transform: rotate(135deg) translate(80px, -20px);">3 ₽</span>
+                    <span style="transform: rotate(225deg) translate(80px, -20px);">2 ₽</span>
+                    <span style="transform: rotate(315deg) translate(80px, -20px);">Промокод</span>
+                </div>
+            </div>
+            <button class="roll-btn" id="roll-btn" onclick="spinWheel()">Крутить</button>
+            <div id="roll-result" style="margin-top:20px; font-size:20px; font-weight:800; text-align:center; color:#00d2ff; min-height:30px;"></div>
         </div>
     </div>
 
-    <div id="screen-catalog" class="screen">
-        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div></div>
-        <div class="catalog-header">
-            <button class="back-btn" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 class="catalog-title">Аккаунты</h2>
+    <!-- МОДАЛКА ПОКУПКИ -->
+    <div id="modal-buy" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 999; padding:20px; flex-direction:column; justify-content:center;">
+        <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; text-align:center;">
+            <h2 id="modal-title" style="font-size:22px; margin-bottom:10px;">Покупка</h2>
+            <p id="modal-price" style="color:#888; margin-bottom:25px;">Цена: 46 ₽</p>
+            
+            <button id="btn-pay-bal" style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #00d2ff, #0052ff); border:none; color:white; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="buyItem('balance')">Купить с баланса (₽)</button>
+            <button id="btn-pay-stars" style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #ffd700, #ff8c00); border:none; color:black; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="buyItem('stars')">Купить за звезды (⭐)</button>
+            
+            <button style="width:100%; padding:12px; border-radius:12px; background:transparent; border:1px solid #555; color:#aaa; font-weight:800;" onclick="closeModal()">Отмена</button>
         </div>
-        <div class="catalog-grid" id="catalog-grid">
-            <div style="color: #888; font-size: 14px; grid-column: span 2;">Загрузка...</div>
-        </div>
-    </div>
-
-    <div id="screen-info" class="screen">
-        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div></div>
-        <div class="catalog-header">
-            <button class="back-btn" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 id="info-title" class="catalog-title">Инфо</h2>
-        </div>
-        <div class="info-container" id="info-content"></div>
     </div>    <script>
         const tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
-
-        const userId = tg?.initDataUnsafe?.user?.id || 0;
         const API_URL = "https://sciptyy-api.onrender.com";
-
+        
+        let userProfile = { balance: 0, last_roll: 0 };
         let accountsData = [];
-        let userProfile = { balance: 0 };
+        let selectedCountry = null;
+        let selectedPrice = 0;
 
         async function loadData() {
             try {
-                const response = await fetch(`${API_URL}/api/profile`, {
-                    headers: { "X-Telegram-Init-Data": tg.initData }
-                });
-                const data = await response.json();
-                
+                const res = await fetch(`${API_URL}/api/profile`, { headers: { "X-Telegram-Init-Data": tg.initData } });
+                const data = await res.json();
                 if (data.status === "ok") {
                     userProfile = data.profile;
                     accountsData = data.shop;
                     
                     document.getElementById('profile-balance').innerText = `${userProfile.balance.toFixed(2)} ₽`;
                     
-                    const purchasesDiv = document.getElementById('profile-purchases');
-                    if (data.purchases && data.purchases.length > 0) {
-                        purchasesDiv.innerHTML = data.purchases.map(p => `
-                            <div class="purchase-item">
-                                <div style="font-weight: bold; color: #00d2ff;">${p.name}</div>
-                                <div style="color: #888; margin-top: 4px;">${p.price} ₽ • ${p.date.split(' ')[0]}</div>
-                            </div>
-                        `).join('');
-                    } else {
-                        purchasesDiv.innerHTML = '<div style="color: #888; font-size: 14px;">У вас пока нет покупок.</div>';
-                    }
+                    const pDiv = document.getElementById('profile-purchases');
+                    pDiv.innerHTML = data.purchases.length > 0 ? data.purchases.map(p => `
+                        <div class="purchase-item">
+                            <div style="font-weight: bold; color: #00d2ff;">${p.name}</div>
+                            <div style="color: #888;">${p.price} ₽ • ${p.date.split(' ')[0]}</div>
+                        </div>`).join('') : '<div style="color:#888;">Покупок нет</div>';
                 }
-            } catch (e) {
-                console.log("Ошибка загрузки API", e);
-                document.getElementById('profile-balance').innerText = "Ошибка";
-            }
+            } catch(e) { console.log(e); }
         }
 
-        function showScreen(screenId) {
+        function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+            document.getElementById(id).classList.add('active');
+            if(id === 'screen-profile') loadData();
         }
 
         function openCatalog() {
             const grid = document.getElementById('catalog-grid');
-            grid.innerHTML = ''; 
-            
-            if (accountsData.length === 0) {
-                grid.innerHTML = '<div style="color: #888; font-size: 14px; grid-column: span 2;">Товары не найдены.</div>';
-                showScreen('screen-catalog');
-                return;
-            }
-
+            grid.innerHTML = '';
             accountsData.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                const stockText = item.stock > 0 ? `<span style="color: #00d2ff;">В наличии: ${item.stock} шт.</span>` : `<span style="color: #ff4444;">Нет в наличии</span>`;
-                const btnDisabled = item.stock > 0 ? '' : 'disabled style="opacity: 0.5;"';
-                
-                card.innerHTML = `
-                    <div>
+                const stockColor = item.stock > 0 ? '#00d2ff' : '#ff4444';
+                const stockText = item.stock > 0 ? `В наличии: ${item.stock}` : 'Нет в наличии';
+                grid.innerHTML += `
+                    <div class="product-card">
                         <div class="product-name">${item.name}</div>
                         <div class="product-price">${item.price} ₽</div>
-                        <div style="font-size: 11px; margin-top: 5px;">${stockText}</div>
+                        <div style="color:${stockColor}; font-size:11px; margin-bottom:5px;">${stockText}</div>
+                        <button class="buy-btn" ${item.stock <= 0 ? 'disabled' : ''} onclick="openModal('${item.code}', '${item.name}', ${item.price}, ${item.stock})">Купить</button>
                     </div>
-                    <button class="buy-btn" ${btnDisabled} onclick="confirmBuy('${item.code}', '${item.name}', ${item.price})">Купить</button>
                 `;
-                grid.appendChild(card);
             });
             showScreen('screen-catalog');
         }
 
-        function openInfo(type) {
-            if (type === 'profile') {
-                loadData();
-                showScreen('screen-profile');
+        function openModal(code, name, price, stock) {
+            if(stock <= 0) return;
+            selectedCountry = code;
+            selectedPrice = price;
+            document.getElementById('modal-title').innerText = name;
+            document.getElementById('modal-price').innerText = `Цена: ${price} ₽`;
+            document.getElementById('modal-buy').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-buy').style.display = 'none';
+        }
+
+        async function buyItem(method) {
+            if (method === 'stars') {
+                closeModal();
+                tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=buy_${selectedCountry}`);
+                tg.close();
                 return;
             }
             
-            const infoTexts = {
-                topup: { title: "💳 Пополнение", text: "<p>Выберите сумму пополнения через Lava.top (СБП/Карты).</p>", btn: "Пополнить 100 ₽", action: "topup_action" },
-                cases: { title: "📦 Кейсы", text: "<p>Испытай удачу и получи крутые призы!</p>", btn: "Перейти к кейсам", action: "cases_menu" },
-                roll: { title: "🎰 Рулетка", text: "<p>Крути раз в 24 часа!</p>", btn: "Крутить", action: "daily_roll" },
-                promo: { title: "🎁 Промокод", text: "<p>Введи код и получи скидку.</p>", btn: "Ввести", action: "enter_promo" },
-                ref: { title: "👥 Рефералка", text: "<p>Приглашай друзей и получай 10%!</p>", btn: "Скопировать ссылку", action: "ref_menu" },
-                support: { title: "🆘 Поддержка", text: "<p>Работаем 24/7.</p>", btn: "Написать", action: "support" },
-                about: { title: "ℹ️ О нас", text: "<p>Sciptyy Store — лучший магазин.</p>", btn: "Назад", action: "back" },
-                terms: { title: "📜 Соглашение", text: "<p>Правила.</p>", btn: "Назад", action: "back" },
-                privacy: { title: "📄 Политика", text: "<p>Данные защищены.</p>", btn: "Назад", action: "back" }
-            };
-            
-            const data = infoTexts[type];
-            document.getElementById('info-title').innerText = data.title;
-            const contentDiv = document.getElementById('info-content');
-            contentDiv.innerHTML = data.text;
-            
-            const btn = document.createElement('button');
-            btn.className = 'info-btn';
-            btn.innerText = data.btn;
-            
-            if (data.action === "back") btn.onclick = () => showScreen('screen-main');
-            else if (data.action === "topup_action") btn.onclick = () => topup(100);
-            else btn.onclick = () => goToBot(data.action);
-            
-            contentDiv.appendChild(btn);
-            showScreen('screen-info');
-        }
-
-        async function topup(amount) {
-            tg.showAlert("Создаем счет. Пожалуйста, подождите...");
+            closeModal();
+            tg.showAlert("Списываем средства...");
             try {
-                const response = await fetch(`${API_URL}/api/topup`, {
+                const res = await fetch(`${API_URL}/api/buy`, {
                     method: 'POST',
                     headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                    body: JSON.stringify({ amount: amount })
+                    body: JSON.stringify({ country: selectedCountry, method: "balance" })
                 });
-                const data = await response.json();
-                if (data.url) {
-                    tg.openLink(data.url);
+                const data = await res.json();
+                if (data.status === 'ok') {
+                    tg.showAlert(`✅ ${data.message}\nТовар: ${data.item}\n\nНапишите в поддержку для выдачи.`);
+                    loadData();
                 } else {
-                    tg.showAlert("Ошибка создания счета: " + data.error);
+                    tg.showAlert(`❌ ${data.error}`);
                 }
-            } catch (e) {
-                tg.showAlert("Не удалось связаться с сервером пополнения.");
+            } catch(e) {
+                tg.showAlert("Ошибка сервера");
             }
         }
 
-        function confirmBuy(code, name, price) {
-            const msg = `Вы уверены, что хотите купить ${name} за ${price} ₽?`;
-            if (tg && tg.showConfirm) {
-                tg.showConfirm(msg, (confirmed) => {
-                    if (confirmed) {
-                        tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=buy_${code}`);
-                        tg.close();
-                    }
+        let isSpinning = false;
+        async function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            const wheel = document.getElementById('wheel');
+            const btn = document.getElementById('roll-btn');
+            const resDiv = document.getElementById('roll-result');
+            
+            btn.innerText = "Крутим...";
+            resDiv.innerText = "";
+            
+            // Анимация кручения (просто рандомный поворот)
+            const randomDeg = 1440 + Math.floor(Math.random() * 360);
+            wheel.style.transform = `rotate(${randomDeg}deg)`;
+            
+            try {
+                const res = await fetch(`${API_URL}/api/roll`, {
+                    method: 'POST',
+                    headers: { "X-Telegram-Init-Data": tg.initData }
                 });
+                const data = await res.json();
+                
+                setTimeout(() => {
+                    if (data.status === 'ok') {
+                        resDiv.innerText = `🎉 Вы выиграли: ${data.prize}`;
+                        resDiv.style.color = "#ffd700";
+                        loadData();
+                    } else {
+                        resDiv.innerText = `❌ ${data.error}`;
+                        resDiv.style.color = "#ff4444";
+                    }
+                    btn.innerText = "Крутить";
+                    wheel.style.transform = `rotate(0deg)`; // Сброс после анимации
+                    isSpinning = false;
+                }, 4000);
+            } catch(e) {
+                setTimeout(() => { btn.innerText = "Крутить"; isSpinning = false; }, 4000);
             }
         }
 
@@ -286,6 +278,7 @@
             }
         }
 
+        // Запуск
         loadData();
     </script>
 </body>
