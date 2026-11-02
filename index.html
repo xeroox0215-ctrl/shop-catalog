@@ -77,13 +77,14 @@
         <div class="main-menu-grid">
             <div class="menu-btn" onclick="openCatalog()"><span class="btn-text">🛒 Купить аккаунты</span></div>
             <div class="menu-btn" onclick="showScreen('screen-profile')"><span class="btn-text">👤 Профиль</span></div>
+            <div class="menu-btn" onclick="showTopupModal()"><span class="btn-text">💳 Пополнить баланс</span></div>
             <div class="menu-btn" onclick="showScreen('screen-roll')"><span class="btn-text">🎰 Рулетка дня</span></div>
             <div class="menu-btn" onclick="showScreen('screen-cases')"><span class="btn-text">📦 Кейсы</span></div>
             <div class="menu-btn" onclick="openInfo('promo')"><span class="btn-text">🎁 Промокод</span></div>
             <div class="menu-btn" onclick="openInfo('ref')"><span class="btn-text">👥 Рефералка</span></div>
             <div class="menu-btn" onclick="showScreen('screen-support')"><span class="btn-text">🆘 Поддержка</span></div>
             <div class="menu-btn" id="admin-btn" style="display: none; background: rgba(255, 0, 0, 0.1); border-color: rgba(255, 0, 0, 0.3);" onclick="showScreen('screen-admin')"><span class="btn-text" style="color: #ff4444;">⚙️ Админ-панель</span></div>
-            <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')"><span class="btn-text" style="color: #00d2ff;">📩 Тикеты</span></div>
+            <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')"><span class="btn-text" style="color: #00d2ff;">📩 Тикеты (Техподдержка)</span></div>
         </div>
     </div>
 
@@ -95,7 +96,6 @@
     <div id="screen-profile" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Профиль</h2></div>
         <div class="balance-card"><div style="font-size: 14px; opacity: 0.8;">Ваш баланс</div><div class="balance-amount" id="profile-balance">0 ₽</div></div>
-        <button class="info-btn" onclick="showTopupModal()" style="margin-bottom:20px;">💳 Пополнить баланс</button>
         <h3 style="position: relative; z-index: 2; margin-bottom: 10px;">История:</h3>
         <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
     </div>
@@ -179,7 +179,7 @@
             <h2 style="font-size:22px; margin-bottom:10px;">Пополнение</h2>
             <p style="color:#888; margin-bottom:25px;">Введите сумму (мин. 50 ₽)</p>
             <input type="number" id="topup-amount" placeholder="Сумма" style="width:100%; padding:15px; border-radius:12px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; margin-bottom:15px;">
-            <button style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #00d2ff, #0052ff); border:none; color:white; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="topupBalance()">Пополнить через Lava</button>
+            <button style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #00d2ff, #0052ff); border:none; color:white; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="topupBalance()">Пополнить</button>
             <button style="width:100%; padding:12px; border-radius:12px; background:transparent; border:1px solid #555; color:#aaa; font-weight:800;" onclick="closeTopup()">Отмена</button>
         </div>
     </div>    <script>
@@ -221,7 +221,7 @@
                         
                     renderTickets(data.tickets);
                 }
-            } catch(e) { console.log("Ошибка загрузки:", e); }
+            } catch(e) { console.log(e); }
         }
 
         function showScreen(id) {
@@ -262,13 +262,22 @@
         async function buyItem(method) {
             closeModal();
             if (method === 'stars') {
-                const starsAmount = Math.round(selectedPrice); 
-                tg.showConfirm(`Вы уверены, что хотите оплатить ${starsAmount} ⭐?`, (confirmed) => {
-                    if (confirmed) {
-                        tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=buy_${selectedCountry}`);
-                        tg.close();
-                    }
-                });
+                try {
+                    const res = await fetch(`${API_URL}/api/buy_stars`, {
+                        method: 'POST',
+                        headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+                        body: JSON.stringify({ country: selectedCountry })
+                    });
+                    const data = await res.json();
+                    if (data.status === 'ok') {
+                        tg.openInvoice(data.url, (status) => {
+                            if (status === 'paid') {
+                                tg.showAlert("✅ Оплачено! Товар будет выдан вручную. Напишите в поддержку.");
+                                loadData();
+                            }
+                        });
+                    } else { tg.showAlert(`❌ ${data.error}`); }
+                } catch(e) { tg.showAlert("Ошибка сервера"); }
                 return;
             }
             
@@ -281,7 +290,7 @@
                 });
                 const data = await res.json();
                 if (data.status === 'ok') {
-                    tg.showAlert(`✅ ${data.message}\nТовар: ${data.item}\n\nНапишите в поддержку для выдачи.`);
+                    tg.showAlert(`✅ ${data.message}\nТовар: ${data.item}`);
                     loadData();
                 } else { tg.showAlert(`❌ ${data.error}`); }
             } catch(e) { tg.showAlert("Ошибка сервера"); }
@@ -509,7 +518,7 @@
             }
             
             const infoTexts = {
-                ref: { title: "👥 Рефералка", text: "<p>Приглашай друзей и получай 10%!</p>", btn: "Скопировать ссылку", action: "ref_menu" }
+                ref: { title: "👥 Рефералка", text: "<p>Приглашай друзей и получай 10%!</p><p>Твоя ссылка находится в боте. Нажми кнопку ниже, чтобы скопировать её.</p>", btn: "Скопировать ссылку", action: "ref_menu" }
             };
             const data = infoTexts[type];
             document.getElementById('info-title').innerText = data.title;
