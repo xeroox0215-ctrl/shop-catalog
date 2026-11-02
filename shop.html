@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sciptyy Store</title>
-    <!-- Официальный скрипт Telegram Mini Apps -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Красивый космический шрифт -->
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800;900&display=swap" rel="stylesheet">
     
     <style>
@@ -36,7 +34,6 @@
             background: #000;
         }
 
-        /* Медленно переливающиеся туманности */
         .nebula {
             position: absolute;
             width: 150vw;
@@ -66,7 +63,6 @@
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        /* Мерцающие звезды и паутина */
         .stars {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -100,14 +96,13 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ================= ЗАГОЛОВОК ================= */
         .glow-title {
             font-size: 52px;
             line-height: 1.1;
             font-weight: 900;
             text-align: center;
-            margin-top: 40px;
-            margin-bottom: 50px;
+            margin-top: 30px;
+            margin-bottom: 40px;
             letter-spacing: 2px;
             background: linear-gradient(90deg, #ffffff, #00d2ff, #8a2be2, #ffffff);
             background-size: 300% 100%;
@@ -125,19 +120,19 @@
         .main-menu-grid {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
+            padding-bottom: 20px;
         }
 
         .menu-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
+            padding: 20px;
+            border-radius: 16px;
             text-align: center;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
         .menu-btn:active {
@@ -147,7 +142,7 @@
         }
 
         .btn-text {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 800;
             color: white;
         }
@@ -157,7 +152,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             margin-top: 10px;
         }
 
@@ -175,23 +170,22 @@
         .back-btn:active { background: rgba(255,255,255,0.2); }
 
         .catalog-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
         }
 
         .catalog-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
 
-        /* Карточки товаров */
         .product-card {
             background: rgba(20, 20, 20, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px 15px;
+            border-radius: 16px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -214,14 +208,14 @@
         }
 
         .product-name {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 800;
             margin-bottom: 5px;
         }
 
         .product-price {
             color: #aaa;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             margin-bottom: 15px;
         }
@@ -230,10 +224,10 @@
             background: rgba(255,255,255,0.1);
             border: none;
             color: white;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 10px;
+            border-radius: 10px;
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: 0.2s;
         }
@@ -242,27 +236,65 @@
             background: #00d2ff;
             color: black;
         }
+
+        /* ================= ИНФО ЭКРАНЫ ================= */
+        .info-container {
+            background: rgba(20, 20, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        
+        .info-container p {
+            margin-bottom: 15px;
+        }
+
+        .info-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(90deg, #00d2ff, #8a2be2);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 16px;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .info-btn:active { opacity: 0.8; }
     </style>
 </head>
 <body>
 
-    <!-- Космический фон и звезды -->
     <div class="space-bg">
         <div class="nebula nebula-1"></div>
         <div class="nebula nebula-2"></div>
         <div class="stars"></div>
     </div>
 
-    <!-- Экран 1: Главное меню -->
+    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ -->
     <div id="screen-main" class="screen active">
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
         
         <div class="main-menu-grid">
-            <div class="menu-btn" onclick="openCatalog('accounts')">
+            <div class="menu-btn" onclick="openCatalog()">
                 <span class="btn-text">🛒 Купить аккаунты</span>
             </div>
-            <div class="menu-btn" onclick="openCatalog('numbers')">
-                <span class="btn-text">📱 Купить номера</span>
+            <div class="menu-btn" onclick="goToBot('cases_menu')">
+                <span class="btn-text">📦 Кейсы</span>
+            </div>
+            <div class="menu-btn" onclick="goToBot('daily_roll')">
+                <span class="btn-text">🎰 Рулетка дня</span>
+            </div>
+            <div class="menu-btn" onclick="goToBot('profile')">
+                <span class="btn-text">👤 Профиль</span>
             </div>
             <div class="menu-btn" onclick="goToBot('enter_promo')">
                 <span class="btn-text">🎁 Промокод</span>
@@ -270,58 +302,106 @@
             <div class="menu-btn" onclick="goToBot('ref_menu')">
                 <span class="btn-text">👥 Рефералка</span>
             </div>
+            <div class="menu-btn" onclick="openInfo('support')">
+                <span class="btn-text">🆘 Поддержка</span>
+            </div>
+            <div class="menu-btn" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')">
+                <span class="btn-text">⭐ Отзывы</span>
+            </div>
+            <div class="menu-btn" onclick="openInfo('about')">
+                <span class="btn-text">ℹ️ О нас</span>
+            </div>
+            <div class="menu-btn" onclick="openInfo('terms')">
+                <span class="btn-text">📜 Соглашение</span>
+            </div>
+            <div class="menu-btn" onclick="openInfo('privacy')">
+                <span class="btn-text">📄 Политика</span>
+            </div>
         </div>
     </div>
 
-    <!-- Экран 2: Каталог товаров -->
+    <!-- ЭКРАН 2: КАТАЛОГ АККАУНТОВ -->
     <div id="screen-catalog" class="screen">
         <div class="catalog-header">
-            <button class="back-btn" onclick="closeCatalog()">← Назад</button>
-            <h2 id="catalog-title" class="catalog-title">Каталог</h2>
+            <button class="back-btn" onclick="showScreen('screen-main')">← Назад</button>
+            <h2 class="catalog-title">Аккаунты</h2>
         </div>
-        <div class="catalog-grid" id="catalog-grid">
-            <!-- Сюда JS вставит карточки -->
+        <div class="catalog-grid" id="catalog-grid"></div>
+    </div>
+
+    <!-- ЭКРАН 3: ИНФО СТРАНИЦЫ (Поддержка, О нас, Соглашение, Политика) -->
+    <div id="screen-info" class="screen">
+        <div class="catalog-header">
+            <button class="back-btn" onclick="showScreen('screen-main')">← Назад</button>
+            <h2 id="info-title" class="catalog-title">Информация</h2>
+        </div>
+        <div class="info-container" id="info-content">
+            <!-- Сюда JS вставит текст -->
         </div>
     </div>
 
     <script>
-        // Инициализация Телеграма
         const tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
 
-        // --- БАЗА ДАННЫХ ---
+        // --- ВСЕ СТРАНЫ ИЗ ТВОЕГО КОДА ---
         const accountsData = [
-            { code: "usa", name: "США", price: 46 },
-            { code: "canada", name: "Канада", price: 99 },
-            { code: "uk", name: "Великобритания", price: 125 },
-            { code: "colombia", name: "Колумбия", price: 99 },
-            { code: "germany", name: "Германия", price: 249 },
-            { code: "kazakhstan", name: "Казахстан", price: 249 }
+            { code: "usa", name: "🇺🇸 США", price: 46 },
+            { code: "canada", name: "🇨🇦 Канада", price: 99 },
+            { code: "colombia", name: "🇨🇴 Колумбия", price: 99 },
+            { code: "uk", name: "🇬🇧 Великобритания", price: 125 },
+            { code: "bangladesh", name: "🇧🇩 Бангладеш", price: 99 },
+            { code: "argentina", name: "🇦🇷 Аргентина", price: 125 },
+            { code: "uzbekistan", name: "🇺🇿 Узбекистан", price: 175 },
+            { code: "brazil", name: "🇧🇷 Бразилия", price: 175 },
+            { code: "thailand", name: "🇹🇭 Таиланд", price: 199 },
+            { code: "france", name: "🇫🇷 Франция", price: 199 },
+            { code: "germany", name: "🇩🇪 Германия", price: 249 },
+            { code: "kazakhstan", name: "🇰🇿 Казахстан", price: 249 },
+            { code: "ukraine", name: "🇺🇦 Украина", price: 249 },
+            { code: "poland", name: "🇵🇱 Польша", price: 249 },
+            { code: "mauritania", name: "🇲🇷 Мавритания", price: 299 }
         ];
 
-        const numbersData = [
-            { code: "num_usa", name: "США", price: 15 },
-            { code: "num_uk", name: "Великобритания", price: 20 },
-            { code: "num_rus", name: "Россия", price: 10 },
-            { code: "num_kz", name: "Казахстан", price: 12 }
-        ];
+        // --- ТЕКСТА ДЛЯ ИНФО СТРАНИЦ ---
+        const infoTexts = {
+            support: {
+                title: "Поддержка",
+                text: "<p>Работаем 24/7 ⏰</p><p>Ответим вам на любой вопрос и поможем с покупкой или выдачей товара.</p><p>Нажмите кнопку ниже, чтобы написать нам в бота.</p>",
+                btn: "Написать в поддержку",
+                action: "support"
+            },
+            about: {
+                title: "О нас",
+                text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выдача.<br>✅ Работаем без обмана и скрытых комиссий.</p><p>Нам доверяют сотни клиентов!</p>",
+                btn: "В главное меню",
+                action: "back"
+            },
+            terms: {
+                title: "Соглашение",
+                text: "<p>Покупая товар в нашем магазине, вы автоматически соглашаетесь со всеми правилами Telegram и нашего бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Мы гарантируем качество товара, но не несем ответственности за дальнейшее использование аккаунтов.</p><p>Мы ничего не нарушаем и работаем строго по правилам.</p>",
+                btn: "В главное меню",
+                action: "back"
+            },
+            privacy: {
+                title: "Политика",
+                text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ваш ID и username для выдачи товаров и работы реферальной системы.</p><p>Ваши данные <b>защищены</b> и никогда не передаются третьим лицам. Мы не нарушаем законы и правила Telegram.</p>",
+                btn: "В главное меню",
+                action: "back"
+            }
+        };
 
-        // --- ФУНКЦИИ ---
-        function openCatalog(type) {
+        // --- ЛОГИКА ---
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function openCatalog() {
             const grid = document.getElementById('catalog-grid');
-            const title = document.getElementById('catalog-title');
             grid.innerHTML = ''; 
 
-            let dataToRender = [];
-            if (type === 'accounts') {
-                title.innerText = "Аккаунты";
-                dataToRender = accountsData;
-            } else if (type === 'numbers') {
-                title.innerText = "Номера";
-                dataToRender = numbersData;
-            }
-
-            dataToRender.forEach(item => {
+            accountsData.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
@@ -334,13 +414,31 @@
                 grid.appendChild(card);
             });
 
-            document.getElementById('screen-main').classList.remove('active');
-            document.getElementById('screen-catalog').classList.add('active');
+            showScreen('screen-catalog');
         }
 
-        function closeCatalog() {
-            document.getElementById('screen-catalog').classList.remove('active');
-            document.getElementById('screen-main').classList.add('active');
+        function openInfo(type) {
+            const data = infoTexts[type];
+            document.getElementById('info-title').innerText = data.title;
+            
+            const contentDiv = document.getElementById('info-content');
+            contentDiv.innerHTML = data.text;
+
+            if (data.action !== "back") {
+                const btn = document.createElement('button');
+                btn.className = 'info-btn';
+                btn.innerText = data.btn;
+                btn.onclick = () => goToBot(data.action);
+                contentDiv.appendChild(btn);
+            } else {
+                const btn = document.createElement('button');
+                btn.className = 'info-btn';
+                btn.innerText = data.btn;
+                btn.onclick = () => showScreen('screen-main');
+                contentDiv.appendChild(btn);
+            }
+
+            showScreen('screen-info');
         }
 
         function confirmBuy(code, name, price) {
@@ -354,7 +452,6 @@
                     }
                 });
             } else {
-                // Для теста в обычном браузере
                 if(confirm(msg)) {
                     window.location.href = `https://t.me/sciptyy_storebot?start=buy_${code}`;
                 }
