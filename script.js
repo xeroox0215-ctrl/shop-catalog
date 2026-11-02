@@ -1,8 +1,12 @@
+const tg = window.Telegram.WebApp;
+tg.expand(); // Развернуть на весь экран
+
+// Список стран
 const countries = [
     { code: "usa", name: "США", price: 46 },
     { code: "canada", name: "Канада", price: 99 },
-    { code: "colombia", name: "Колумбия", price: 99 },
     { code: "uk", name: "Великобритания", price: 125 },
+    { code: "colombia", name: "Колумбия", price: 99 },
     { code: "bangladesh", name: "Бангладеш", price: 99 },
     { code: "argentina", name: "Аргентина", price: 125 },
     { code: "uzbekistan", name: "Узбекистан", price: 175 },
@@ -16,30 +20,49 @@ const countries = [
     { code: "mauritania", name: "Мавритания", price: 299 }
 ];
 
-let tg = window.Telegram.WebApp;
-tg.expand();
-
-const catalog = document.getElementById('catalog');
-
+// 1. Отрисовка каталога
+const catalogGrid = document.getElementById('catalog-grid');
 countries.forEach(c => {
     const card = document.createElement('div');
-    card.className = 'card';
+    card.className = 'product-card';
     card.innerHTML = `
-        <div class="name">${c.name}</div>
-        <div class="price">${c.price} ₽</div>
-        <button class="btn" onclick="buy('${c.code}')">Купить</button>
+        <div>
+            <div class="product-name">${c.name}</div>
+            <div class="product-price">${c.price} ₽</div>
+        </div>
+        <button class="buy-btn" onclick="confirmBuy('${c.code}', '${c.name}', ${c.price})">Купить</button>
     `;
-    catalog.appendChild(card);
+    catalogGrid.appendChild(card);
 });
 
-// Покупка аккаунта (перекидывает в бота с командой start=buy_code)
-function buy(code) {
-    tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=buy_${code}`);
-    tg.close();
+// 2. Переход на экран меню
+function openMenu() {
+    document.getElementById('screen-welcome').classList.remove('active');
+    document.getElementById('screen-menu').classList.add('active');
 }
 
-// Переход в другие разделы бота
+// 3. Переключение вкладок (Главная / Каталог)
+function switchTab(tabId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+}
+
+// 4. Подтверждение покупки
+function confirmBuy(code, name, price) {
+    const confirmMsg = `Вы уверены, что хотите купить аккаунт ${name} за ${price} ₽?`;
+    
+    tg.showConfirm(confirmMsg, (confirmed) => {
+        if (confirmed) {
+            // Если да — перекидываем в бота
+            tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=buy_${code}`);
+            tg.close();
+        }
+    });
+}
+
+// 5. Переход в другие разделы бота (Рефералка, Промокод и т.д.)
 function goToBot(action) {
+    // Закрываем сайт и перекидываем в бота
     tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=${action}`);
     tg.close();
 }
