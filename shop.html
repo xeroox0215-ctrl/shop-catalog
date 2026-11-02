@@ -116,6 +116,44 @@
             100% { background-position: 300% center; }
         }
 
+        /* ================= ХЭЛЛОУИН ДЕКОР ДЛЯ ЭКРАНОВ ================= */
+        .halloween-decor {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; /* Чтобы не мешали нажимать кнопки */
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .decor-web {
+            position: absolute;
+            top: -20px; left: -20px;
+            width: 120px; height: 120px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.15)" fill="none" stroke-width="1"/></svg>');
+            background-size: cover;
+            transform: rotate(180deg);
+            opacity: 0.6;
+            animation: floatWeb 8s ease-in-out infinite alternate;
+        }
+
+        .decor-spider {
+            position: absolute;
+            top: 0; left: 40px;
+            font-size: 24px;
+            animation: spiderDrop 4s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatWeb {
+            0% { transform: rotate(170deg) scale(1); }
+            100% { transform: rotate(190deg) scale(1.1); }
+        }
+
+        @keyframes spiderDrop {
+            0%, 100% { transform: translateY(10px); }
+            50% { transform: translateY(25px); }
+        }
+
         /* ================= ХЭЛЛОУИН БАННЕР ================= */
         .halloween-banner {
             position: relative;
@@ -131,6 +169,7 @@
             align-items: center;
             background: #111;
             transition: transform 0.2s;
+            z-index: 2;
         }
 
         .halloween-banner:active { transform: scale(0.97); }
@@ -161,11 +200,6 @@
             animation: floatWeb 10s ease-in-out infinite alternate;
         }
 
-        @keyframes floatWeb {
-            0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(10deg) scale(1.1); }
-        }
-
         .banner-spider {
             position: absolute;
             top: 0; right: 25px;
@@ -173,11 +207,6 @@
             z-index: 2;
             animation: spiderDrop 4s ease-in-out infinite;
             text-shadow: 0 0 10px rgba(0,0,0,0.8);
-        }
-
-        @keyframes spiderDrop {
-            0%, 100% { transform: translateY(5px); }
-            50% { transform: translateY(20px); }
         }
 
         .banner-content {
@@ -219,6 +248,8 @@
             flex-direction: column;
             gap: 15px;
             padding-bottom: 20px;
+            position: relative;
+            z-index: 2;
         }
 
         .menu-btn {
@@ -251,6 +282,8 @@
             gap: 15px;
             margin-bottom: 25px;
             margin-top: 10px;
+            position: relative;
+            z-index: 2;
         }
 
         .back-btn {
@@ -275,6 +308,8 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+            position: relative;
+            z-index: 2;
         }
 
         .product-card {
@@ -347,6 +382,8 @@
             display: flex;
             flex-direction: column;
             min-height: 250px;
+            position: relative;
+            z-index: 2;
         }
         
         .info-container p { margin-bottom: 15px; }
@@ -380,7 +417,12 @@
 
     <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ -->
     <div id="screen-main" class="screen active">
-        <h1 class="glow-title">SCIPTYY<br>STORE</h1>
+        <div class="halloween-decor">
+            <div class="decor-web"></div>
+            <div class="decor-spider">🕷️</div>
+        </div>
+
+        <h1 class="glow-title" style="position: relative; z-index: 2;">SCIPTYY<br>STORE</h1>
         
         <!-- ХЭЛЛОУИН БАННЕР -->
         <div class="halloween-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -434,6 +476,10 @@
 
     <!-- ЭКРАН 2: КАТАЛОГ АККАУНТОВ -->
     <div id="screen-catalog" class="screen">
+        <div class="halloween-decor">
+            <div class="decor-web"></div>
+            <div class="decor-spider">🕷️</div>
+        </div>
         <div class="catalog-header">
             <button class="back-btn" onclick="showScreen('screen-main')">← Назад</button>
             <h2 class="catalog-title">Аккаунты</h2>
@@ -443,6 +489,10 @@
 
     <!-- ЭКРАН 3: ИНФО СТРАНИЦЫ -->
     <div id="screen-info" class="screen">
+        <div class="halloween-decor">
+            <div class="decor-web"></div>
+            <div class="decor-spider">🕷️</div>
+        </div>
         <div class="catalog-header">
             <button class="back-btn" onclick="showScreen('screen-main')">← Назад</button>
             <h2 id="info-title" class="catalog-title">Информация</h2>
@@ -513,39 +563,4 @@
             },
             about: {
                 title: "ℹ️ О нас",
-                text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выдача.<br>✅ Работаем без обмана и скрытых комиссий.</p><p>Нам доверяют сотни клиентов!</p>",
-                btn: "В главное меню",
-                action: "back"
-            },
-            terms: {
-                title: "📜 Соглашение",
-                text: "<p>Покупая товар в нашем магазине, вы автоматически соглашаетесь со всеми правилами Telegram и нашего бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Мы гарантируем качество товара, но не несем ответственности за дальнейшее использование аккаунтов.</p><p>Мы ничего не нарушаем и работаем строго по правилам.</p>",
-                btn: "В главное меню",
-                action: "back"
-            },
-            privacy: {
-                title: "📄 Политика",
-                text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ваш ID и username для выдачи товаров и работы реферальной системы.</p><p>Ваши данные <b>защищены</b> и никогда не передаются третьим лицам. Мы не нарушаем законы и правила Telegram.</p>",
-                btn: "В главное меню",
-                action: "back"
-            }
-        };
-
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-        }
-
-        function openCatalog() {
-            const grid = document.getElementById('catalog-grid');
-            grid.innerHTML = ''; 
-
-            accountsData.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <div>
-                        <div class="product-name">${item.name}</div>
-                        <div class="product-price">${item.price} ₽</div>
-                    </div>
-                    <button class=
+                text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выд
