@@ -247,6 +247,9 @@
             font-size: 14px;
             line-height: 1.6;
             color: #ddd;
+            display: flex;
+            flex-direction: column;
+            min-height: 250px;
         }
         
         .info-container p {
@@ -259,16 +262,17 @@
             background: linear-gradient(90deg, #00d2ff, #8a2be2);
             color: white;
             text-align: center;
-            padding: 15px;
+            padding: 16px;
             border-radius: 12px;
             font-weight: 800;
             font-size: 16px;
-            margin-top: 20px;
+            margin-top: auto; /* Прижимает кнопку к низу */
             border: none;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
         }
         
-        .info-btn:active { opacity: 0.8; }
+        .info-btn:active { opacity: 0.8; transform: scale(0.98); }
     </style>
 </head>
 <body>
@@ -287,19 +291,19 @@
             <div class="menu-btn" onclick="openCatalog()">
                 <span class="btn-text">🛒 Купить аккаунты</span>
             </div>
-            <div class="menu-btn" onclick="goToBot('cases_menu')">
+            <div class="menu-btn" onclick="openInfo('cases')">
                 <span class="btn-text">📦 Кейсы</span>
             </div>
-            <div class="menu-btn" onclick="goToBot('daily_roll')">
+            <div class="menu-btn" onclick="openInfo('roll')">
                 <span class="btn-text">🎰 Рулетка дня</span>
             </div>
-            <div class="menu-btn" onclick="goToBot('profile')">
+            <div class="menu-btn" onclick="openInfo('profile')">
                 <span class="btn-text">👤 Профиль</span>
             </div>
-            <div class="menu-btn" onclick="goToBot('enter_promo')">
+            <div class="menu-btn" onclick="openInfo('promo')">
                 <span class="btn-text">🎁 Промокод</span>
             </div>
-            <div class="menu-btn" onclick="goToBot('ref_menu')">
+            <div class="menu-btn" onclick="openInfo('ref')">
                 <span class="btn-text">👥 Рефералка</span>
             </div>
             <div class="menu-btn" onclick="openInfo('support')">
@@ -329,7 +333,7 @@
         <div class="catalog-grid" id="catalog-grid"></div>
     </div>
 
-    <!-- ЭКРАН 3: ИНФО СТРАНИЦЫ (Поддержка, О нас, Соглашение, Политика) -->
+    <!-- ЭКРАН 3: ИНФО СТРАНИЦЫ -->
     <div id="screen-info" class="screen">
         <div class="catalog-header">
             <button class="back-btn" onclick="showScreen('screen-main')">← Назад</button>
@@ -344,7 +348,7 @@
         const tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
 
-        // --- ВСЕ СТРАНЫ ИЗ ТВОЕГО КОДА ---
+        // --- ВСЕ СТРАНЫ ---
         const accountsData = [
             { code: "usa", name: "🇺🇸 США", price: 46 },
             { code: "canada", name: "🇨🇦 Канада", price: 99 },
@@ -365,33 +369,62 @@
 
         // --- ТЕКСТА ДЛЯ ИНФО СТРАНИЦ ---
         const infoTexts = {
+            cases: {
+                title: "📦 Кейсы",
+                text: "<p>Испытай свою удачу! Открывай кейсы и получай крутые призы: от денег на баланс до редких аккаунтов Telegram.</p><p>У нас есть обычные и VIP-кейсы с повышенным шансом на дорогой выигрыш.</p>",
+                btn: "Перейти к кейсам",
+                action: "cases_menu"
+            },
+            roll: {
+                title: "🎰 Рулетка дня",
+                text: "<p>Крути рулетку раз в 24 часа и получай гарантированный приз!</p><p>Внутри: от 1 до 3 рублей на баланс или промокоды на скидку от 5% до 20%. Не упусти свой шанс!</p>",
+                btn: "Крутить рулетку",
+                action: "daily_roll"
+            },
+            profile: {
+                title: "👤 Профиль",
+                text: "<p>Твой личный кабинет. Здесь ты можешь посмотреть свой баланс, историю покупок, текущую скидку и реферальный доход.</p><p>Следи за своими успехами в одном месте.</p>",
+                btn: "Посмотреть профиль",
+                action: "profile"
+            },
+            promo: {
+                title: "🎁 Промокод",
+                text: "<p>У тебя есть секретный код? Активируй его прямо сейчас и получи персональную скидку на любые товары в магазине!</p><p>Введи промокод в боте, чтобы применить его.</p>",
+                btn: "Ввести промокод",
+                action: "enter_promo"
+            },
+            ref: {
+                title: "👥 Рефералка",
+                text: "<p>Приглашай друзей и получай <b>10%</b> с каждой их покупки на свой баланс!</p><p>Просто отправь другу свою уникальную ссылку, и получай пассивный доход.</p>",
+                btn: "Скопировать ссылку",
+                action: "ref_menu"
+            },
             support: {
-                title: "Поддержка",
+                title: "🆘 Поддержка",
                 text: "<p>Работаем 24/7 ⏰</p><p>Ответим вам на любой вопрос и поможем с покупкой или выдачей товара.</p><p>Нажмите кнопку ниже, чтобы написать нам в бота.</p>",
                 btn: "Написать в поддержку",
                 action: "support"
             },
             about: {
-                title: "О нас",
+                title: "ℹ️ О нас",
                 text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выдача.<br>✅ Работаем без обмана и скрытых комиссий.</p><p>Нам доверяют сотни клиентов!</p>",
                 btn: "В главное меню",
                 action: "back"
             },
             terms: {
-                title: "Соглашение",
+                title: "📜 Соглашение",
                 text: "<p>Покупая товар в нашем магазине, вы автоматически соглашаетесь со всеми правилами Telegram и нашего бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Мы гарантируем качество товара, но не несем ответственности за дальнейшее использование аккаунтов.</p><p>Мы ничего не нарушаем и работаем строго по правилам.</p>",
                 btn: "В главное меню",
                 action: "back"
             },
             privacy: {
-                title: "Политика",
+                title: "📄 Политика",
                 text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ваш ID и username для выдачи товаров и работы реферальной системы.</p><p>Ваши данные <b>защищены</b> и никогда не передаются третьим лицам. Мы не нарушаем законы и правила Telegram.</p>",
                 btn: "В главное меню",
                 action: "back"
             }
         };
 
-        // --- ЛОГИКА ---
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -424,20 +457,17 @@
             const contentDiv = document.getElementById('info-content');
             contentDiv.innerHTML = data.text;
 
-            if (data.action !== "back") {
-                const btn = document.createElement('button');
-                btn.className = 'info-btn';
-                btn.innerText = data.btn;
-                btn.onclick = () => goToBot(data.action);
-                contentDiv.appendChild(btn);
-            } else {
-                const btn = document.createElement('button');
-                btn.className = 'info-btn';
-                btn.innerText = data.btn;
+            const btn = document.createElement('button');
+            btn.className = 'info-btn';
+            btn.innerText = data.btn;
+            
+            if (data.action === "back") {
                 btn.onclick = () => showScreen('screen-main');
-                contentDiv.appendChild(btn);
+            } else {
+                btn.onclick = () => goToBot(data.action);
             }
-
+            
+            contentDiv.appendChild(btn);
             showScreen('screen-info');
         }
 
@@ -458,6 +488,7 @@
             }
         }
 
+        // Перекидывание в бота с нужным действием
         function goToBot(action) {
             if (tg && tg.openTelegramLink) {
                 tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=${action}`);
