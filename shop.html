@@ -9,55 +9,41 @@
 </head>
 <body>
 
-    <!-- Фоновые эффекты (Космос/Паутина) -->
-    <div class="bg-glow"></div>
-    <div class="spider-web top-left"></div>
-    <div class="spider-web top-right"></div>
+    <!-- Космический фон и звезды -->
+    <div class="space-bg">
+        <div class="nebula nebula-1"></div>
+        <div class="nebula nebula-2"></div>
+        <div class="stars"></div>
+    </div>
 
-    <!-- ЭКРАН 1: Приветствие -->
-    <div id="screen-welcome" class="screen active">
-        <div class="welcome-content">
-            <h1 class="glow-text">Sciptyy Store</h1>
-            <p class="subtitle">Лучшие аккаунты Telegram.<br>Быстро. Надежно. Дешево.</p>
-            <button class="main-btn" onclick="openMenu()">Перейти в меню 🚀</button>
+    <!-- Экран 1: Главное меню -->
+    <div id="screen-main" class="screen active">
+        <h1 class="glow-title">SCIPTYY<br>STORE</h1>
+        
+        <div class="main-menu-grid">
+            <div class="menu-btn" onclick="openCatalog('accounts')">
+                <span class="btn-text">🛒 Купить аккаунты</span>
+            </div>
+            <div class="menu-btn" onclick="openCatalog('numbers')">
+                <span class="btn-text">📱 Купить номера</span>
+            </div>
+            <div class="menu-btn" onclick="goToBot('enter_promo')">
+                <span class="btn-text">🎁 Промокод</span>
+            </div>
+            <div class="menu-btn" onclick="goToBot('ref_menu')">
+                <span class="btn-text">👥 Рефералка</span>
+            </div>
         </div>
     </div>
 
-    <!-- ЭКРАН 2: Меню и Каталог -->
-    <div id="screen-menu" class="screen">
-        
-        <!-- Вкладка: Главная меню -->
-        <div id="tab-main" class="tab active">
-            <h2 class="page-title">Главное меню</h2>
-            <div class="menu-grid">
-                <div class="menu-card" onclick="switchTab('catalog')">
-                    <span class="icon">🛒</span>
-                    <span class="title">Купить аккаунты</span>
-                </div>
-                <div class="menu-card" onclick="goToBot('ref_menu')">
-                    <span class="icon">👥</span>
-                    <span class="title">Рефералка</span>
-                </div>
-                <div class="menu-card" onclick="goToBot('enter_promo')">
-                    <span class="icon">🎁</span>
-                    <span class="title">Промокод</span>
-                </div>
-                <div class="menu-card" onclick="goToBot('profile')">
-                    <span class="icon">👤</span>
-                    <span class="title">Профиль</span>
-                </div>
-            </div>
+    <!-- Экран 2: Каталог товаров (Аккаунты или Номера) -->
+    <div id="screen-catalog" class="screen">
+        <div class="catalog-header">
+            <button class="back-btn" onclick="closeCatalog()">← Назад</button>
+            <h2 id="catalog-title" class="catalog-title">Каталог</h2>
         </div>
-
-        <!-- Вкладка: Каталог стран -->
-        <div id="tab-catalog" class="tab">
-            <div class="catalog-header">
-                <button class="back-btn" onclick="switchTab('main')">← Назад</button>
-                <h2 class="page-title">Аккаунты</h2>
-            </div>
-            <div class="catalog-grid" id="catalog-grid">
-                <!-- Сюда JS будет вставлять карточки -->
-            </div>
+        <div class="catalog-grid" id="catalog-grid">
+            <!-- Сюда JS вставит карточки -->
         </div>
     </div>
 
