@@ -61,7 +61,8 @@
         .info-container { background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px 20px; font-size: 14px; line-height: 1.6; color: #ddd; display: flex; flex-direction: column; min-height: 250px; position: relative; z-index: 2; }
         .info-btn { display: block; width: 100%; background: linear-gradient(90deg, #00d2ff, #8a2be2); color: white; text-align: center; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 16px; margin-top: auto; border: none; cursor: pointer; }
     </style>
-</head><body>
+</head>
+<body>
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
 
     <div id="screen-main" class="screen active">
@@ -182,7 +183,8 @@
             <button style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #00d2ff, #0052ff); border:none; color:white; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="topupBalance()">Пополнить</button>
             <button style="width:100%; padding:12px; border-radius:12px; background:transparent; border:1px solid #555; color:#aaa; font-weight:800;" onclick="closeTopup()">Отмена</button>
         </div>
-    </div>    <script>
+    </div>
+        <script>
         const tg = window.Telegram?.WebApp;
         if (tg) tg.expand();
         const API_URL = "https://sciptyy-api.onrender.com";
