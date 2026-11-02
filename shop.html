@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sciptyy Store | Витрина</title>
+    <title>Sciptyy Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="stars"></div>
-    <h1>🌍 Sciptyy Store</h1>
+    <h1>Sciptyy Store</h1>
+    
     <div class="grid" id="catalog"></div>
+
+    <!-- Нижнее меню -->
+    <div class="bottom-menu">
+        <a href="#" class="menu-item" onclick="goToBot('profile')">👤<br>Профиль</a>
+        <a href="#" class="menu-item" onclick="goToBot('ref_menu')">👥<br>Рефералы</a>
+        <a href="#" class="menu-item" onclick="goToBot('enter_promo')">🎁<br>Промокод</a>
+        <a href="#" class="menu-item" onclick="goToBot('support')">🆘<br>Помощь</a>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
