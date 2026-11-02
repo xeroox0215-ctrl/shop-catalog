@@ -53,13 +53,11 @@
         .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 40px; z-index: 10; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
         .roll-btn { margin-top: 40px; background: linear-gradient(90deg, #ff416c, #ff4b2b); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-size: 18px; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(255, 65, 108, 0.5); z-index: 10; }
         .roll-btn:active { transform: scale(0.95); }
-        .case-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 40px; position: relative; z-index: 2; height: 300px; }
-        .chest { width: 150px; height: 120px; background: linear-gradient(135deg, #5d4037, #3e2723); border-radius: 10px; position: relative; box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(0,0,0,0.8); transition: 0.5s; display: flex; align-items: center; justify-content: center; font-size: 50px; border: 2px solid #8d6e63; }
-        .chest-lid { position: absolute; top: -10px; left: -2px; width: 150px; height: 30px; background: #4e342e; border-radius: 10px 10px 0 0; border: 2px solid #8d6e63; transition: 0.5s; }
-        .chest-opening { animation: chestShake 0.5s infinite; }
-        .chest-opened .chest-lid { transform: rotateX(90deg) translateY(-20px); opacity: 0; }
-        .chest-opened { transform: scale(1.5); opacity: 0; }
-        @keyframes chestShake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+        .case-anim-container { display: none; flex-direction: column; align-items: center; justify-content: center; margin-top: 40px; position: relative; z-index: 2; height: 300px; }
+        .case-bar { width: 100%; height: 100px; border: 2px solid #8d6e63; background: #111; overflow: hidden; position: relative; border-radius: 10px; display: flex; align-items: center; }
+        .case-bar-line { position: absolute; top: 0; left: 50%; width: 4px; height: 100%; background: #ff416c; z-index: 10; transform: translateX(-50%); box-shadow: 0 0 10px #ff416c; }
+        .case-items { display: flex; gap: 10px; position: absolute; transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); }
+        .case-item { width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; flex-shrink: 0; }
         .info-container { background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px 20px; font-size: 14px; line-height: 1.6; color: #ddd; display: flex; flex-direction: column; min-height: 250px; position: relative; z-index: 2; }
         .info-btn { display: block; width: 100%; background: linear-gradient(90deg, #00d2ff, #8a2be2); color: white; text-align: center; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 16px; margin-top: auto; border: none; cursor: pointer; }
     </style>
@@ -84,42 +82,26 @@
             <div class="menu-btn" onclick="openInfo('promo')"><span class="btn-text">🎁 Промокод</span></div>
             <div class="menu-btn" onclick="openInfo('ref')"><span class="btn-text">👥 Рефералка</span></div>
             <div class="menu-btn" onclick="showScreen('screen-support')"><span class="btn-text">🆘 Поддержка</span></div>
-            
-            <div class="menu-btn" id="admin-btn" style="display: none; background: rgba(255, 0, 0, 0.1); border-color: rgba(255, 0, 0, 0.3);" onclick="showScreen('screen-admin')">
-                <span class="btn-text" style="color: #ff4444;">⚙️ Админ-панель</span>
-            </div>
-            <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')">
-                <span class="btn-text" style="color: #00d2ff;">📩 Тикеты (Техподдержка)</span>
-            </div>
+            <div class="menu-btn" id="admin-btn" style="display: none; background: rgba(255, 0, 0, 0.1); border-color: rgba(255, 0, 0, 0.3);" onclick="showScreen('screen-admin')"><span class="btn-text" style="color: #ff4444;">⚙️ Админ-панель</span></div>
+            <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')"><span class="btn-text" style="color: #00d2ff;">📩 Тикеты</span></div>
         </div>
     </div>
 
     <div id="screen-catalog" class="screen">
-        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
-            <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 style="font-size:20px; font-weight:800;">Аккаунты</h2>
-        </div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Аккаунты</h2></div>
         <div class="catalog-grid" id="catalog-grid"><div style="grid-column:span 2;">Загрузка...</div></div>
     </div>
 
     <div id="screen-profile" class="screen">
-        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
-            <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 style="font-size:20px; font-weight:800;">Профиль</h2>
-        </div>
-        <div class="balance-card">
-            <div style="font-size: 14px; opacity: 0.8;">Ваш баланс</div>
-            <div class="balance-amount" id="profile-balance">0 ₽</div>
-        </div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Профиль</h2></div>
+        <div class="balance-card"><div style="font-size: 14px; opacity: 0.8;">Ваш баланс</div><div class="balance-amount" id="profile-balance">0 ₽</div></div>
+        <button class="info-btn" onclick="showTopupModal()" style="margin-bottom:20px;">💳 Пополнить баланс</button>
         <h3 style="position: relative; z-index: 2; margin-bottom: 10px;">История:</h3>
         <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
     </div>
 
     <div id="screen-roll" class="screen">
-        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
-            <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 style="font-size:20px; font-weight:800;">Рулетка</h2>
-        </div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Рулетка</h2></div>
         <div class="wheel-container">
             <div class="wheel-wrapper">
                 <div class="wheel-pointer">🔻</div>
@@ -136,27 +118,24 @@
     </div>
 
     <div id="screen-cases" class="screen">
-        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
-            <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 style="font-size:20px; font-weight:800;">Кейсы</h2>
-        </div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Кейсы</h2></div>
         <div class="main-menu-grid" id="case-buttons">
             <div class="menu-btn" onclick="buyCase('normal')"><span class="btn-text">📦 Купить Обычный (99 ₽)</span></div>
             <div class="menu-btn" onclick="buyCase('vip')"><span class="btn-text">👑 Купить VIP (249 ₽)</span></div>
             <div class="menu-btn" id="open-normal-case" style="display:none; background: rgba(0, 210, 255, 0.1);" onclick="openCase('normal')"><span class="btn-text">🎁 Открыть Обычный</span></div>
             <div class="menu-btn" id="open-vip-case" style="display:none; background: rgba(255, 215, 0, 0.1);" onclick="openCase('vip')"><span class="btn-text">🎁 Открыть VIP</span></div>
         </div>
-        <div class="case-container" id="case-animation" style="display:none;">
-            <div class="chest" id="chest"><div class="chest-lid"></div>🔒</div>
-            <div id="case-prize-text" style="font-size:20px; font-weight:800; color:#ffd700; margin-top:30px; text-align:center; text-shadow:0 0 10px #ffd700;"></div>
+        <div class="case-anim-container" id="case-animation">
+            <div class="case-bar">
+                <div class="case-bar-line"></div>
+                <div class="case-items" id="case-items-container"></div>
+            </div>
+            <div id="case-prize-text" style="font-size:20px; font-weight:800; color:#ffd700; margin-top:30px; text-align:center; text-shadow:0 0 10px #ffd700; min-height:30px;"></div>
         </div>
     </div>
 
     <div id="screen-support" class="screen">
-        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
-            <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 style="font-size:20px; font-weight:800;">Поддержка</h2>
-        </div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Поддержка</h2></div>
         <div class="info-container">
             <p>Работаем 24/7. Напишите свой вопрос, и мы ответим в ближайшее время.</p>
             <textarea id="ticket-input" placeholder="Ваш вопрос..." style="width:100%; height:100px; background:rgba(255,255,255,0.05); border:1px solid #333; color:white; border-radius:10px; padding:10px; margin-bottom:10px; resize:none;"></textarea>
@@ -166,18 +145,12 @@
     </div>
 
     <div id="screen-admin-tickets" class="screen">
-        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
-            <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 style="font-size:20px; font-weight:800; color:#00d2ff;">Тикеты</h2>
-        </div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color:#00d2ff;">Тикеты</h2></div>
         <div id="admin-ticket-list" style="position:relative; z-index:2;"></div>
     </div>
 
     <div id="screen-admin" class="screen">
-        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
-            <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 style="font-size:20px; font-weight:800; color: #ff4444;">Админка</h2>
-        </div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color: #ff4444;">Админка</h2></div>
         <div class="main-menu-grid">
             <div class="menu-btn" onclick="adminAction('money')"><span class="btn-text">💰 Выдать себе рубли</span></div>
             <div class="menu-btn" onclick="adminAction('promo')"><span class="btn-text">🎁 Создать промокод</span></div>
@@ -187,10 +160,7 @@
     </div>
 
     <div id="screen-info" class="screen">
-        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
-            <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
-            <h2 id="info-title" style="font-size:20px; font-weight:800;">Инфо</h2>
-        </div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 id="info-title" style="font-size:20px; font-weight:800;">Инфо</h2></div>
         <div class="info-container" id="info-content"></div>
     </div>
 
@@ -201,6 +171,16 @@
             <button style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #00d2ff, #0052ff); border:none; color:white; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="buyItem('balance')">Купить с баланса (₽)</button>
             <button style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #ffd700, #ff8c00); border:none; color:black; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="buyItem('stars')">Купить за звезды (⭐)</button>
             <button style="width:100%; padding:12px; border-radius:12px; background:transparent; border:1px solid #555; color:#aaa; font-weight:800;" onclick="closeModal()">Отмена</button>
+        </div>
+    </div>
+
+    <div id="modal-topup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 999; padding:20px; flex-direction:column; justify-content:center;">
+        <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; text-align:center;">
+            <h2 style="font-size:22px; margin-bottom:10px;">Пополнение</h2>
+            <p style="color:#888; margin-bottom:25px;">Введите сумму (мин. 50 ₽)</p>
+            <input type="number" id="topup-amount" placeholder="Сумма" style="width:100%; padding:15px; border-radius:12px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; margin-bottom:15px;">
+            <button style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #00d2ff, #0052ff); border:none; color:white; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="topupBalance()">Пополнить через Lava</button>
+            <button style="width:100%; padding:12px; border-radius:12px; background:transparent; border:1px solid #555; color:#aaa; font-weight:800;" onclick="closeTopup()">Отмена</button>
         </div>
     </div>    <script>
         const tg = window.Telegram?.WebApp;
@@ -370,13 +350,23 @@
 
         async function openCase(type) {
             const animDiv = document.getElementById('case-animation');
-            const chest = document.getElementById('chest');
+            const itemsContainer = document.getElementById('case-items-container');
             const prizeText = document.getElementById('case-prize-text');
             
-            animDiv.style.display = 'block';
-            chest.className = 'chest chest-opening';
+            animDiv.style.display = 'flex';
             prizeText.innerText = "";
+            itemsContainer.innerHTML = "";
+            itemsContainer.style.transition = "none";
+            itemsContainer.style.transform = "translateX(0)";
             
+            const icons = ['🇺🇸', '🇨🇦', '💰', '🎁', '🇬🇧', '🇩🇪', '🇫🇷', '🇵🇱'];
+            for (let i = 0; i < 40; i++) {
+                const el = document.createElement('div');
+                el.className = 'case-item';
+                el.innerText = icons[Math.floor(Math.random() * icons.length)];
+                itemsContainer.appendChild(el);
+            }
+
             try {
                 const res = await fetch(`${API_URL}/api/case/open`, {
                     method: 'POST',
@@ -387,7 +377,11 @@
                 
                 if (data.status === 'ok') {
                     setTimeout(() => {
-                        chest.className = 'chest chest-opened';
+                        const randomStop = Math.floor(Math.random() * (30 - 10) + 10);
+                        const moveX = -(randomStop * 90) + 150; 
+                        itemsContainer.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)";
+                        itemsContainer.style.transform = `translateX(${moveX}px)`;
+                        
                         setTimeout(() => {
                             let prizeStr = "";
                             if (data.prize.type === 'money') prizeStr = `🎉 Вы выиграли: ${data.prize.value}`;
@@ -395,24 +389,21 @@
                             if (data.prize.type === 'account') prizeStr = `🎉 Выиграли: ${data.prize.value}\n\nНапишите в поддержку!`;
                             
                             prizeText.innerText = prizeStr;
-                            chest.style.display = 'none';
+                            tg.showAlert(prizeStr);
+                            loadData();
+                            
                             setTimeout(() => {
                                 animDiv.style.display = 'none';
-                                chest.style.display = 'flex';
-                                tg.showAlert(prizeStr);
-                                loadData();
-                            }, 4000);
-                        }, 1000);
-                    }, 1500);
+                            }, 3000);
+                        }, 4200);
+                    }, 100);
                 } else {
                     tg.showAlert(data.error);
                     animDiv.style.display = 'none';
-                    chest.className = 'chest';
                 }
             } catch(e) {
                 tg.showAlert("Ошибка сервера");
                 animDiv.style.display = 'none';
-                chest.className = 'chest';
             }
         }
 
@@ -551,6 +542,26 @@
                 } else {
                     tg.showAlert(`❌ ${data.error}`);
                 }
+            } catch(e) { tg.showAlert("Ошибка сервера"); }
+        }
+
+        function showTopupModal() { document.getElementById('modal-topup').style.display = 'flex'; }
+        function closeTopup() { document.getElementById('modal-topup').style.display = 'none'; }
+        
+        async function topupBalance() {
+            const amount = parseFloat(document.getElementById('topup-amount').value);
+            if (!amount || amount < 50) return tg.showAlert("Минимум 50 ₽");
+            closeTopup();
+            tg.showAlert("Создаем счет...");
+            try {
+                const res = await fetch(`${API_URL}/api/topup`, {
+                    method: 'POST',
+                    headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount: amount })
+                });
+                const data = await res.json();
+                if (data.url) tg.openLink(data.url);
+                else tg.showAlert("Ошибка: " + data.error);
             } catch(e) { tg.showAlert("Ошибка сервера"); }
         }
 
