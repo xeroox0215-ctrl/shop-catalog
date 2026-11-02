@@ -8,16 +8,57 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Sciptyy Store</h1>
-    
-    <div class="grid" id="catalog"></div>
 
-    <!-- Нижнее меню -->
-    <div class="bottom-menu">
-        <a href="#" class="menu-item" onclick="goToBot('profile')">👤<br>Профиль</a>
-        <a href="#" class="menu-item" onclick="goToBot('ref_menu')">👥<br>Рефералы</a>
-        <a href="#" class="menu-item" onclick="goToBot('enter_promo')">🎁<br>Промокод</a>
-        <a href="#" class="menu-item" onclick="goToBot('support')">🆘<br>Помощь</a>
+    <!-- Фоновые эффекты (Космос/Паутина) -->
+    <div class="bg-glow"></div>
+    <div class="spider-web top-left"></div>
+    <div class="spider-web top-right"></div>
+
+    <!-- ЭКРАН 1: Приветствие -->
+    <div id="screen-welcome" class="screen active">
+        <div class="welcome-content">
+            <h1 class="glow-text">Sciptyy Store</h1>
+            <p class="subtitle">Лучшие аккаунты Telegram.<br>Быстро. Надежно. Дешево.</p>
+            <button class="main-btn" onclick="openMenu()">Перейти в меню 🚀</button>
+        </div>
+    </div>
+
+    <!-- ЭКРАН 2: Меню и Каталог -->
+    <div id="screen-menu" class="screen">
+        
+        <!-- Вкладка: Главная меню -->
+        <div id="tab-main" class="tab active">
+            <h2 class="page-title">Главное меню</h2>
+            <div class="menu-grid">
+                <div class="menu-card" onclick="switchTab('catalog')">
+                    <span class="icon">🛒</span>
+                    <span class="title">Купить аккаунты</span>
+                </div>
+                <div class="menu-card" onclick="goToBot('ref_menu')">
+                    <span class="icon">👥</span>
+                    <span class="title">Рефералка</span>
+                </div>
+                <div class="menu-card" onclick="goToBot('enter_promo')">
+                    <span class="icon">🎁</span>
+                    <span class="title">Промокод</span>
+                </div>
+                <div class="menu-card" onclick="goToBot('profile')">
+                    <span class="icon">👤</span>
+                    <span class="title">Профиль</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка: Каталог стран -->
+        <div id="tab-catalog" class="tab">
+            <div class="catalog-header">
+                <button class="back-btn" onclick="switchTab('main')">← Назад</button>
+                <h2 class="page-title">Аккаунты</h2>
+            </div>
+            <div class="catalog-grid" id="catalog-grid">
+                <!-- Сюда JS будет вставлять карточки -->
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
