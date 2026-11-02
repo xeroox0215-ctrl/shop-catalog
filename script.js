@@ -62,7 +62,6 @@ function openCatalog() {
     });
     showScreen('screen-catalog');
 }
-
 function openModal(code, name, price, stock) {
     if(stock <= 0) return;
     selectedCountry = code;
@@ -229,8 +228,7 @@ async function openCase(type) {
         tg.showAlert("Ошибка сервера");
         animDiv.style.display = 'none';
     }
-}
-
+    }
 async function createTicket() {
     const text = document.getElementById('ticket-input').value.trim();
     if(!text) return tg.showAlert("Напишите вопрос!");
