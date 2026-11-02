@@ -25,9 +25,13 @@
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Заголовок */
+        /* Заголовок и Меню */
         .glow-title { font-size: 46px; line-height: 1.1; font-weight: 900; text-align: center; margin-top: 20px; margin-bottom: 25px; background: linear-gradient(90deg, #ffffff, #00d2ff, #8a2be2, #ffffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer 8s linear infinite; position: relative; z-index: 2; }
         @keyframes textShimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
+        .main-menu-grid { display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
+        .menu-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .menu-btn:active { transform: scale(0.96); background: rgba(0, 210, 255, 0.15); border-color: #00d2ff; }
+        .btn-text { font-size: 16px; font-weight: 800; color: white; }
 
         /* Баннер */
         .halloween-banner { position: relative; width: 100%; border-radius: 20px; overflow: hidden; margin-bottom: 25px; padding: 25px 20px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; background: #111; transition: transform 0.2s; z-index: 2; }
@@ -41,13 +45,7 @@
         .banner-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; }
         .banner-subtitle { font-size: 11px; color: #eee; }
 
-        /* Меню */
-        .main-menu-grid { display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
-        .menu-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .menu-btn:active { transform: scale(0.96); background: rgba(0, 210, 255, 0.15); border-color: #00d2ff; }
-        .btn-text { font-size: 16px; font-weight: 800; color: white; }
-
-        /* Карточки */
+        /* Каталог */
         .catalog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: relative; z-index: 2; }
         .product-card { background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
         .product-name { font-size: 14px; font-weight: 800; margin-bottom: 5px; }
@@ -62,23 +60,27 @@
         .balance-amount { font-size: 28px; font-weight: 900; }
         .purchase-item { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 12px; border: 1px solid rgba(255,255,255,0.05); }
 
-        /* Рулетка */
+        /* Рулетка (Стеклянная) */
         .wheel-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 30px; position: relative; z-index: 2; }
         .wheel-wrapper { position: relative; width: 280px; height: 280px; }
-        .wheel { width: 100%; height: 100%; border-radius: 50%; border: 8px solid #222; position: relative; overflow: hidden; box-shadow: 0 0 30px rgba(0, 210, 255, 0.4); transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(#00d2ff 0deg 90deg, #8a2be2 90deg 180deg, #ff416c 180deg 270deg, #ffd700 270deg 360deg); }
-        .wheel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: #111; border-radius: 50%; border: 4px solid #fff; }
+        .wheel { width: 100%; height: 100%; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); position: relative; overflow: hidden; box-shadow: 0 0 30px rgba(0, 210, 255, 0.4), inset 0 0 20px rgba(255,255,255,0.2); transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(rgba(0, 210, 255, 0.6) 0deg 90deg, rgba(138, 43, 226, 0.6) 90deg 180deg, rgba(255, 65, 108, 0.6) 180deg 270deg, rgba(255, 215, 0, 0.6) 270deg 360deg); backdrop-filter: blur(5px); }
+        .wheel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: #111; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 10px #fff; }
         .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 40px; z-index: 10; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
         .roll-btn { margin-top: 40px; background: linear-gradient(90deg, #ff416c, #ff4b2b); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-size: 18px; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(255, 65, 108, 0.5); z-index: 10; }
+        .roll-btn:active { transform: scale(0.95); }
 
         /* Инфо */
         .info-container { background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px 20px; font-size: 14px; line-height: 1.6; color: #ddd; display: flex; flex-direction: column; min-height: 250px; position: relative; z-index: 2; }
         .info-btn { display: block; width: 100%; background: linear-gradient(90deg, #00d2ff, #8a2be2); color: white; text-align: center; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 16px; margin-top: auto; border: none; cursor: pointer; }
 
         /* Кейсы (Анимация) */
-        .case-box { width: 120px; height: 120px; background: #8b5a2b; border: 4px solid #d4af37; border-radius: 10px; margin: 40px auto; position: relative; transition: 0.5s; display: flex; align-items: center; justify-content: center; font-size: 40px; }
-        .case-box.opened { transform: scale(1.2) rotate(10deg); opacity: 0; }
-        .case-items { display: flex; justify-content: center; gap: 10px; overflow: hidden; height: 80px; margin-top: 20px; }
-        .case-item { width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: 1s; }
+        .case-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 40px; position: relative; z-index: 2; height: 300px; }
+        .chest { width: 150px; height: 120px; background: linear-gradient(135deg, #5d4037, #3e2723); border-radius: 10px; position: relative; box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(0,0,0,0.8); transition: 0.5s; display: flex; align-items: center; justify-content: center; font-size: 50px; border: 2px solid #8d6e63; }
+        .chest-lid { position: absolute; top: -10px; left: -2px; width: 150px; height: 30px; background: #4e342e; border-radius: 10px 10px 0 0; border: 2px solid #8d6e63; transition: 0.5s; }
+        .chest-opening { animation: chestShake 0.5s infinite; }
+        .chest-opened .chest-lid { transform: rotateX(90deg) translateY(-20px); opacity: 0; }
+        .chest-opened { transform: scale(1.5); opacity: 0; }
+        @keyframes chestShake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
     </style>
 </head><body>
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
@@ -103,7 +105,6 @@
             <div class="menu-btn" onclick="openInfo('ref')"><span class="btn-text">👥 Рефералка</span></div>
             <div class="menu-btn" onclick="showScreen('screen-support')"><span class="btn-text">🆘 Поддержка</span></div>
             
-            <!-- Админские кнопки (скрыты по умолчанию) -->
             <div class="menu-btn" id="admin-btn" style="display: none; background: rgba(255, 0, 0, 0.1); border-color: rgba(255, 0, 0, 0.3);" onclick="showScreen('screen-admin')">
                 <span class="btn-text" style="color: #ff4444;">⚙️ Админ-панель</span>
             </div>
@@ -163,24 +164,19 @@
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
             <h2 style="font-size:20px; font-weight:800;">Кейсы</h2>
         </div>
-        <div class="main-menu-grid">
+        <div class="main-menu-grid" id="case-buttons">
             <div class="menu-btn" onclick="buyCase('normal')"><span class="btn-text">📦 Купить Обычный (99 ₽)</span></div>
             <div class="menu-btn" onclick="buyCase('vip')"><span class="btn-text">👑 Купить VIP (249 ₽)</span></div>
-            <div class="menu-btn" id="open-normal-case" style="display:none; background: rgba(0, 210, 255, 0.1);" onclick="openCase('normal')"><span class="btn-text">🎁 Открыть Обычный кейс</span></div>
-            <div class="menu-btn" id="open-vip-case" style="display:none; background: rgba(255, 215, 0, 0.1);" onclick="openCase('vip')"><span class="btn-text">🎁 Открыть VIP кейс</span></div>
+            <div class="menu-btn" id="open-normal-case" style="display:none; background: rgba(0, 210, 255, 0.1);" onclick="openCase('normal')"><span class="btn-text">🎁 Открыть Обычный</span></div>
+            <div class="menu-btn" id="open-vip-case" style="display:none; background: rgba(255, 215, 0, 0.1);" onclick="openCase('vip')"><span class="btn-text">🎁 Открыть VIP</span></div>
         </div>
-        
-        <!-- Анимация сундука -->
-        <div style="text-align:center; margin-top:30px; position:relative; z-index:2;">
-            <div id="case-animation" style="display:none;">
-                <div class="case-box" id="suitcase">📦</div>
-                <div class="case-items" id="case-items-container"></div>
-                <div id="case-prize-text" style="font-size:18px; font-weight:800; color:#ffd700; margin-top:20px; height:30px;"></div>
-            </div>
+        <div class="case-container" id="case-animation" style="display:none;">
+            <div class="chest" id="chest"><div class="chest-lid"></div>🔒</div>
+            <div id="case-prize-text" style="font-size:20px; font-weight:800; color:#ffd700; margin-top:30px; text-align:center; text-shadow:0 0 10px #ffd700;"></div>
         </div>
     </div>
 
-    <!-- ПОДДЕРЖКА (ПОЛЬЗОВАТЕЛЬ) -->
+    <!-- ПОДДЕРЖКА -->
     <div id="screen-support" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -194,7 +190,7 @@
         </div>
     </div>
 
-    <!-- ТИКЕТЫ (АДМИН) -->
+    <!-- ТИКЕТЫ АДМИН -->
     <div id="screen-admin-tickets" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
             <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
@@ -217,6 +213,15 @@
         <div id="admin-result" style="margin-top: 20px; text-align:center; color: #00d2ff; font-weight: 800; position:relative; z-index:2;"></div>
     </div>
 
+    <!-- ИНФО -->
+    <div id="screen-info" class="screen">
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;">
+            <button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button>
+            <h2 id="info-title" style="font-size:20px; font-weight:800;">Инфо</h2>
+        </div>
+        <div class="info-container" id="info-content"></div>
+    </div>
+
     <!-- МОДАЛКА ПОКУПКИ -->
     <div id="modal-buy" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 999; padding:20px; flex-direction:column; justify-content:center;">
         <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; text-align:center;">
@@ -234,6 +239,7 @@
         let userProfile = { balance: 0, last_roll: 0, cases: 0, vip_cases: 0 };
         let accountsData = [];
         let selectedCountry = null;
+        let selectedPrice = 0;
         let isAdmin = false;
 
         async function loadData() {
@@ -245,17 +251,14 @@
                     accountsData = data.shop;
                     isAdmin = data.is_admin;
                     
-                    // Показываем кнопки админа
                     if (isAdmin) {
                         document.getElementById('admin-btn').style.display = 'block';
                         document.getElementById('admin-tickets-btn').style.display = 'block';
                     }
                     
-                    // Обновляем кнопки кейсов (если они куплены)
                     if (userProfile.cases > 0) document.getElementById('open-normal-case').style.display = 'block';
                     if (userProfile.vip_cases > 0) document.getElementById('open-vip-case').style.display = 'block';
                     
-                    // Обновляем профиль
                     document.getElementById('profile-balance').innerText = `${userProfile.balance.toFixed(2)} ₽`;
                     
                     const pDiv = document.getElementById('profile-purchases');
@@ -265,7 +268,6 @@
                             <div style="color: #888;">${p.price} ₽ • ${p.date.split(' ')[0]}</div>
                         </div>`).join('') : '<div style="color:#888;">Покупок нет</div>';
                         
-                    // Обновляем тикеты
                     renderTickets(data.tickets);
                 }
             } catch(e) { console.log("Ошибка загрузки:", e); }
@@ -277,7 +279,6 @@
             if(id === 'screen-profile' || id === 'screen-main' || id === 'screen-admin-tickets') loadData();
         }
 
-        // --- КАТАЛОГ ---
         function openCatalog() {
             const grid = document.getElementById('catalog-grid');
             grid.innerHTML = '';
@@ -299,6 +300,7 @@
         function openModal(code, name, price, stock) {
             if(stock <= 0) return;
             selectedCountry = code;
+            selectedPrice = price;
             document.getElementById('modal-title').innerText = name;
             document.getElementById('modal-price').innerText = `Цена: ${price} ₽`;
             document.getElementById('modal-buy').style.display = 'flex';
@@ -307,13 +309,18 @@
         function closeModal() { document.getElementById('modal-buy').style.display = 'none'; }
 
         async function buyItem(method) {
+            closeModal();
             if (method === 'stars') {
-                closeModal();
-                tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=buy_${selectedCountry}`);
-                tg.close();
+                const starsAmount = Math.round(selectedPrice); // Предполагаем 1 к 1
+                tg.showConfirm(`Вы уверены, что хотите оплатить ${starsAmount} ⭐?`, (confirmed) => {
+                    if (confirmed) {
+                        tg.openTelegramLink(`https://t.me/sciptyy_storebot?start=buy_${selectedCountry}`);
+                        tg.close();
+                    }
+                });
                 return;
             }
-            closeModal();
+            
             tg.showAlert("Списываем средства...");
             try {
                 const res = await fetch(`${API_URL}/api/buy`, {
@@ -394,24 +401,13 @@
 
         async function openCase(type) {
             const animDiv = document.getElementById('case-animation');
-            const suitcase = document.getElementById('suitcase');
+            const chest = document.getElementById('chest');
             const prizeText = document.getElementById('case-prize-text');
-            const itemsContainer = document.getElementById('case-items-container');
             
             animDiv.style.display = 'block';
-            suitcase.classList.remove('opened');
+            chest.className = 'chest chest-opening';
             prizeText.innerText = "";
-            itemsContainer.innerHTML = "";
             
-            // Анимация вылетающих предметов
-            const items = ['🇺🇸', '🇨🇦', '💰', '🎁', '🇬🇧', '🇩🇪'];
-            items.forEach(icon => {
-                const el = document.createElement('div');
-                el.className = 'case-item';
-                el.innerText = icon;
-                itemsContainer.appendChild(el);
-            });
-
             try {
                 const res = await fetch(`${API_URL}/api/case/open`, {
                     method: 'POST',
@@ -422,26 +418,32 @@
                 
                 if (data.status === 'ok') {
                     setTimeout(() => {
-                        suitcase.classList.add('opened'); // Сундук исчезает
+                        chest.className = 'chest chest-opened';
                         setTimeout(() => {
                             let prizeStr = "";
                             if (data.prize.type === 'money') prizeStr = `🎉 Вы выиграли: ${data.prize.value}`;
-                            if (data.prize.type === 'promo') prizeStr = `🎉 Вы выиграли: ${data.prize.value}\nКод: ${data.prize.code}`;
-                            if (data.prize.type === 'account') prizeStr = `🎉 Вы выиграли: ${data.prize.value}\n\nНапишите в поддержку!`;
+                            if (data.prize.type === 'promo') prizeStr = `🎉 Выиграли: ${data.prize.value}\nКод: ${data.prize.code}`;
+                            if (data.prize.type === 'account') prizeStr = `🎉 Выиграли: ${data.prize.value}\n\nНапишите в поддержку!`;
                             
                             prizeText.innerText = prizeStr;
-                            animDiv.style.display = 'none'; // Скрываем анимацию
-                            tg.showAlert(prizeStr);
-                            loadData();
+                            chest.style.display = 'none';
+                            setTimeout(() => {
+                                animDiv.style.display = 'none';
+                                chest.style.display = 'flex';
+                                tg.showAlert(prizeStr);
+                                loadData();
+                            }, 4000);
                         }, 1000);
                     }, 1500);
                 } else {
                     tg.showAlert(data.error);
                     animDiv.style.display = 'none';
+                    chest.className = 'chest';
                 }
             } catch(e) {
                 tg.showAlert("Ошибка сервера");
                 animDiv.style.display = 'none';
+                chest.className = 'chest';
             }
         }
 
@@ -468,7 +470,6 @@
             const adminList = document.getElementById('admin-ticket-list');
             
             if (isAdmin) {
-                // Для админа
                 adminList.innerHTML = tickets.length > 0 ? tickets.map(t => `
                     <div class="purchase-item" style="background:rgba(0,210,255,0.1); border-color:#00d2ff;">
                         <div style="font-weight:bold; color:#fff; margin-bottom:5px;">От: @${t.username} (ID: ${t.user_id})</div>
@@ -477,7 +478,6 @@
                     </div>
                 `).join('') : '<div style="color:#888;">Нет новых тикетов.</div>';
             } else {
-                // Для юзера (история)
                 list.innerHTML = tickets.length > 0 ? tickets.map(t => `
                     <div class="purchase-item">
                         <div style="color:#888; font-size:11px; margin-bottom:5px;">Ваш вопрос: ${t.question}</div>
