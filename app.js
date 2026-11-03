@@ -59,9 +59,21 @@ async function loadEvents() {
 }
 setInterval(loadEvents, 10000); loadEvents();
 
+// ОБНОВЛЕННАЯ ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+    
+    // Подсветка нижней панели
+    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+    const screensMap = {
+        'screen-main': 0, 'screen-cases': 1, 'screen-roll': 2, 'screen-profile': 3, 'screen-news': 4
+    };
+    if (screensMap[id] !== undefined) {
+        const navItems = document.querySelectorAll('.nav-item');
+        if(navItems[screensMap[id]]) navItems[screensMap[id]].classList.add('active');
+    }
+
     if(id === 'screen-profile' || id === 'screen-main' || id === 'screen-admin-tickets') loadData();
     if(id === 'screen-chat') loadChat();
 }
@@ -103,7 +115,6 @@ async function buyItem(method) {
         } catch(e) { tg.showAlert("Ошибка сервера"); }
         return;
     }
-    
     tg.showAlert("Списываем средства...");
     try {
         const res = await fetch(`${API_URL}/api/buy`, {
@@ -111,10 +122,7 @@ async function buyItem(method) {
             body: JSON.stringify({ country: selectedCountry, method: "balance" })
         });
         const data = await res.json();
-        if (data.status === 'ok') { 
-            tg.showAlert(`✅ ${data.message}`); 
-            loadData(); loadEvents(); 
-        }
+        if (data.status === 'ok') { tg.showAlert(`✅ ${data.message}`); loadData(); loadEvents(); }
         else { tg.showAlert(`❌ ${data.error}`); }
     } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
@@ -145,11 +153,10 @@ async function spinWheel() {
                 isSpinning = false;
                 loadData();
             }, 4000);
-        } else {
-            resDiv.innerText = `❌ ${data.error}`; resDiv.style.color = "#ff4444"; btn.innerText = "Крутить"; isSpinning = false;
-        }
+        } else { resDiv.innerText = `❌ ${data.error}`; resDiv.style.color = "#ff4444"; btn.innerText = "Крутить"; isSpinning = false; }
     } catch(e) { resDiv.innerText = "Ошибка"; btn.innerText = "Крутить"; isSpinning = false; }
 }
+
 async function buyCase(type) {
     const price = type === 'normal' ? 99 : 249;
     tg.showConfirm(`Купить кейс за ${price} ₽?`, async (confirmed) => {
@@ -172,17 +179,14 @@ async function openCase(type) {
     const winContainer = document.getElementById('win-card-container');
     const winContent = document.getElementById('win-card-content');
     const prizeText = document.getElementById('case-prize-text');
-    
     animDiv.style.display = 'block'; winContainer.style.display = 'none';
     track.style.transition = 'none'; track.style.transform = 'translateX(0)'; track.innerHTML = '';
-    
     try {
         const res = await fetch(`${API_URL}/api/case/open`, {
             method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
             body: JSON.stringify({ type: type })
         });
         const data = await res.json();
-        
         if (data.status === 'ok') {
             const winIndex = 25; let itemsHTML = '';
             for (let i = 0; i < 30; i++) {
@@ -207,7 +211,6 @@ async function openCase(type) {
                     if (data.prize.type === 'money') prizeStr = `<div style="text-align:center; font-size:18px; color:#00d2ff; margin-top:10px;">Вы выиграли <b>${data.prize.value}</b>!</div>`;
                     if (data.prize.type === 'promo') prizeStr = `<div style="text-align:center; font-size:14px; margin-top:10px;">Промокод:<br><b style="font-size:20px; color:#ffd700;">${data.prize.code}</b></div>`;
                     if (data.prize.type === 'account') prizeStr = `<div style="text-align:center; font-size:16px; margin-top:10px;">Аккаунт <b>${data.prize.value}</b><br><span style="font-size:11px; color:#aaa;">Напишите в поддержку!</span></div>`;
-                    
                     winContent.innerHTML = `<div style="font-size:50px; text-align:center;">🎁</div><div style="font-size:18px; font-weight:900; color:#ffd700; text-align:center; margin-top:10px;">ПОЗДРАВЛЯЕМ!</div>`;
                     prizeText.innerHTML = prizeStr;
                     winContainer.style.display = 'flex';
@@ -217,6 +220,62 @@ async function openCase(type) {
             }, 100);
         } else { tg.showAlert(data.error); animDiv.style.display = 'none'; }
     } catch(e) { tg.showAlert("Ошибка сервера"); animDiv.style.display = 'none'; }
+}
+function selectSlot(slotNum) {
+    if(myAccounts.length === 0) return tg.showAlert("У вас нет аккаунтов для апгрейда.");
+    let msg = `Слот ${slotNum}. Введите номер аккаунта из списка (1-${myAccounts.length}):\n\n`;
+    myAccounts.forEach((acc, i) => msg += `${i + 1}. ${acc}\n`);
+    
+    askPrompt(msg, "", (choice) => {
+        if(!choice) return;
+        const acc = myAccounts[parseInt(choice) - 1];
+        if(!acc) return tg.showAlert("Неверный номер.");
+        
+        tg.showConfirm(`Поставить "${acc}" в слот ${slotNum}?`, (confirmed) => {
+            if(!confirmed) return;
+            if(slotNum === 1) { 
+                upgradeSlot1 = acc; 
+                document.getElementById('slot-1').innerHTML = `<div style="font-size:12px; color:#ffd700; text-align:center;">${acc}</div>`; 
+                document.getElementById('slot-1').classList.add('filled'); 
+            } else { 
+                upgradeSlot2 = acc; 
+                document.getElementById('slot-2').innerHTML = `<div style="font-size:12px; color:#ffd700; text-align:center;">${acc}</div>`; 
+                document.getElementById('slot-2').classList.add('filled'); 
+            }
+            checkUpgrade();
+        });
+    });
+}
+
+function checkUpgrade() {
+    const btn = document.getElementById('upgrade-btn');
+    if(upgradeSlot1 && upgradeSlot2 && upgradeSlot1 === upgradeSlot2) {
+        btn.disabled = false; btn.style.opacity = '1'; btn.style.background = 'linear-gradient(90deg, #00d2ff, #0052ff)'; btn.style.cursor = 'pointer';
+    } else { 
+        btn.disabled = true; btn.style.opacity = '0.5'; btn.style.background = '#333'; btn.style.cursor = 'not-allowed'; 
+    }
+}
+
+async function startUpgrade() {
+    tg.showConfirm("Вы уверены? Аккаунты могут сгореть!", async (confirmed) => {
+        if(!confirmed) return;
+        tg.showAlert("Апгрейд запущен...");
+        try {
+            const res = await fetch(`${API_URL}/api/upgrade`, {
+                method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+                body: JSON.stringify({ acc1: upgradeSlot1, acc2: upgradeSlot2 })
+            });
+            const data = await res.json();
+            if(data.status === 'ok') {
+                tg.showAlert(data.success ? `🎉 ${data.message}` : `😢 ${data.message}`);
+                upgradeSlot1 = null; upgradeSlot2 = null;
+                document.getElementById('slot-1').innerHTML = '<div style="font-size:30px; margin-bottom:10px;">➕</div><div style="font-size:12px; color:#888;">Аккаунт 1</div>';
+                document.getElementById('slot-2').innerHTML = '<div style="font-size:30px; margin-bottom:10px;">➕</div><div style="font-size:12px; color:#888;">Аккаунт 2</div>';
+                document.getElementById('slot-1').classList.remove('filled'); document.getElementById('slot-2').classList.remove('filled');
+                checkUpgrade(); loadData();
+            } else { tg.showAlert(`❌ ${data.error}`); }
+        } catch(e) { tg.showAlert("Ошибка сервера"); }
+    });
 }
 
 async function loadChat() {
@@ -240,81 +299,14 @@ async function sendChatMessage() {
     const text = input.value.trim();
     if(!text) return;
     input.value = "";
-    await fetch(`${API_URL}/api/chat`, {
-        method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-        body: JSON.stringify({ text: text })
-    });
+    await fetch(`${API_URL}/api/chat`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ text: text }) });
     loadChat();
 }
 
-function selectSlot(slotNum) {
-    if(myAccounts.length === 0) return tg.showAlert("У вас нет аккаунтов для апгрейда.");
-    let msg = "Выберите аккаунт:\n";
-    myAccounts.forEach((acc, i) => msg += `${i + 1}. ${acc}\n`);
-    const choice = prompt(msg + "\nВведите номер:");
-    if(!choice) return;
-    const acc = myAccounts[parseInt(choice) - 1];
-    if(!acc) return tg.showAlert("Неверный номер.");
-    tg.showConfirm(`Поставить "${acc}" в слот ${slotNum}?`, (confirmed) => {
-        if(!confirmed) return;
-        if(slotNum === 1) { 
-            upgradeSlot1 = acc; 
-            document.getElementById('slot-1').innerHTML = `<div style="font-size:12px; color:#ffd700; text-align:center;">${acc}</div>`; 
-            document.getElementById('slot-1').classList.add('filled'); 
-        } else { 
-            upgradeSlot2 = acc; 
-            document.getElementById('slot-2').innerHTML = `<div style="font-size:12px; color:#ffd700; text-align:center;">${acc}</div>`; 
-            document.getElementById('slot-2').classList.add('filled'); 
-        }
-        checkUpgrade();
-    });
-}
-
-function checkUpgrade() {
-    const btn = document.getElementById('upgrade-btn');
-    if(upgradeSlot1 && upgradeSlot2 && upgradeSlot1 === upgradeSlot2) {
-        btn.disabled = false; btn.style.opacity = '1'; btn.style.background = 'linear-gradient(90deg, #00d2ff, #0052ff)';
-    } else { 
-        btn.disabled = true; btn.style.opacity = '0.5'; btn.style.background = '#333'; 
-    }
-}
-
-async function startUpgrade() {
-    tg.showConfirm("Вы уверены? Аккаунты могут сгореть!", async (confirmed) => {
-        if(!confirmed) return;
-        tg.showAlert("Апгрейд запущен...");
-        try {
-            const res = await fetch(`${API_URL}/api/upgrade`, {
-                method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                body: JSON.stringify({ acc1: upgradeSlot1, acc2: upgradeSlot2 })
-            });
-            const data = await res.json();
-            
-            if(data.status === 'ok') {
-                if(data.success) {
-                    tg.showAlert(`🎉 ${data.message}`);
-                } else {
-                    tg.showAlert(`😢 ${data.message}`);
-                }
-                
-                upgradeSlot1 = null; upgradeSlot2 = null;
-                document.getElementById('slot-1').innerHTML = '<div style="font-size:30px; margin-bottom:10px;">➕</div><div style="font-size:12px; color:#888;">Аккаунт 1</div>';
-                document.getElementById('slot-2').innerHTML = '<div style="font-size:30px; margin-bottom:10px;">➕</div><div style="font-size:12px; color:#888;">Аккаунт 2</div>';
-                document.getElementById('slot-1').classList.remove('filled'); document.getElementById('slot-2').classList.remove('filled');
-                checkUpgrade(); loadData();
-            } else { 
-                tg.showAlert(`❌ ${data.error}`); 
-            }
-        } catch(e) { tg.showAlert("Ошибка сервера"); }
-    });
-}
 async function createTicket() {
     const text = document.getElementById('ticket-input').value.trim();
     if(!text) return tg.showAlert("Напишите вопрос!");
-    const res = await fetch(`${API_URL}/api/ticket/create`, {
-        method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-        body: JSON.stringify({ question: text })
-    });
+    const res = await fetch(`${API_URL}/api/ticket/create`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ question: text }) });
     const data = await res.json();
     tg.showAlert(data.message || data.error);
     if(data.status === 'ok') { document.getElementById('ticket-input').value = ""; loadData(); }
@@ -330,54 +322,64 @@ function renderTickets(tickets) {
     }
 }
 
-async function replyTicket(id) {
-    const answer = prompt("Введите ответ:");
-    if(!answer) return;
-    const res = await fetch(`${API_URL}/api/ticket/reply`, {
-        method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-        body: JSON.stringify({ ticket_id: id, answer: answer })
+function replyTicket(id) {
+    askPrompt("Введите ответ на тикет:", "", async (answer) => {
+        if(!answer) return;
+        const res = await fetch(`${API_URL}/api/ticket/reply`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ ticket_id: id, answer: answer }) });
+        const data = await res.json(); tg.showAlert(data.message || data.error); loadData();
     });
-    const data = await res.json(); tg.showAlert(data.message || data.error); loadData();
 }
 
-async function adminAction(action) {
+function adminAction(action) {
     const resDiv = document.getElementById('admin-result');
-    resDiv.innerText = "Загрузка...";
-    try {
-        if (action === 'money') {
-            const amount = prompt("Сколько рублей выдать?"); if (!amount) { resDiv.innerText = ""; return; }
-            const res = await fetch(`${API_URL}/api/admin/money`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ amount: parseFloat(amount) }) });
-            const data = await res.json(); resDiv.innerText = data.message || data.error; loadData();
-        }
-        if (action === 'promo') {
-            const code = prompt("Название промокода:"); if (!code) { resDiv.innerText = ""; return; }
-            const disc = prompt("Скидка (%):"); const limit = prompt("Лимит:");
-            const res = await fetch(`${API_URL}/api/admin/promo`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ code, discount: parseInt(disc), limit: parseInt(limit) }) });
-            const data = await res.json(); resDiv.innerText = data.message || data.error;
-        }
-        if (action === 'stock') {
-            let list = "Код страны:\n"; accountsData.forEach(i => list += `${i.code} - ${i.name}\n`);
-            const country = prompt(list); if (!country) { resDiv.innerText = ""; return; }
-            const amount = prompt(`Сколько штук для ${country}?`);
-            const res = await fetch(`${API_URL}/api/admin/stock`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ country: country.toLowerCase(), amount: parseInt(amount) }) });
-            const data = await res.json(); resDiv.innerText = data.message || data.error; loadData();
-        }
-        if (action === 'broadcast') {
-            const text = prompt("Текст рассылки:"); if (!text) { resDiv.innerText = ""; return; }
-            const res = await fetch(`${API_URL}/api/admin/broadcast`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ text: text, minutes: 60 }) });
-            const data = await res.json(); resDiv.innerText = data.message || data.error; loadEvents();
-        }
-    } catch(e) { resDiv.innerText = "Ошибка связи с сервером"; }
+    resDiv.innerText = "";
+    
+    if (action === 'money') { 
+        askPrompt("Сколько рублей выдать?", "", async (amount) => {
+            if (!amount) return;
+            resDiv.innerText = "Загрузка...";
+            const res = await fetch(`${API_URL}/api/admin/money`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ amount: parseFloat(amount) }) }); 
+            const data = await res.json(); resDiv.innerText = data.message || data.error; loadData(); 
+        });
+    }
+    if (action === 'promo') { 
+        askPrompt("Название промокода:", "", (code) => {
+            if (!code) return;
+            askPrompt("Скидка (%):", "", (disc) => {
+                askPrompt("Лимит активаций:", "", async (limit) => {
+                    resDiv.innerText = "Загрузка...";
+                    const res = await fetch(`${API_URL}/api/admin/promo`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ code, discount: parseInt(disc), limit: parseInt(limit) }) }); 
+                    const data = await res.json(); resDiv.innerText = data.message || data.error; 
+                });
+            });
+        });
+    }
+    if (action === 'stock') { 
+        let list = "Код страны:\n"; 
+        accountsData.forEach(i => list += `${i.code} - ${i.name}\n`); 
+        askPrompt(list, "", (country) => {
+            if (!country) return;
+            askPrompt(`Сколько штук для ${country}?`, "", async (amount) => {
+                resDiv.innerText = "Загрузка...";
+                const res = await fetch(`${API_URL}/api/admin/stock`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ country: country.toLowerCase(), amount: parseInt(amount) }) }); 
+                const data = await res.json(); resDiv.innerText = data.message || data.error; loadData(); 
+            });
+        });
+    }
+    if (action === 'broadcast') { 
+        askPrompt("Текст рассылки:", "", async (text) => {
+            if (!text) return;
+            resDiv.innerText = "Загрузка...";
+            const res = await fetch(`${API_URL}/api/admin/broadcast`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ text: text, minutes: 60 }) }); 
+            const data = await res.json(); resDiv.innerText = data.message || data.error; loadEvents(); 
+        });
+    }
 }
 
 async function clearEvents() {
     const resDiv = document.getElementById('admin-result'); resDiv.innerText = "Очистка...";
-    try {
-        const res = await fetch(`${API_URL}/api/admin/clear_events`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData } });
-        const data = await res.json(); resDiv.innerText = data.message || data.error; loadEvents();
-    } catch(e) { resDiv.innerText = "Ошибка"; }
+    try { const res = await fetch(`${API_URL}/api/admin/clear_events`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData } }); const data = await res.json(); resDiv.innerText = data.message || data.error; loadEvents(); } catch(e) { resDiv.innerText = "Ошибка"; }
 }
-
 function openInfo(type) {
     if (type === 'promo') {
         document.getElementById('info-title').innerText = "🎁 Промокод";
@@ -398,57 +400,67 @@ function openInfo(type) {
     document.getElementById('info-content').appendChild(btn);
     showScreen('screen-info');
 }
+
 async function activatePromo() {
     const code = document.getElementById('promo-input').value.trim().toUpperCase();
     if (!code) return tg.showAlert("Введите код!");
-    try {
-        const res = await fetch(`${API_URL}/api/promo`, { 
-            method: 'POST', 
-            headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, 
-            body: JSON.stringify({ code }) 
-        });
-        const data = await res.json(); 
-        tg.showAlert(data.status === 'ok' ? `✅ ${data.message}` : `❌ ${data.error}`); 
-        if (data.status === 'ok') loadData();
-    } catch(e) { tg.showAlert("Ошибка сервера"); }
+    try { const res = await fetch(`${API_URL}/api/promo`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ code }) }); const data = await res.json(); tg.showAlert(data.status === 'ok' ? `✅ ${data.message}` : `❌ ${data.error}`); if (data.status === 'ok') loadData(); } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
 
-function showTopupModal() { 
-    document.getElementById('modal-topup').style.display = 'flex'; 
-}
-
-function closeTopup() { 
-    document.getElementById('modal-topup').style.display = 'none'; 
-}
-
+function showTopupModal() { document.getElementById('modal-topup').style.display = 'flex'; }
+function closeTopup() { document.getElementById('modal-topup').style.display = 'none'; }
 async function topupBalance() {
     const amount = parseFloat(document.getElementById('topup-amount').value);
     if (!amount || amount < 50) return tg.showAlert("Минимум 50 ₽");
-    
-    closeTopup(); 
-    tg.showAlert("Создаем счет...");
-    
-    try {
-        const res = await fetch(`${API_URL}/api/topup`, { 
-            method: 'POST', 
-            headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, 
-            body: JSON.stringify({ amount }) 
-        });
-        const data = await res.json(); 
-        if (data.url) {
-            tg.openLink(data.url); 
-        } else {
-            tg.showAlert("Ошибка: " + data.error);
-        }
-    } catch(e) { 
-        tg.showAlert("Ошибка сервера"); 
+    closeTopup(); tg.showAlert("Создаем счет...");
+    try { const res = await fetch(`${API_URL}/api/topup`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ amount }) }); const data = await res.json(); if (data.url) { tg.openLink(data.url); } else { tg.showAlert("Ошибка: " + data.error); } } catch(e) { tg.showAlert("Ошибка сервера"); }
+}
+
+// ================= СИСТЕМА КАСТОМНОГО PROMPT И ЗВУКОВ =================
+let promptCallback = null;
+
+function askPrompt(title, defaultValue, callback) {
+    document.getElementById('prompt-title').innerText = title;
+    const input = document.getElementById('prompt-input');
+    input.value = defaultValue || "";
+    document.getElementById('custom-prompt').style.display = 'flex';
+    promptCallback = callback;
+    setTimeout(() => input.focus(), 100);
+}
+
+function submitPrompt() {
+    const val = document.getElementById('prompt-input').value;
+    closePrompt();
+    if (promptCallback) promptCallback(val);
+}
+
+function closePrompt() {
+    document.getElementById('custom-prompt').style.display = 'none';
+    promptCallback = null;
+}
+
+// Звук при нажатии
+function playClickSound() {
+    const audio = document.getElementById('click-sound');
+    if (audio) {
+        audio.currentTime = 0;
+        audio.volume = 0.3; // Громкость 30% (поменяй на 0.1, если громко)
+        audio.play().catch(e => console.log("Звук заблокирован"));
     }
 }
 
-// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАПУСКЕ
-if (tg) { 
-    tg.ready(); 
-    loadData(); 
-    loadEvents(); 
-    setInterval(loadData, 15000); 
-}
+// Навешиваем звук и вибрацию на все кнопки
+document.addEventListener('DOMContentLoaded', () => {
+    const clickable = document.querySelectorAll('.menu-btn, .buy-btn, .info-btn, .roll-btn, .upgrade-slot, .nav-item');
+    clickable.forEach(el => {
+        el.addEventListener('click', () => {
+            playClickSound();
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            }
+        });
+    });
+});
+
+// Глобальный запуск
+if (tg) { tg.ready(); loadData(); loadEvents(); setInterval(loadData, 15000); }
