@@ -8,8 +8,8 @@ let selectedCountry = null;
 let selectedPrice = 0;
 let isAdmin = false;
 
+// ЗАГРУЗКА ДАННЫХ ПРОФИЛЯ
 async function loadData() {
-    // Подтягиваем данные профиля из Телеграма (аватарка, ник)
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const u = tg.initDataUnsafe.user;
         document.getElementById('user-name').innerText = u.first_name + (u.last_name ? ' ' + u.last_name : '');
@@ -39,7 +39,6 @@ async function loadData() {
                 document.getElementById('admin-tickets-btn').style.display = 'block';
             }
             
-            // Управление кнопками кейсов
             if (userProfile.cases > 0) document.getElementById('open-normal-case').style.display = 'block';
             if (userProfile.vip_cases > 0) document.getElementById('open-vip-case').style.display = 'block';
             
@@ -67,7 +66,7 @@ async function loadData() {
     } catch(e) { console.log(e); }
 }
 
-// Бегущая строка
+// БЕГУЩАЯ СТРОКА
 async function loadEvents() {
     try {
         const res = await fetch(`${API_URL}/api/events`);
@@ -77,7 +76,7 @@ async function loadEvents() {
         }
     } catch(e) { console.log(e); }
 }
-setInterval(loadEvents, 10000);
+setInterval(loadEvents, 10000); // Обновляем каждые 10 секунд
 loadEvents();
 
 function showScreen(id) {
@@ -86,6 +85,7 @@ function showScreen(id) {
     if(id === 'screen-profile' || id === 'screen-main' || id === 'screen-admin-tickets') loadData();
 }
 
+// КАТАЛОГ
 function openCatalog() {
     const grid = document.getElementById('catalog-grid');
     grid.innerHTML = '';
@@ -127,7 +127,7 @@ async function buyItem(method) {
             if (data.status === 'ok') {
                 tg.openInvoice(data.url, (status) => {
                     if (status === 'paid') {
-                        tg.showAlert("✅ Оплачено звездами! Номер скоро выдадут. Если долго — напишите в поддержку.");
+                        tg.showAlert("✅ Оплачено звездами! Номер скоро выдадут.");
                         loadData();
                     }
                 });
@@ -145,7 +145,7 @@ async function buyItem(method) {
         });
         const data = await res.json();
         if (data.status === 'ok') {
-            tg.showAlert(`✅ Деньги списаны! Номер скоро выдадут.\nЕсли долго — напишите в поддержку.`);
+            tg.showAlert(`✅ Деньги списаны! Номер скоро выдадут.`);
             loadData();
             loadEvents(); // Обновляем бегущую строку
         } else { tg.showAlert(`❌ ${data.error}`); }
@@ -162,9 +162,7 @@ async function spinWheel() {
     
     btn.innerText = "Крутим...";
     resDiv.innerText = "";
-    
-    // Добавляем эффект матрицы (свечение)
-    wheel.style.boxShadow = "0 0 50px #00d2ff, inset 0 0 50px #00d2ff";
+    wheel.style.boxShadow = "0 0 50px #00d2ff, inset 0 0 50px #00d2ff"; // Эффект матрицы
     
     try {
         const res = await fetch(`${API_URL}/api/roll`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData } });
@@ -177,8 +175,6 @@ async function spinWheel() {
             if (data.amount === 3) targetDeg = 360 - 135;
             
             const randomOffset = Math.floor(Math.random() * 40) - 20;
-            
-            // 3D Вращение с перспективой
             wheel.style.transform = `rotateX(20deg) rotate(${1440 + targetDeg + randomOffset}deg)`;
             
             setTimeout(() => {
@@ -186,7 +182,6 @@ async function spinWheel() {
                 resDiv.style.color = "#ffd700";
                 btn.innerText = "Крутить";
                 isSpinning = false;
-                // Убираем свечение
                 wheel.style.boxShadow = "0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.2)"; 
                 loadData();
             }, 4000);
@@ -218,19 +213,21 @@ async function buyCase(type) {
             const data = await res.json();
             tg.showAlert(data.message || data.error);
             loadData();
-            loadEvents(); // Обновляем бегущую строку
         } catch(e) { tg.showAlert("Ошибка сервера"); }
     });
 }
+
 async function openCase(type) {
     const animDiv = document.getElementById('case-animation');
-    const chest = document.getElementById('chest');
+    const card = document.getElementById('case-card');
     const prizeText = document.getElementById('case-prize-text');
+    const lootContainer = document.getElementById('loot-container');
     
     animDiv.style.display = 'flex';
-    chest.classList.remove('chest-opened');
-    chest.classList.add('chest-opening');
+    card.style.display = 'flex';
     prizeText.innerText = "";
+    lootContainer.innerHTML = "";
+    card.classList.add('case-shake'); // Тряска
 
     try {
         const res = await fetch(`${API_URL}/api/case/open`, {
@@ -241,10 +238,34 @@ async function openCase(type) {
         const data = await res.json();
         
         if (data.status === 'ok') {
-            // Тряска сундука 1.5 секунды, потом взрыв
             setTimeout(() => {
-                chest.classList.remove('chest-opening');
-                chest.classList.add('chest-opened');
+                card.classList.remove('case-shake');
+                card.style.opacity = '0';
+                card.style.transform = 'scale(1.5)';
+                
+                // Вылетающие карточки
+                const icons = ['🇺🇸', '🇷🇺', '🇰🇿', '💰', '🎁', '💳'];
+                for (let i = 0; i < 8; i++) {
+                    const loot = document.createElement('div');
+                    loot.className = 'loot-card';
+                    loot.style.left = '50%';
+                    loot.style.top = '50%';
+                    loot.style.transform = 'translate(-50%, -50%)';
+                    loot.innerText = icons[Math.floor(Math.random() * icons.length)];
+                    
+                    const angle = (i / 8) * Math.PI * 2;
+                    const distance = 100 + Math.random() * 50;
+                    const targetX = Math.cos(angle) * distance;
+                    const targetY = Math.sin(angle) * distance;
+                    
+                    loot.animate([
+                        { transform: 'translate(-50%, -50%) scale(0.5)', opacity: 1 },
+                        { transform: `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY}px)) scale(1) rotate(${Math.random()*360}deg)`, opacity: 1 },
+                        { transform: `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY}px)) scale(0)`, opacity: 0 }
+                    ], { duration: 1500, easing: 'ease-out', fill: 'forwards' });
+                    
+                    lootContainer.appendChild(loot);
+                }
                 
                 setTimeout(() => {
                     let prizeStr = "";
@@ -257,23 +278,24 @@ async function openCase(type) {
                     loadData();
                     loadEvents(); // Обновляем бегущую строку
                     
-                    // Прячем сундук через 4 секунды
                     setTimeout(() => {
                         animDiv.style.display = 'none';
-                        chest.classList.remove('chest-opened');
-                    }, 4000);
-                }, 1000);
-            }, 1500);
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, 3000);
+                }, 1500);
+            }, 2000);
         } else {
             tg.showAlert(data.error);
             animDiv.style.display = 'none';
+            card.classList.remove('case-shake');
         }
     } catch(e) {
         tg.showAlert("Ошибка сервера");
         animDiv.style.display = 'none';
+        card.classList.remove('case-shake');
     }
 }
-
 // ТИКЕТЫ
 async function createTicket() {
     const text = document.getElementById('ticket-input').value.trim();
