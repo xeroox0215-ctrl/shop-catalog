@@ -25,16 +25,6 @@
         <div class="splash-skip" onclick="document.getElementById('splash-screen').classList.add('splash-hidden')">Пропустить</div>
     </div>
 
-    <!-- МОДАЛКА ВВОДА (Вместо prompt) -->
-    <div id="custom-prompt" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 10000; padding:20px; flex-direction:column; justify-content:center; align-items:center;">
-        <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; width:100%; max-width:400px; text-align:center;">
-            <h3 id="prompt-title" style="margin-bottom:15px; color:#00d2ff; font-size:16px;">Введите данные</h3>
-            <input type="text" id="prompt-input" style="width:100%; padding:15px; border-radius:12px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; margin-bottom:15px; font-family:Unbounded;">
-            <button class="buy-btn" style="width:100%; margin-bottom:10px;" onclick="submitPrompt()">Отправить</button>
-            <button class="info-btn" style="background:transparent; border:1px solid #555; color:#aaa;" onclick="closePrompt()">Отмена</button>
-        </div>
-    </div>
-
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
 
     <!-- ГЛАВНЫЙ ЭКРАН -->
@@ -55,7 +45,6 @@
                         <span style="font-size:9px; font-weight:800; color:#ffd700; background:rgba(0,0,0,0.5); padding:3px 6px; border-radius:6px; text-transform: uppercase;">Официальный канал</span>
                         <h3 class="banner-title" style="font-size: 22px; margin-top: 5px;">Sciptyy Store News</h3>
                         <p class="banner-subtitle" style="font-size: 10px; line-height: 1.4;">🔥 Промокод <b>HALLOWEEN31</b> (15%)</p>
-                        <button class="buy-btn" style="margin-top: 10px; padding: 6px 12px; font-size: 11px;">Подписаться</button>
                     </div>
                 </div>
                 <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; background: #111; position: relative;" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')">
@@ -79,7 +68,10 @@
             <div class="menu-btn" onclick="openInfo('promo')"><span class="btn-text">🎁 Промокод</span></div>
             <div class="menu-btn" onclick="openInfo('reviews')"><span class="btn-text">⭐ Отзывы</span></div>
             <div class="menu-btn" onclick="showScreen('screen-support')"><span class="btn-text">🆘 Поддержка</span></div>
+            
+            <!-- КНОПКА НОВОСТЕЙ -->
             <div class="menu-btn" onclick="showScreen('screen-news')"><span class="btn-text">📰 Новости</span></div>
+            
             <div class="menu-btn" onclick="openInfo('about')"><span class="btn-text">ℹ️ О нас</span></div>
             <div class="menu-btn" onclick="openInfo('terms')"><span class="btn-text">📜 Соглашение</span></div>
             <div class="menu-btn" onclick="openInfo('privacy')"><span class="btn-text">📄 Политика</span></div>
@@ -87,14 +79,14 @@
             <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')"><span class="btn-text" style="color: #00d2ff;">📩 Тикеты</span></div>
         </div>
     </div>
-        <!-- ЭКРАН НОВОСТЕЙ -->
+
+    <!-- ЭКРАН НОВОСТЕЙ -->
     <div id="screen-news" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Новости</h2></div>
         <div id="news-container"><div style="color:#888; text-align:center; margin-top:20px;">Загрузка новостей...</div></div>
     </div>
-
-    <!-- КАТАЛОГ -->
+        <!-- КАТАЛОГ -->
     <div id="screen-catalog" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Аккаунты</h2></div>
@@ -117,7 +109,8 @@
         <h3 style="position: relative; z-index: 2; margin-bottom: 10px; font-size: 16px;">История покупок:</h3>
         <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
     </div>
-       <!-- РУЛЕТКА -->
+
+    <!-- РУЛЕТКА -->
     <div id="screen-roll" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Рулетка</h2></div>
@@ -164,8 +157,7 @@
         </div>
         <button id="upgrade-btn" class="buy-btn" style="width:100%; padding:15px; opacity:0.5; cursor:not-allowed; background:#333;" disabled onclick="startUpgrade()">Сделать апгрейд</button>
     </div>
-
-    <!-- КЕЙСЫ -->
+        <!-- КЕЙСЫ -->
     <div id="screen-cases" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Кейсы</h2></div>
@@ -190,7 +182,8 @@
             </div>
         </div>
     </div>
-      <!-- ПОДДЕРЖКА -->
+
+    <!-- ПОДДЕРЖКА -->
     <div id="screen-support" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Поддержка</h2></div>
@@ -249,10 +242,7 @@
             <div class="menu-btn" onclick="adminAction('promo')"><span class="btn-text">🎁 Создать промокод</span></div>
             <div class="menu-btn" onclick="adminAction('stock')"><span class="btn-text">📦 Склад (Товары)</span></div>
             <div class="menu-btn" onclick="adminAction('broadcast')"><span class="btn-text">📢 Рассылка</span></div>
-            
-            <!-- НОВАЯ КНОПКА НОВОСТЕЙ -->
             <div class="menu-btn" onclick="adminAction('news')"><span class="btn-text">📰 Написать новость</span></div>
-            
             <div class="menu-btn" onclick="clearEvents()"><span class="btn-text" style="color: #ff4444;">🗑 Очистить события</span></div>
         </div>
         <div id="admin-result" style="margin-top: 20px; text-align:center; color: #00d2ff; font-weight: 800;"></div>
@@ -288,13 +278,11 @@
     </div>
 
     <script>
-        // Скрытие заставки через 5 секунд
         setTimeout(() => { const splash = document.getElementById('splash-screen'); if (splash) splash.classList.add('splash-hidden'); }, 5000);
-        // Слайдер баннеров
         let currentBannerIndex = 0; const track = document.getElementById('banner-track'); const totalBanners = 2;
         function nextBanner() { currentBannerIndex++; if (currentBannerIndex >= totalBanners) currentBannerIndex = 0; track.style.transform = `translateX(-${currentBannerIndex * 100}%)`; }
         setInterval(nextBanner, 5000);
     </script>
     <script src="app.js"></script>
 </body>
-</html>  
+</html>
