@@ -9,28 +9,50 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-        <!-- ЗАСТАВКА -->
+    <!-- ЗАСТАВКА (Чистая CSS, без картинок) -->
     <div id="splash-screen">
         <div class="splash-web-left">🕸️</div>
         <div class="splash-web-right">🕸️</div>
-        
-        <div class="splash-spiders">
-            <span class="spider-anim" style="animation-delay: 0s;">🕷️</span>
-            <span class="spider-anim" style="animation-delay: 1s; left: 80%;">🕷️</span>
-            <span class="spider-anim" style="animation-delay: 2s; left: 20%;">🕷️</span>
-        </div>
-
         <div class="splash-pumpkin">🎃</div>
         
-        <div class="splash-banner-overlay">
+        <div class="splash-banner">
             <h2>ХЭЛЛОУИН ОБНОВЛЕНИЕ</h2>
             <p>Скидки, промокоды и новые кейсы!</p>
-            <div class="banner-pumpkins">
-                <span>🎃</span><span>🕸️</span><span>🕷️</span>
+            <div class="splash-icons">
+                <span>🕷️</span><span>🕸️</span><span>🎃</span>
             </div>
         </div>
     </div>
-            
+
+    <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
+
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <div id="screen-main" class="screen active">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
+        <h1 class="glow-title">SCIPTYY<br>STORE</h1>
+        
+        <div class="ticker-container" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 10px; margin-bottom: 15px; display: flex; align-items: center; z-index: 2; position: relative;">
+            <span style="font-size: 14px; margin-right: 5px; z-index: 2;">🔥</span>
+            <div id="ticker-track" style="display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; color: #00d2ff; font-size: 11px; font-weight: bold; z-index: 2;">
+                Загрузка событий...
+            </div>
+        </div>
+
+        <!-- Карусель баннеров -->
+        <div style="position: relative; overflow: hidden; width: 100%; border-radius: 20px; margin-bottom: 20px; height: 170px;">
+            <div id="banner-track" style="display: flex; width: 200%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);">
+                
+                <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; padding: 20px; position: relative;" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+                    <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
+                    <div style="position: absolute; bottom: 10px; right: 10px; font-size: 25px; opacity: 0.6;">🎃</div>
+                    <div class="banner-content">
+                        <span style="font-size:9px; font-weight:800; color:#ffd700; background:rgba(0,0,0,0.5); padding:3px 6px; border-radius:6px; text-transform: uppercase;">Официальный канал</span>
+                        <h3 class="banner-title" style="font-size: 18px; margin-top: 5px;">Sciptyy Store News</h3>
+                        <p class="banner-subtitle" style="font-size: 10px; line-height: 1.4;">🔥 Промокод <b>HALLOWEEN31</b> (15%)</p>
+                        <button class="buy-btn" style="margin-top: 10px; padding: 6px 12px; font-size: 11px;">Подписаться</button>
+                    </div>
+                </div>
+
                 <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; background: #111; position: relative;" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')">
                     <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow" style="opacity: 0.4;"></div>
                     <div style="position: absolute; bottom: 10px; right: 10px; font-size: 25px; opacity: 0.6;">🎃</div>
@@ -209,7 +231,8 @@
             <div id="ticket-list" style="margin-top:20px;"></div>
         </div>
     </div>
-        <!-- ТИКЕТЫ АДМИН -->
+
+    <!-- ТИКЕТЫ АДМИН -->
     <div id="screen-admin-tickets" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color:#00d2ff;">Тикеты</h2></div>
