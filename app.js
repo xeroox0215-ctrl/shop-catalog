@@ -39,6 +39,7 @@ async function loadData() {
                 document.getElementById('admin-tickets-btn').style.display = 'block';
             }
             
+            // Управление кнопками кейсов
             if (userProfile.cases > 0) document.getElementById('open-normal-case').style.display = 'block';
             if (userProfile.vip_cases > 0) document.getElementById('open-vip-case').style.display = 'block';
             
@@ -76,7 +77,7 @@ async function loadEvents() {
         }
     } catch(e) { console.log(e); }
 }
-setInterval(loadEvents, 10000); // Обновляем каждые 10 секунд
+setInterval(loadEvents, 10000);
 loadEvents();
 
 function showScreen(id) {
@@ -295,7 +296,7 @@ async function openCase(type) {
         animDiv.style.display = 'none';
         card.classList.remove('case-shake');
     }
-}
+                                 }
 // ТИКЕТЫ
 async function createTicket() {
     const text = document.getElementById('ticket-input').value.trim();
@@ -356,20 +357,7 @@ async function adminAction(action) {
     const resDiv = document.getElementById('admin-result');
     resDiv.innerText = "Загрузка...";
     
-    if (action === 'money') {    if (action === 'broadcast') {
-        const text = prompt("Введите текст рассылки:");
-        if (!text) return;
-        const minutes = prompt("На сколько минут показать в событиях?", "60");
-        if (!minutes) return;
-        
-        const res = await fetch(`${API_URL}/api/admin/broadcast`, {
-            method: 'POST',
-            headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-            body: JSON.stringify({ text: text, minutes: parseInt(minutes) })
-        });
-        const data = await res.json();
-        tg.showAlert(data.message || data.error);
-    }
+    if (action === 'money') {
         const amount = prompt("Сколько рублей выдать?");
         if (!amount) { resDiv.innerText = ""; return; }
         const res = await fetch(`${API_URL}/api/admin/money`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ amount: parseFloat(amount) }) });
@@ -378,7 +366,7 @@ async function adminAction(action) {
         loadData();
     }
     if (action === 'promo') {
-        const code = prompt("Название промокода (например, HALLOWEEN):");
+        const code = prompt("Название промокода (например, HALLOWEEN31):");
         if (!code) { resDiv.innerText = ""; return; }
         const disc = prompt("Скидка от 5 до 80 (%):");
         const limit = prompt("Лимит активаций:");
@@ -396,6 +384,21 @@ async function adminAction(action) {
         const data = await res.json();
         resDiv.innerText = data.message || data.error;
         loadData();
+    }
+    if (action === 'broadcast') {
+        const text = prompt("Введите текст рассылки:");
+        if (!text) { resDiv.innerText = ""; return; }
+        const minutes = prompt("На сколько минут показать в событиях?", "60");
+        if (!minutes) { resDiv.innerText = ""; return; }
+        
+        const res = await fetch(`${API_URL}/api/admin/broadcast`, {
+            method: 'POST',
+            headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+            body: JSON.stringify({ text: text, minutes: parseInt(minutes) })
+        });
+        const data = await res.json();
+        resDiv.innerText = data.message || data.error;
+        loadEvents(); // Обновляем бегущую строку сразу
     }
 }
 
