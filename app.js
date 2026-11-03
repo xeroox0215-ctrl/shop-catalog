@@ -413,7 +413,7 @@ function adminAction(action) {
 async function clearEvents() {
     const resDiv = document.getElementById('admin-result'); resDiv.innerText = "Очистка...";
     try { const res = await fetch(`${API_URL}/api/admin/clear_events`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData } }); const data = await res.json(); resDiv.innerText = data.message || data.error; loadEvents(); } catch(e) { resDiv.innerText = "Ошибка"; }
-}
+                    }
 function openInfo(type) {
     if (type === 'promo') {
         document.getElementById('info-title').innerText = "🎁 Промокод";
