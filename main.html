@@ -42,7 +42,9 @@
         .banner-content { position: relative; z-index: 3; width: 100%; }
         .banner-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; }
         .banner-subtitle { font-size: 11px; color: #eee; }
-
+    </style>
+</head>
+    <style>
         .screen { display: none; padding: 30px 20px; min-height: 100vh; animation: fadeIn 0.5s ease; position: relative; }
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -86,17 +88,37 @@
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
         
-        <div class="halloween-banner" id="swap-banner" style="padding: 20px;">
-            <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
-            <div class="banner-content" id="banner-content-area">
-                <!-- Сюда JS будет вставлять текст -->
+        <div style="position: relative; overflow: hidden; width: 100%; border-radius: 20px; margin-bottom: 25px; height: 160px;">
+            <div id="banner-track" style="display: flex; width: 200%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);">
+                <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0;" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+                    <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
+                    <div class="banner-content">
+                        <span style="font-size:10px; font-weight:800; color:#ffd700; background:rgba(0,0,0,0.5); padding:4px 8px; border-radius:8px;">🔥 ХЭЛЛОУИН СКИДКИ</span>
+                        <h3 class="banner-title">Наш Telegram Канал</h3>
+                        <p class="banner-subtitle">Перейти 👉 @sciptyystore</p>
+                    </div>
+                </div>
+                <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; background: #111;" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')">
+                    <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow" style="opacity: 0.4;"></div>
+                    <div class="banner-content">
+                        <h3 class="banner-title" style="font-size: 18px;">👑 Администраторы</h3>
+                        <p style="font-size: 10px; color: #ddd; margin-bottom: 2px;">Разработчик: @xeroox9</p>
+                        <p style="font-size: 10px; color: #ddd; margin-bottom: 2px;">(строго по вопросам бота)</p>
+                        <p style="font-size: 10px; color: #ddd; margin-bottom: 2px;">Владелец: @sciptyyzov</p>
+                        <p style="font-size: 10px; color: #ddd; margin-bottom: 10px;">(обо всех вопросах)</p>
+                        <button class="buy-btn" style="padding: 6px 12px; font-size: 11px; margin: 0;">⭐ Отзывы</button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="main-menu-grid">
             <div class="menu-btn" onclick="openCatalog()"><span class="btn-text">🛒 Купить аккаунты</span></div>
             <div class="menu-btn" onclick="showScreen('screen-profile')"><span class="btn-text">👤 Профиль</span></div>
-            <div class="menu-btn" onclick="showTopupModal()"><span class="btn-text">💳 Пополнить баланс</span></div>
+            <div class="menu-btn" onclick="showTopupModal()">
+                <span class="btn-text">💳 Пополнить баланс</span>
+                <p style="font-size: 10px; color: #00d2ff; margin-top: 5px;">🎁 От 500 ₽ — обычный кейс в подарок!</p>
+            </div>
             <div class="menu-btn" onclick="showScreen('screen-roll')"><span class="btn-text">🎰 Рулетка дня</span></div>
             <div class="menu-btn" onclick="showScreen('screen-cases')"><span class="btn-text">📦 Кейсы</span></div>
             <div class="menu-btn" onclick="openInfo('promo')"><span class="btn-text">🎁 Промокод</span></div>
@@ -109,7 +131,7 @@
             <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')"><span class="btn-text" style="color: #00d2ff;">📩 Тикеты</span></div>
         </div>
     </div>
-
+        <!-- КАТАЛОГ -->
     <div id="screen-catalog" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -120,18 +142,26 @@
         <div class="catalog-grid" id="catalog-grid"><div style="grid-column:span 2;">Загрузка...</div></div>
     </div>
 
+    <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
-        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
-            <div class="mini-banner-glow"></div>
-            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
+        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Мой профиль</h2></div>
+        
+        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px; text-align: center; position: relative; z-index: 2; margin-bottom: 20px;">
+            <div id="user-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #00d2ff, #8a2be2); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; color: #fff; background-size: cover; background-position: center; box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);"></div>
+            <h2 id="user-name" style="font-size: 20px; font-weight: 800; margin-bottom: 5px;">Пользователь</h2>
+            <p id="user-id" style="font-size: 12px; color: #888; margin-bottom: 15px;">ID: 0</p>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px; text-align: left; margin-bottom: 15px;">
+                <div style="font-size: 12px; color: #aaa;">Ваш баланс:</div>
+                <div id="profile-balance" style="font-size: 24px; font-weight: 900; color: #00d2ff;">0 ₽</div>
+            </div>
         </div>
-        <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Профиль</h2></div>
-        <div class="balance-card"><div style="font-size: 14px; opacity: 0.8;">Ваш баланс</div><div class="balance-amount" id="profile-balance">0 ₽</div></div>
-        <h3 style="position: relative; z-index: 2; margin-bottom: 10px;">История:</h3>
+
+        <h3 style="position: relative; z-index: 2; margin-bottom: 10px;">История покупок:</h3>
         <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
     </div>
 
+    <!-- РУЛЕТКА -->
     <div id="screen-roll" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -154,6 +184,7 @@
         </div>
     </div>
 
+    <!-- КЕЙСЫ -->
     <div id="screen-cases" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -175,7 +206,7 @@
             <div id="case-prize-text" style="font-size:20px; font-weight:800; color:#ffd700; margin-top:30px; text-align:center; text-shadow:0 0 10px #ffd700; min-height:30px;"></div>
         </div>
     </div>
-
+       <!-- ПОДДЕРЖКА -->
     <div id="screen-support" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -215,22 +246,16 @@
         </div>
     </div>
 
+    <!-- ТИКЕТЫ АДМИН -->
     <div id="screen-admin-tickets" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
-        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
-            <div class="mini-banner-glow"></div>
-            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
-        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color:#00d2ff;">Тикеты</h2></div>
         <div id="admin-ticket-list" style="position:relative; z-index:2;"></div>
     </div>
 
+    <!-- АДМИНКА -->
     <div id="screen-admin" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
-        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
-            <div class="mini-banner-glow"></div>
-            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
-        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color: #ff4444;">Админка</h2></div>
         <div class="main-menu-grid">
             <div class="menu-btn" onclick="adminAction('money')"><span class="btn-text">💰 Выдать себе рубли</span></div>
@@ -240,16 +265,14 @@
         <div id="admin-result" style="margin-top: 20px; text-align:center; color: #00d2ff; font-weight: 800; position:relative; z-index:2;"></div>
     </div>
 
+    <!-- ИНФО -->
     <div id="screen-info" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
-        <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
-            <div class="mini-banner-glow"></div>
-            <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
-        </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 id="info-title" style="font-size:20px; font-weight:800;">Инфо</h2></div>
         <div class="info-container" id="info-content"></div>
     </div>
 
+    <!-- МОДАЛКИ -->
     <div id="modal-buy" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 999; padding:20px; flex-direction:column; justify-content:center;">
         <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; text-align:center;">
             <h2 id="modal-title" style="font-size:22px; margin-bottom:10px;">Покупка</h2>
@@ -265,50 +288,27 @@
             <h2 style="font-size:22px; margin-bottom:10px;">Пополнение</h2>
             <p style="color:#888; margin-bottom:25px;">Введите сумму (мин. 50 ₽)</p>
             <input type="number" id="topup-amount" placeholder="Сумма" style="width:100%; padding:15px; border-radius:12px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; margin-bottom:15px;">
+            <div style="font-size: 11px; color: #aaa; margin-bottom: 15px;">🎁 При пополнении от 500 ₽ — <b>обычный кейс (99 ₽) в подарок!</b></div>
             <button style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #00d2ff, #0052ff); border:none; color:white; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="topupBalance()">Пополнить</button>
             <button style="width:100%; padding:12px; border-radius:12px; background:transparent; border:1px solid #555; color:#aaa; font-weight:800;" onclick="closeTopup()">Отмена</button>
         </div>
     </div>
 
     <script>
-        const bannerData = [
-            {
-                title: "👑 Администраторы бота",
-                lines: [
-                    "Разработчик: @xeroox9",
-                    "(писать строго по вопросам бота)",
-                    "Владелец: @sciptyyzov",
-                    "(писать обо всех вопросах)"
-                ],
-                link: "https://t.me/sciptyyrewievs",
-                btnText: "⭐ Отзывы"
-            },
-            {
-                title: "🎃 Хэллоуин скидки!",
-                lines: ["Заходи в наш канал и забирай промокоды!"],
-                link: "https://t.me/sciptyystore",
-                btnText: "Перейти в канал"
+        let currentBannerIndex = 0;
+        const track = document.getElementById('banner-track');
+        const totalBanners = 2;
+
+        function nextBanner() {
+            currentBannerIndex++;
+            if (currentBannerIndex >= totalBanners) {
+                currentBannerIndex = 0;
             }
-        ];
-        
-        let currentBanner = 0;
-        function swapBanner() {
-            const b = bannerData[currentBanner];
-            const area = document.getElementById('banner-content-area');
-            
-            let html = `<h3 class="banner-title" style="font-size: 18px;">${b.title}</h3>`;
-            b.lines.forEach(line => {
-                html += `<p style="font-size: 10px; color: #ddd; margin-bottom: 2px;">${line}</p>`;
-            });
-            html += `<button class="buy-btn" style="margin-top: 10px; padding: 8px 15px; font-size: 12px;" onclick="window.open('${b.link}', '_blank')">${b.btnText}</button>`;
-            
-            area.innerHTML = html;
-            currentBanner = (currentBanner + 1) % bannerData.length;
+            track.style.transform = `translateX(-${currentBannerIndex * 100}%)`;
         }
-        
-        swapBanner();
-        setInterval(swapBanner, 3000);
+
+        setInterval(nextBanner, 5000);
     </script>
     <script src="app.js"></script>
 </body>
-                </html>
+</html> 
