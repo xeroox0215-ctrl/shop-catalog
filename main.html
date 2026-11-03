@@ -9,14 +9,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- ЗАСТАВКА (новая) -->
+    <!-- НОВАЯ ЗАСТАВКА (Кладбище + Космос) -->
     <div id="splash-screen">
-        <div class="splash-bg"></div>
-        <div class="splash-moon"></div>
-        <div class="splash-bat bat1">🦇</div>
-        <div class="splash-bat bat2">🦇</div>
-        <div class="splash-spider">🕷️</div>
-        <div class="splash-title">SCIPTYY STORE</div>
+        <div class="splash-space"></div>
+        <div class="splash-graveyard">
+            <div class="tombstone" style="left: 10%; bottom: 20%;">R.I.P</div>
+            <div class="tombstone" style="left: 70%; bottom: 15%;">R.I.P</div>
+            <div class="pumpkin" style="left: 40%; bottom: 10%;">🎃</div>
+        </div>
+        <div class="spider-web"></div>
+        <div class="spider">🕷️</div>
         <div class="splash-card">
             <span>🇷🇺</span>
             <p>Аккаунт РФ</p>
@@ -45,7 +47,7 @@
                     <div class="banner-content">
                         <span style="font-size:9px; font-weight:800; color:#ffd700; background:rgba(0,0,0,0.5); padding:3px 6px; border-radius:6px; text-transform: uppercase;">Официальный канал</span>
                         <h3 class="banner-title" style="font-size: 18px; margin-top: 5px;">Sciptyy Store News</h3>
-                        <p class="banner-subtitle" style="font-size: 10px; line-height: 1.4;">🔥 Промокод <b>HALLOWEEN31</b> — 15% на первую покупку!</p>
+                        <p class="banner-subtitle" style="font-size: 10px; line-height: 1.4;">🔥 Промокод <b>HALLOWEEN31</b> (15%)</p>
                         <button class="buy-btn" style="margin-top: 10px; padding: 6px 12px; font-size: 11px;">Подписаться</button>
                     </div>
                 </div>
@@ -164,15 +166,13 @@
             <div class="menu-btn" id="open-vip-case" style="display:none; background: rgba(255, 215, 0, 0.1);" onclick="openCase('vip')"><span class="btn-text">🎁 Открыть VIP</span></div>
         </div>
 
-        <!-- Новая анимация кейса (Карточка) -->
+        <!-- Анимация открытия кейса -->
         <div class="chest-container" id="case-animation" style="display: none; height: 350px; align-items: center; justify-content: center; position: relative; z-index: 2;">
             <div class="case-card" id="case-card" onclick="openCase('normal')">
                 <span style="font-size: 40px;">📦</span>
                 <p style="font-weight: bold; margin-top: 10px;">Открыть кейс</p>
             </div>
-            
             <div id="loot-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></div>
-            
             <div id="case-prize-text" style="font-size:20px; font-weight:800; color:#ffd700; position: absolute; bottom: 20px; text-align:center; text-shadow:0 0 10px #ffd700; min-height:30px; width: 100%;"></div>
         </div>
     </div>
