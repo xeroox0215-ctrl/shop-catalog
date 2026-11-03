@@ -163,7 +163,7 @@
 
         <!-- Анимация открытия кейса -->
         <div class="chest-container" id="case-animation" style="display: none; height: 350px; align-items: center; justify-content: center; position: relative; z-index: 2;">
-            <div class="case-card" id="case-card">
+            <div class="case-card" id="case-card">onclick="openCase('normal vip')
                 <span style="font-size: 40px;">📦</span>
                 <p style="font-weight: bold; margin-top: 10px;">Открыть кейс</p>
             </div>
@@ -242,6 +242,7 @@
         <div class="main-menu-grid">
             <div class="menu-btn" onclick="adminAction('money')"><span class="btn-text">💰 Выдать себе рубли</span></div>
             <div class="menu-btn" onclick="adminAction('promo')"><span class="btn-text">🎁 Создать промокод</span></div>
+            <div class="menu-btn" onclick="adminAction('broadcast')"><span class="btn-text">📢 Рассылка</span></div>
             <div class="menu-btn" onclick="adminAction('stock')"><span class="btn-text">📦 Склад (Товары)</span></div>
         </div>
         <div id="admin-result" style="margin-top: 20px; text-align:center; color: #00d2ff; font-weight: 800; position:relative; z-index:2;"></div>
