@@ -453,3 +453,50 @@ body::before {
     z-index: 0;
     animation: floatPumpkin 6s ease-in-out infinite;
 }
+/* ================= ПЕРЕЛИВАЮЩИЙСЯ ФОН (как на баннере) ================= */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(45deg, #050505, #1a0b2e, #2a0845, #1a0b2e, #050505);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+    z-index: -2;
+    opacity: 0.8; /* Мягкий оттенок, чтобы не давило на глаза */
+}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ================= КЕЙС (Прозрачная карточка) ================= */
+.case-card {
+    background: rgba(20, 20, 20, 0.5); /* Полупрозрачный фон */
+    backdrop-filter: blur(10px); /* Размытие */
+    border: 2px solid rgba(138, 43, 226, 0.5);
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+    cursor: pointer;
+}
+
+/* ================= ЗАСТАВКА (Красивая) ================= */
+#splash-screen {
+    background: #000;
+}
+
+.moon {
+    animation: pulseMoon 3s infinite alternate;
+}
+
+/* Карточка РФ на заставке */
+.splash-card {
+    background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    animation: flyUp 4s ease-out forwards, rotateCard 4s ease-in-out infinite alternate;
+}
+
+@keyframes rotateCard {
+    0% { transform: translateX(-50%) rotate(-5deg); }
+    100% { transform: translateX(-50%) rotate(5deg); }
+}
