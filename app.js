@@ -2,6 +2,11 @@ const tg = window.Telegram?.WebApp;
 if (tg) tg.expand();
 const API_URL = "https://sciptyy-api.onrender.com";
 
+// Скрываем заставку сразу, чтобы она не перекрывала экран
+if (document.getElementById('splash-screen')) {
+    document.getElementById('splash-screen').style.display = 'none';
+}
+
 let userProfile = { balance: 0, cases: 0, vip_cases: 0, discount: 0 };
 let accountsData = []; 
 let myAccounts = []; 
@@ -59,12 +64,36 @@ async function loadEvents() {
 }
 setInterval(loadEvents, 10000); loadEvents();
 
-// ОБНОВЛЕННАЯ ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
+async function loadNews() {
+    const container = document.getElementById('news-container');
+    if(!container) return;
+    try {
+        const res = await fetch(`${API_URL}/api/news`);
+        const data = await res.json();
+        if (data.status === 'ok' && data.news.length > 0) {
+            container.innerHTML = data.news.map(n => `
+                <div class="news-card">
+                    <div class="news-image" style="background: linear-gradient(135deg, #2a0845, #6441A5, #ff416c); position: relative; overflow: hidden;">
+                        <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path d=\"M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50\" stroke=\"rgba(255,255,255,0.1)\" fill=\"none\" stroke-width=\"1\"/></svg>'); background-size: cover;"></div>
+                        <h3 style="color:#fff; text-align:center; font-weight:900; position:relative; z-index:2; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">НОВОСТИ<br><span style="font-size:12px; color:#ffd700;">Sciptyy Store</span></h3>
+                    </div>
+                    <div class="news-content" style="padding:15px;">
+                        <div style="font-size:10px; color:#00d2ff; font-weight:bold; margin-bottom:5px;">${n.date}</div>
+                        <h3 style="color:#fff; margin-bottom:10px; font-family:Unbounded;">${n.title}</h3>
+                        <p style="color:#ccc; font-size:12px; line-height:1.6; font-family:Unbounded; white-space: pre-wrap;">${n.text}</p>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<div style="color:#888; text-align:center; margin-top:20px;">Новостей пока нет.</div>';
+        }
+    } catch(e) { container.innerHTML = '<div style="color:#ff4444; text-align:center;">Ошибка загрузки новостей.</div>'; }
+}
+
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     
-    // Подсветка нижней панели
     document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
     const screensMap = {
         'screen-main': 0, 'screen-cases': 1, 'screen-roll': 2, 'screen-profile': 3, 'screen-news': 4
@@ -76,6 +105,7 @@ function showScreen(id) {
 
     if(id === 'screen-profile' || id === 'screen-main' || id === 'screen-admin-tickets') loadData();
     if(id === 'screen-chat') loadChat();
+    if(id === 'screen-news') loadNews();
 }
 function openCatalog() {
     const grid = document.getElementById('catalog-grid');
@@ -127,7 +157,9 @@ async function buyItem(method) {
     } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
 
+let currentWheelDeg = 0;
 let isSpinning = false;
+
 async function spinWheel() {
     if (isSpinning) return;
     isSpinning = true;
@@ -144,8 +176,13 @@ async function spinWheel() {
             if (data.amount === 1) targetDeg = 360 - 45;
             if (data.amount === 2) targetDeg = 360 - 225;
             if (data.amount === 3) targetDeg = 360 - 135;
+            
             const randomOffset = Math.floor(Math.random() * 40) - 20;
-            wheel.style.transform = `rotateX(20deg) rotate(${1440 + targetDeg + randomOffset}deg)`;
+            
+            // Накопление угла (чтобы колесо всегда крутилось вперед)
+            currentWheelDeg += 1440 + targetDeg + randomOffset;
+            wheel.style.transform = `rotateX(20deg) rotate(${currentWheelDeg}deg)`;
+            
             setTimeout(() => {
                 resDiv.innerText = `🎉 Вы выиграли: ${data.prize}`;
                 resDiv.style.color = "#ffd700";
@@ -153,7 +190,9 @@ async function spinWheel() {
                 isSpinning = false;
                 loadData();
             }, 4000);
-        } else { resDiv.innerText = `❌ ${data.error}`; resDiv.style.color = "#ff4444"; btn.innerText = "Крутить"; isSpinning = false; }
+        } else { 
+            resDiv.innerText = `❌ ${data.error}`; resDiv.style.color = "#ff4444"; btn.innerText = "Крутить"; isSpinning = false; 
+        }
     } catch(e) { resDiv.innerText = "Ошибка"; btn.innerText = "Крутить"; isSpinning = false; }
 }
 
@@ -372,6 +411,18 @@ function adminAction(action) {
             resDiv.innerText = "Загрузка...";
             const res = await fetch(`${API_URL}/api/admin/broadcast`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ text: text, minutes: 60 }) }); 
             const data = await res.json(); resDiv.innerText = data.message || data.error; loadEvents(); 
+        });
+    }
+    if (action === 'news') {
+        askPrompt("Заголовок новости:", "Обновление Sciptyy Store", (title) => {
+            if (!title) return;
+            askPrompt("Текст новости:", "", async (text) => {
+                if (!text) return;
+                resDiv.innerText = "Публикация...";
+                const res = await fetch(`${API_URL}/api/admin/news`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ title: title, text: text }) });
+                const data = await res.json(); resDiv.innerText = data.message || data.error;
+                if(data.status === 'ok') loadNews();
+            });
         });
     }
 }
