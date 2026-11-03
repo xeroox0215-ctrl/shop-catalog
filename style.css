@@ -478,50 +478,11 @@ body::before {
     box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
     cursor: pointer;
 }
-
-/* ================= ЗАСТАВКА (Красивая) ================= */
-#splash-screen {
-    background: #000;
-}
-
-.moon {
-    animation: pulseMoon 3s infinite alternate;
-}
-
-/* Карточка РФ на заставке */
-.splash-card {
-    background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-    border: 2px solid #ffd700;
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
-    animation: flyUp 4s ease-out forwards, rotateCard 4s ease-in-out infinite alternate;
-}
-
-@keyframes rotateCard {
-    0% { transform: translateX(-50%) rotate(-5deg); }
-    100% { transform: translateX(-50%) rotate(5deg); }
-}
-/* ================= ПЕРЕЛИВАЮЩИЙСЯ ФОН ================= */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(45deg, #050505, #1a0b2e, #2a0845, #1a0b2e, #050505);
-    background-size: 400% 400%;
-    animation: gradientBG 20s ease infinite;
-    z-index: -2;
-    opacity: 0.8; 
-}
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* ================= НОВАЯ ЗАСТАВКА (как на MRKT) ================= */
+/* ================= НОВАЯ ЗАСТАВКА С КАРТИНКАМИ ================= */
 #splash-screen {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: #0d0a1a; /* Темно-фиолетовый фон */
+    background: linear-gradient(180deg, #0d0817 0%, #1a0b2e 50%, #000 100%);
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -531,64 +492,67 @@ body::before {
     transition: opacity 1s ease-out, visibility 1s ease-out;
 }
 
-/* Круглая луна */
+.splash-bg-bats {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('bats.png');
+    background-size: cover;
+    opacity: 0.3;
+    animation: floatBats 20s linear infinite;
+}
+@keyframes floatBats {
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 100%; }
+}
+
 .splash-moon {
     position: absolute;
-    top: 15%; right: 15%;
-    width: 120px; height: 120px;
+    top: 10%; right: 10%;
+    width: 100px; height: 100px;
     background: #ffd700;
     border-radius: 50%;
     box-shadow: 0 0 50px #ffd700, 0 0 100px #ff8c00;
-    animation: pulseMoon 4s infinite alternate;
+    animation: pulseMoon 3s infinite alternate;
 }
 @keyframes pulseMoon {
     0% { box-shadow: 0 0 30px #ffd700; }
-    100% { box-shadow: 0 0 100px #ffd700, 0 0 150px #ff8c00; }
+    100% { box-shadow: 0 0 80px #ffd700, 0 0 150px #ff8c00; }
 }
 
-/* Летучие мыши */
-.splash-bat {
+.splash-pumpkin {
     position: absolute;
-    font-size: 40px;
-    animation: flyBat 6s linear infinite;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: auto;
+    animation: glowPumpkin 2s infinite alternate;
+    z-index: 5;
 }
-.bat1 { top: 20%; left: -100px; animation-delay: 0s; }
-.bat2 { top: 50%; left: -100px; animation-delay: 3s; font-size: 30px; }
-@keyframes flyBat {
-    0% { transform: translateX(0) translateY(0) rotate(0deg); }
-    50% { transform: translateX(50vw) translateY(-30px) rotate(10deg); }
-    100% { transform: translateX(110vw) translateY(0) rotate(0deg); }
+@keyframes glowPumpkin {
+    0% { filter: drop-shadow(0 0 10px #ff8c00); }
+    100% { filter: drop-shadow(0 0 30px #ffd700); }
 }
 
-/* Свисающий паук */
-.splash-spider {
+.splash-web {
     position: absolute;
-    top: -50px; left: 50%;
-    font-size: 50px;
-    animation: dropSpider 4s ease-out forwards;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: auto;
+    animation: dropWeb 3s ease-out forwards;
+    z-index: 10;
 }
-@keyframes dropSpider {
-    0% { transform: translateY(-100px); }
-    100% { transform: translateY(100px); }
-}
-
-/* Заголовок на заставке */
-.splash-title {
-    font-size: 40px;
-    font-weight: 900;
-    color: #fff;
-    text-align: center;
-    text-shadow: 0 0 20px #ffd700;
-    margin-bottom: 50px;
-    animation: fadeInTitle 2s ease-out;
-}
-@keyframes fadeInTitle {
-    0% { opacity: 0; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1); }
+@keyframes dropWeb {
+    0% { transform: translate(-50%, -100%); }
+    100% { transform: translate(-50%, 0); }
 }
 
-/* Карточка РФ */
 .splash-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
     background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
     border: 2px solid #ffd700;
     border-radius: 15px;
@@ -597,29 +561,22 @@ body::before {
     flex-direction: column;
     align-items: center;
     box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
-    animation: flyUp 4s ease-out forwards;
-    animation-delay: 2s; /* Ждем, пока упадет паук */
+    animation: flyCard 4s ease-out forwards;
+    animation-delay: 1.5s;
     opacity: 0;
+    z-index: 20;
 }
-.splash-card span { font-size: 60px; }
+.splash-card span { font-size: 50px; }
 .splash-card p { font-size: 16px; font-weight: bold; color: #fff; margin-top: 10px; }
 
-@keyframes flyUp {
-    0% { transform: translateY(100px) scale(0.5); opacity: 0; }
-    50% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-100px) scale(1.1); opacity: 0; }
+@keyframes flyCard {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+    30% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    70% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    100% { transform: translate(-50%, -150%) scale(0.8); opacity: 0; }
 }
 
 .splash-hidden {
     opacity: 0;
     visibility: hidden;
-}
-
-/* ================= КЕЙС (Прозрачная карточка) ================= */
-.case-card {
-    background: rgba(26, 26, 26, 0.6); /* Полупрозрачный фон */
-    backdrop-filter: blur(10px); /* Размытие */
-    border: 2px solid rgba(138, 43, 226, 0.5);
-    box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
-    cursor: pointer;
 }
