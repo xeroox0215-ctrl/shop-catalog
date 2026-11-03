@@ -356,7 +356,20 @@ async function adminAction(action) {
     const resDiv = document.getElementById('admin-result');
     resDiv.innerText = "Загрузка...";
     
-    if (action === 'money') {
+    if (action === 'money') {    if (action === 'broadcast') {
+        const text = prompt("Введите текст рассылки:");
+        if (!text) return;
+        const minutes = prompt("На сколько минут показать в событиях?", "60");
+        if (!minutes) return;
+        
+        const res = await fetch(`${API_URL}/api/admin/broadcast`, {
+            method: 'POST',
+            headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+            body: JSON.stringify({ text: text, minutes: parseInt(minutes) })
+        });
+        const data = await res.json();
+        tg.showAlert(data.message || data.error);
+    }
         const amount = prompt("Сколько рублей выдать?");
         if (!amount) { resDiv.innerText = ""; return; }
         const res = await fetch(`${API_URL}/api/admin/money`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ amount: parseFloat(amount) }) });
