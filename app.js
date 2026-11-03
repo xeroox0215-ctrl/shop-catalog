@@ -88,14 +88,6 @@ async function loadNews() {
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    
-    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-    const screensMap = { 'screen-main': 0, 'screen-cases': 1, 'screen-roll': 2, 'screen-profile': 3, 'screen-news': 4 };
-    if (screensMap[id] !== undefined) {
-        const navItems = document.querySelectorAll('.nav-item');
-        if(navItems[screensMap[id]]) navItems[screensMap[id]].classList.add('active');
-    }
-
     if(id === 'screen-profile' || id === 'screen-main' || id === 'screen-admin-tickets') loadData();
     if(id === 'screen-chat') loadChat();
     if(id === 'screen-news') loadNews();
@@ -458,7 +450,7 @@ async function topupBalance() {
     try { const res = await fetch(`${API_URL}/api/topup`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ amount }) }); const data = await res.json(); if (data.url) { tg.openLink(data.url); } else { tg.showAlert("Ошибка: " + data.error); } } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
 
-// ================= СИСТЕМА КАСТОМНОГО PROMPT И ЗВУКОВ =================
+// ================= МОДАЛКА ВМЕСТО PROMPT + ЗВУК =================
 let promptCallback = null;
 
 function askPrompt(title, defaultValue, callback) {
