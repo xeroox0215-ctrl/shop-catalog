@@ -280,3 +280,176 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
     z-index: 0;
     animation: floatPumpkin 6s ease-in-out infinite;
 }
+/* Переливающийся фон (как на баннере) */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(45deg, #0a0a0a, #1a0b2e, #2a0845, #1a0b2e, #0a0a0a);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    z-index: -2;
+}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Заставка (Splash) */
+#splash-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #050505;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 1s ease-out, visibility 1s ease-out;
+}
+
+/* Луна на заставке */
+.moon {
+    position: absolute;
+    top: 40px; right: 40px;
+    width: 80px; height: 80px;
+    background: #ffd700;
+    border-radius: 50%;
+    box-shadow: 0 0 50px #ffd700, 0 0 100px #ffd700;
+    animation: pulseMoon 4s infinite alternate;
+}
+@keyframes pulseMoon {
+    0% { box-shadow: 0 0 30px #ffd700; }
+    100% { box-shadow: 0 0 80px #ffd700, 0 0 150px #ff8c00; }
+}
+
+/* Паутина на заставке */
+.splash-web {
+    position: absolute;
+    top: 0; left: 15%;
+    width: 350px; height: 350px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.3)" fill="none" stroke-width="1"/></svg>');
+    background-size: cover;
+    transform-origin: top center;
+    animation: dropWeb 3s ease-out forwards;
+    opacity: 0;
+}
+@keyframes dropWeb {
+    0% { transform: scaleY(0); opacity: 0; }
+    100% { transform: scaleY(1); opacity: 1; }
+}
+
+/* Карточка на заставке */
+.splash-card {
+    position: absolute;
+    bottom: -300px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 240px;
+    background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+    border: 2px solid #ffd700;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    animation: flyUp 4s ease-out forwards;
+    animation-delay: 1.5s;
+    z-index: 10;
+}
+.splash-card span { font-size: 70px; }
+.splash-card p { font-size: 14px; font-weight: bold; color: #fff; margin-top: 10px; }
+
+@keyframes flyUp {
+    0% { bottom: -300px; opacity: 0; }
+    40% { bottom: 30%; opacity: 1; transform: translateX(-50%) scale(1); }
+    60% { bottom: 30%; opacity: 1; transform: translateX(-50%) scale(1.05); }
+    100% { bottom: 150%; opacity: 0; transform: translateX(-50%) scale(0.8); }
+}
+
+.splash-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* ================= КЕЙС (КАРТОЧКА) ================= */
+.case-card {
+    width: 180px;
+    height: 240px;
+    background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+    border: 2px solid #8a2be2;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
+    transition: 0.5s;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.case-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+    transform: skewX(-20deg);
+    animation: cardShimmer 3s infinite;
+}
+@keyframes cardShimmer {
+    0% { left: -100%; }
+    50%, 100% { left: 200%; }
+}
+
+/* Тряска кейса */
+.case-shake {
+    animation: caseShake 0.5s infinite;
+}
+@keyframes caseShake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px) rotate(-2deg); }
+    50% { transform: translateX(5px) rotate(2deg); }
+    75% { transform: translateX(-5px) rotate(-2deg); }
+    100% { transform: translateX(0); }
+}
+
+/* Вылетающие карточки */
+.loot-card {
+    width: 100px;
+    height: 140px;
+    background: linear-gradient(145deg, #222, #111);
+    border: 1px solid #ffd700;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+/* Паутина и тыква на баннере событий (для красоты) */
+.ticker-container::before {
+    content: '🕸️';
+    position: absolute;
+    top: -10px; left: -10px;
+    font-size: 40px;
+    opacity: 0.2;
+    z-index: 0;
+}
+.ticker-container::after {
+    content: '🎃';
+    position: absolute;
+    bottom: -10px; right: -10px;
+    font-size: 30px;
+    opacity: 0.4;
+    z-index: 0;
+    animation: floatPumpkin 6s ease-in-out infinite;
+}
