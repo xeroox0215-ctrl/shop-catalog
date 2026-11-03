@@ -82,18 +82,17 @@
 <body>
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
 
-    <!-- ГЛАВНЫЙ ЭКРАН -->
     <div id="screen-main" class="screen active">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
-        <div class="halloween-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+        
+        <div class="halloween-banner" id="swap-banner" style="padding: 20px;">
             <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
-            <div class="banner-content">
-                <span style="font-size:10px; font-weight:800; color:#ffd700; background:rgba(0,0,0,0.5); padding:4px 8px; border-radius:8px;">🔥 ХЭЛЛОУИН СКИДКИ</span>
-                <h3 class="banner-title">Наш Telegram Канал</h3>
-                <p class="banner-subtitle">Перейти 👉 @sciptyystore</p>
+            <div class="banner-content" id="banner-content-area">
+                <!-- Сюда JS будет вставлять текст -->
             </div>
         </div>
+
         <div class="main-menu-grid">
             <div class="menu-btn" onclick="openCatalog()"><span class="btn-text">🛒 Купить аккаунты</span></div>
             <div class="menu-btn" onclick="showScreen('screen-profile')"><span class="btn-text">👤 Профиль</span></div>
@@ -111,7 +110,6 @@
         </div>
     </div>
 
-    <!-- КАТАЛОГ -->
     <div id="screen-catalog" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -122,7 +120,6 @@
         <div class="catalog-grid" id="catalog-grid"><div style="grid-column:span 2;">Загрузка...</div></div>
     </div>
 
-    <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -135,7 +132,6 @@
         <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
     </div>
 
-    <!-- РУЛЕТКА -->
     <div id="screen-roll" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -158,7 +154,6 @@
         </div>
     </div>
 
-    <!-- КЕЙСЫ -->
     <div id="screen-cases" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -181,7 +176,6 @@
         </div>
     </div>
 
-    <!-- ПОДДЕРЖКА -->
     <div id="screen-support" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -189,15 +183,38 @@
             <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
         </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Поддержка</h2></div>
-        <div class="info-container">
-            <p>Работаем 24/7. Напишите свой вопрос, и мы ответим в ближайшее время.</p>
-            <textarea id="ticket-input" placeholder="Ваш вопрос..." style="width:100%; height:100px; background:rgba(255,255,255,0.05); border:1px solid #333; color:white; border-radius:10px; padding:10px; margin-bottom:10px; resize:none;"></textarea>
-            <button class="info-btn" onclick="createTicket()">Отправить</button>
+        
+        <div class="info-container" style="min-height: auto;">
+            <p style="margin-bottom: 15px; font-weight: bold; color: #00d2ff;">🆘 Частые вопросы:</p>
+            
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Не видно номеров в разделе Аккаунтов?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Подождите около 1 минуты (серверу нужно проснуться) и обновите страницу. Если товары так и не появились — напишите в поддержку.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Купил аккаунт, но не пришел?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Все товары выдаются вручную. Обычно это занимает от 5 до 15 минут. Если прошло больше времени, напишите в поддержку с номером транзакции (он есть в вашем профиле).</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Как работает Рулетка?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Крутить рулетку можно раз в 24 часа. Вы можете выиграть от 1 до 3 рублей на баланс или промокод на скидку.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Не работает Промокод?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Убедитесь, что срок действия кода не истек и вы ввели его правильно (без пробелов). Один промокод можно активировать только один раз.</p>
+            </details>
+
+            <p style="margin-top: 20px; font-weight: bold; color: #00d2ff;">Не нашли ответ на свой вопрос?</p>
+            
+            <textarea id="ticket-input" placeholder="Опишите вашу проблему подробно..." style="width:100%; height:100px; background:rgba(255,255,255,0.05); border:1px solid #333; color:white; border-radius:10px; padding:10px; margin-bottom:10px; margin-top: 10px; resize:none;"></textarea>
+            <button class="info-btn" onclick="createTicket()">Написать в поддержку</button>
             <div id="ticket-list" style="margin-top:20px;"></div>
         </div>
     </div>
 
-    <!-- ТИКЕТЫ (АДМИН) -->
     <div id="screen-admin-tickets" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -208,7 +225,6 @@
         <div id="admin-ticket-list" style="position:relative; z-index:2;"></div>
     </div>
 
-    <!-- АДМИНКА -->
     <div id="screen-admin" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -224,7 +240,6 @@
         <div id="admin-result" style="margin-top: 20px; text-align:center; color: #00d2ff; font-weight: 800; position:relative; z-index:2;"></div>
     </div>
 
-    <!-- ИНФО -->
     <div id="screen-info" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -235,7 +250,6 @@
         <div class="info-container" id="info-content"></div>
     </div>
 
-    <!-- МОДАЛКИ -->
     <div id="modal-buy" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 999; padding:20px; flex-direction:column; justify-content:center;">
         <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; text-align:center;">
             <h2 id="modal-title" style="font-size:22px; margin-bottom:10px;">Покупка</h2>
@@ -256,7 +270,45 @@
         </div>
     </div>
 
-    <!-- ПОДКЛЮЧАЕМ СКРИПТ -->
-    <script src="script.js"></script>
+    <script>
+        const bannerData = [
+            {
+                title: "👑 Администраторы бота",
+                lines: [
+                    "Разработчик: @xeroox9",
+                    "(писать строго по вопросам бота)",
+                    "Владелец: @sciptyyzov",
+                    "(писать обо всех вопросах)"
+                ],
+                link: "https://t.me/sciptyyrewievs",
+                btnText: "⭐ Отзывы"
+            },
+            {
+                title: "🎃 Хэллоуин скидки!",
+                lines: ["Заходи в наш канал и забирай промокоды!"],
+                link: "https://t.me/sciptyystore",
+                btnText: "Перейти в канал"
+            }
+        ];
+        
+        let currentBanner = 0;
+        function swapBanner() {
+            const b = bannerData[currentBanner];
+            const area = document.getElementById('banner-content-area');
+            
+            let html = `<h3 class="banner-title" style="font-size: 18px;">${b.title}</h3>`;
+            b.lines.forEach(line => {
+                html += `<p style="font-size: 10px; color: #ddd; margin-bottom: 2px;">${line}</p>`;
+            });
+            html += `<button class="buy-btn" style="margin-top: 10px; padding: 8px 15px; font-size: 12px;" onclick="window.open('${b.link}', '_blank')">${b.btnText}</button>`;
+            
+            area.innerHTML = html;
+            currentBanner = (currentBanner + 1) % bannerData.length;
+        }
+        
+        swapBanner();
+        setInterval(swapBanner, 3000);
+    </script>
+    <script src="app.js"></script>
 </body>
-</html>
+                </html>
