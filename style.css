@@ -139,3 +139,144 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
     z-index: 0;
     animation: floatPumpkin 6s ease-in-out infinite;
 }
+/* ================= ЗАСТАВКА ================= */
+#splash-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #050505;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 1s ease-out, visibility 1s ease-out;
+}
+
+/* Туман */
+#splash-screen::before {
+    content: '';
+    position: absolute;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(0, 210, 255, 0.1) 0%, transparent 60%);
+    animation: rotateFog 20s linear infinite;
+}
+@keyframes rotateFog {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Луна */
+.moon {
+    position: absolute;
+    top: 40px; right: 40px;
+    width: 80px; height: 80px;
+    background: #ffd700;
+    border-radius: 50%;
+    box-shadow: 0 0 50px #ffd700, 0 0 100px #ffd700;
+    animation: pulseMoon 4s infinite alternate;
+}
+@keyframes pulseMoon {
+    0% { box-shadow: 0 0 30px #ffd700; }
+    100% { box-shadow: 0 0 80px #ffd700, 0 0 150px #ff8c00; }
+}
+
+/* Паутина */
+.splash-web {
+    position: absolute;
+    top: 0; left: 15%;
+    width: 350px; height: 350px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.3)" fill="none" stroke-width="1"/></svg>');
+    background-size: cover;
+    transform-origin: top center;
+    animation: dropWeb 3s ease-out forwards;
+    opacity: 0;
+}
+@keyframes dropWeb {
+    0% { transform: scaleY(0); opacity: 0; }
+    100% { transform: scaleY(1); opacity: 1; }
+}
+
+/* Карточка */
+.splash-card {
+    position: absolute;
+    bottom: -300px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 240px;
+    background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+    border: 2px solid #ffd700;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    animation: flyUp 4s ease-out forwards;
+    animation-delay: 1.5s;
+    z-index: 10;
+}
+.splash-card span { font-size: 70px; }
+.splash-card p { font-size: 14px; font-weight: bold; color: #fff; margin-top: 10px; }
+
+@keyframes flyUp {
+    0% { bottom: -300px; opacity: 0; }
+    40% { bottom: 30%; opacity: 1; transform: translateX(-50%) scale(1); }
+    60% { bottom: 30%; opacity: 1; transform: translateX(-50%) scale(1.05); }
+    100% { bottom: 150%; opacity: 0; transform: translateX(-50%) scale(0.8); }
+}
+
+.splash-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Переливы и паутина на карточках товара */
+.product-card {
+    position: relative;
+    overflow: hidden;
+}
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,210,255,0.2), transparent);
+    transform: skewX(-20deg);
+    animation: cardShimmer 4s infinite;
+}
+@keyframes cardShimmer {
+    0% { left: -100%; }
+    50%, 100% { left: 200%; }
+}
+.product-card::after {
+    content: '🕸️';
+    position: absolute;
+    top: 0; right: 0;
+    font-size: 30px;
+    opacity: 0.3;
+    transform: rotate(45deg) translate(10px, -10px);
+}
+
+/* Паутина и тыква на баннере событий */
+.ticker-container {
+    position: relative;
+    overflow: hidden;
+}
+.ticker-container::before {
+    content: '🕸️';
+    position: absolute;
+    top: -10px; left: -10px;
+    font-size: 40px;
+    opacity: 0.2;
+    z-index: 0;
+}
+.ticker-container::after {
+    content: '🎃';
+    position: absolute;
+    bottom: -10px; right: -10px;
+    font-size: 30px;
+    opacity: 0.4;
+    z-index: 0;
+    animation: floatPumpkin 6s ease-in-out infinite;
+}
