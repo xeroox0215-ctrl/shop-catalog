@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
     <!-- ЗАСТАВКА -->
     <div id="splash-screen">
         <div class="splash-bg-gradient"></div>
@@ -25,12 +26,12 @@
     </div>
 
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
-        <!-- ГЛАВНЫЙ ЭКРАН -->
+
+    <!-- ГЛАВНЫЙ ЭКРАН -->
     <div id="screen-main" class="screen active">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
         
-        <!-- УМНАЯ БЕГУЩАЯ СТРОКА -->
         <div class="ticker-container">
             <div class="ticker-decor">🕸️</div>
             <div class="ticker-content">
@@ -64,7 +65,8 @@
                 </div>
             </div>
         </div>
-               <div class="main-menu-grid">
+
+        <div class="main-menu-grid">
             <div class="menu-btn" onclick="openCatalog()"><span class="btn-text">🛒 Купить аккаунты</span></div>
             <div class="menu-btn" onclick="showScreen('screen-profile')"><span class="btn-text">👤 Профиль</span></div>
             <div class="menu-btn" onclick="showScreen('screen-upgrade')"><span class="btn-text">📈 Апгрейд аккаунтов</span></div>
@@ -85,7 +87,7 @@
             <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')"><span class="btn-text" style="color: #00d2ff;">📩 Тикеты</span></div>
         </div>
     </div>
-        <!-- КАТАЛОГ -->
+       <!-- КАТАЛОГ -->
     <div id="screen-catalog" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Аккаунты</h2></div>
@@ -125,7 +127,8 @@
             <div id="roll-result" style="margin-top:20px; font-size:20px; font-weight:800; text-align:center; color:#00d2ff; min-height:30px;"></div>
         </div>
     </div>
-        <!-- ЧАТ -->
+
+    <!-- ЧАТ -->
     <div id="screen-chat" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Общение</h2></div>
         <div id="chat-messages" style="height: 50vh; overflow-y: auto; background: rgba(20, 20, 20, 0.5); border-radius: 15px; padding: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 10px;"></div>
@@ -150,18 +153,20 @@
                 <div style="font-size:12px; color:#888;">Аккаунт 2</div>
             </div>
         </div>
-
         <button id="upgrade-btn" class="buy-btn" style="width:100%; padding:15px; opacity:0.5; cursor:not-allowed; background:#333;" disabled onclick="startUpgrade()">Сделать апгрейд</button>
     </div>
         <!-- КЕЙСЫ -->
     <div id="screen-cases" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Кейсы</h2></div>
+        
         <div class="main-menu-grid" id="case-buttons">
             <div class="menu-btn" onclick="buyCase('normal')"><span class="btn-text">📦 Купить Обычный (99 ₽)</span></div>
             <div class="menu-btn" onclick="buyCase('vip')"><span class="btn-text">👑 Купить VIP (249 ₽)</span></div>
             <div class="menu-btn" id="open-normal-case" style="display:none; background: rgba(0, 210, 255, 0.1);" onclick="openCase('normal')"><span class="btn-text">🎁 Открыть Обычный</span></div>
             <div class="menu-btn" id="open-vip-case" style="display:none; background: rgba(255, 215, 0, 0.1);" onclick="openCase('vip')"><span class="btn-text">🎁 Открыть VIP</span></div>
         </div>
+
         <div id="case-animation" class="case-roulette-container" style="display: none;">
             <div class="case-banner-bg">
                 <div class="decor-web" style="top: -30px; right: -30px; transform: scaleX(-1);"></div>
@@ -176,23 +181,64 @@
         </div>
     </div>
 
-    <!-- ПОДДЕРЖКА -->
+    <!-- ПОДДЕРЖКА (С ВОПРОСАМИ FAQ) -->
     <div id="screen-support" class="screen">
+        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Поддержка</h2></div>
-        <div class="info-container">
-            <p style="margin-bottom: 15px; font-weight: bold; color: #00d2ff;">🆘 Задайте вопрос:</p>
-            <textarea id="ticket-input" placeholder="Опишите проблему..." style="width:100%; height:100px; background:rgba(255,255,255,0.05); border:1px solid #333; color:white; border-radius:10px; padding:10px; margin-bottom:10px; resize:none;"></textarea>
+        
+        <div class="info-container" style="min-height: auto;">
+            <p style="margin-bottom: 15px; font-weight: bold; color: #00d2ff;">🆘 Частые вопросы:</p>
+            
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Не видно номеров в разделе Аккаунтов?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Подождите около 1 минуты (серверу нужно проснуться) и обновите страницу. Если товары так и не появились — напишите в поддержку.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Купил аккаунт, но не пришел?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Все товары выдаются вручную. Обычно это занимает от 5 до 15 минут. Если прошло больше времени, напишите в поддержку с номером транзакции (заказа).</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Как работает Рулетка?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Крутить рулетку можно раз в 24 часа. Вы можете выиграть от 1 до 3 рублей на баланс или промокод на скидку.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Не работает Промокод?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Убедитесь, что срок действия кода не истек и вы ввели его правильно (без пробелов). Один промокод можно активировать только один раз, после покупки он сгорает.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Как оплатить?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Вы можете оплатить с баланса (кнопка «Пополнить баланс») или звездами Telegram (кнопка «Купить за звезды»).</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Кейсы не открываются?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Убедитесь, что у вас куплен кейс (нажмите «Открыть» на странице кейсов). Если кнопка пропала — значит, кейсов нет, купите новый.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Как получить подарок за пополнение?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Пополните баланс на 500 ₽ или больше. Обычный кейс придет автоматически в раздел «Кейсы».</p>
+            </details>
+
+            <p style="margin-top: 20px; font-weight: bold; color: #00d2ff;">Не нашли ответ на свой вопрос?</p>
+            
+            <textarea id="ticket-input" placeholder="Опишите вашу проблему подробно..." style="width:100%; height:100px; background:rgba(255,255,255,0.05); border:1px solid #333; color:white; border-radius:10px; padding:10px; margin-bottom:10px; margin-top: 10px; resize:none;"></textarea>
             <button class="info-btn" onclick="createTicket()">Написать в поддержку</button>
             <div id="ticket-list" style="margin-top:20px;"></div>
         </div>
     </div>
 
-    <!-- АДМИНКА -->
+    <!-- ТИКЕТЫ АДМИН -->
     <div id="screen-admin-tickets" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color:#00d2ff;">Тикеты</h2></div>
         <div id="admin-ticket-list"></div>
     </div>
 
+    <!-- АДМИНКА -->
     <div id="screen-admin" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color: #ff4444;">Админка</h2></div>
         <div class="main-menu-grid">
@@ -205,11 +251,13 @@
         <div id="admin-result" style="margin-top: 20px; text-align:center; color: #00d2ff; font-weight: 800;"></div>
     </div>
 
+    <!-- ИНФО -->
     <div id="screen-info" class="screen">
         <div style="display:flex; gap:10px; margin-bottom:20px;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 id="info-title" style="font-size:20px; font-weight:800;">Инфо</h2></div>
         <div class="info-container" id="info-content"></div>
     </div>
-        <!-- МОДАЛКА ПОКУПКИ -->
+
+    <!-- МОДАЛКА ПОКУПКИ -->
     <div id="modal-buy" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 999; padding:20px; flex-direction:column; justify-content:center;">
         <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; text-align:center;">
             <h2 id="modal-title" style="font-size:22px; margin-bottom:10px;">Покупка</h2>
@@ -226,6 +274,7 @@
             <h2 style="font-size:22px; margin-bottom:10px;">Пополнение</h2>
             <p style="color:#888; margin-bottom:15px;">Введите сумму (мин. 50 ₽)</p>
             <input type="number" id="topup-amount" placeholder="Сумма" style="width:100%; padding:15px; border-radius:12px; border:1px solid #333; background:rgba(255,255,255,0.05); color:white; margin-bottom:15px;">
+            <div style="font-size: 11px; color: #00d2ff; margin-bottom: 15px;">🎁 При пополнении от 500 ₽ — <b>обычный кейс в подарок!</b></div>
             <button style="width:100%; padding:15px; border-radius:12px; background:linear-gradient(90deg, #00d2ff, #0052ff); border:none; color:white; font-weight:800; font-size:16px; margin-bottom:10px;" onclick="topupBalance()">Пополнить</button>
             <button style="width:100%; padding:12px; border-radius:12px; background:transparent; border:1px solid #555; color:#aaa; font-weight:800;" onclick="closeTopup()">Отмена</button>
         </div>
