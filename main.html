@@ -21,6 +21,7 @@
 
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
 
+    <!-- ГЛАВНЫЙ ЭКРАН -->
     <div id="screen-main" class="screen active">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
@@ -32,9 +33,11 @@
             </div>
         </div>
 
+        <!-- Карусель баннеров -->
         <div style="position: relative; overflow: hidden; width: 100%; border-radius: 20px; margin-bottom: 20px; height: 170px;">
             <div id="banner-track" style="display: flex; width: 200%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);">
                 
+                <!-- Баннер 1: Канал -->
                 <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; padding: 20px; position: relative;" onclick="window.open('https://t.me/sciptyystore', '_blank')">
                     <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
                     <div style="position: absolute; bottom: 10px; right: 10px; font-size: 25px; opacity: 0.6;">🎃</div>
@@ -46,6 +49,7 @@
                     </div>
                 </div>
 
+                <!-- Баннер 2: Админы -->
                 <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; background: #111; position: relative;" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')">
                     <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow" style="opacity: 0.4;"></div>
                     <div style="position: absolute; bottom: 10px; right: 10px; font-size: 25px; opacity: 0.6;">🎃</div>
@@ -148,17 +152,25 @@
             <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
         </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Кейсы</h2></div>
+        
+        <!-- Кнопки покупки -->
         <div class="main-menu-grid" id="case-buttons">
             <div class="menu-btn" onclick="buyCase('normal')"><span class="btn-text">📦 Купить Обычный (99 ₽)</span></div>
             <div class="menu-btn" onclick="buyCase('vip')"><span class="btn-text">👑 Купить VIP (249 ₽)</span></div>
             <div class="menu-btn" id="open-normal-case" style="display:none; background: rgba(0, 210, 255, 0.1);" onclick="openCase('normal')"><span class="btn-text">🎁 Открыть Обычный</span></div>
             <div class="menu-btn" id="open-vip-case" style="display:none; background: rgba(255, 215, 0, 0.1);" onclick="openCase('vip')"><span class="btn-text">🎁 Открыть VIP</span></div>
         </div>
-        
-        <!-- 3D Сундук -->
-        <div class="chest-container" id="case-animation" style="display: none;">
-            <div class="chest" id="chest"><div class="chest-lid"></div>🔒</div>
-            <div id="case-prize-text" style="font-size:20px; font-weight:800; color:#ffd700; margin-top:30px; text-align:center; text-shadow:0 0 10px #ffd700; min-height:30px;"></div>
+
+        <!-- Анимация открытия кейса -->
+        <div class="chest-container" id="case-animation" style="display: none; height: 350px; align-items: center; justify-content: center; position: relative; z-index: 2;">
+            <div class="case-card" id="case-card">
+                <span style="font-size: 40px;">📦</span>
+                <p style="font-weight: bold; margin-top: 10px;">Открыть кейс</p>
+            </div>
+            
+            <div id="loot-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></div>
+            
+            <div id="case-prize-text" style="font-size:20px; font-weight:800; color:#ffd700; position: absolute; bottom: 20px; text-align:center; text-shadow:0 0 10px #ffd700; min-height:30px; width: 100%;"></div>
         </div>
     </div>
 
@@ -181,7 +193,7 @@
 
             <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
                 <summary style="font-weight: bold; font-size: 14px;">Купил аккаунт, но не пришел?</summary>
-                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Все товары выдаются вручную. Обычно это занимает от 5 до 15 минут. Если прошло больше времени, напишите в поддержку с номером транзакции (он есть в вашем профиле).</p>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Все товары выдаются вручную. Обычно это занимает от 5 до 15 минут. Если прошло больше времени, напишите в поддержку с номером транзакции.</p>
             </details>
 
             <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
