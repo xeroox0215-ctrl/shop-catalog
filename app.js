@@ -112,12 +112,13 @@ async function buyItem(method) {
         });
         const data = await res.json();
         if (data.status === 'ok') { 
-            tg.showAlert(`✅ ${data.message}`); // Тут будет номер транзакции
+            tg.showAlert(`✅ ${data.message}`); 
             loadData(); loadEvents(); 
         }
         else { tg.showAlert(`❌ ${data.error}`); }
     } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
+
 let isSpinning = false;
 async function spinWheel() {
     if (isSpinning) return;
@@ -149,7 +150,6 @@ async function spinWheel() {
         }
     } catch(e) { resDiv.innerText = "Ошибка"; btn.innerText = "Крутить"; isSpinning = false; }
 }
-
 async function buyCase(type) {
     const price = type === 'normal' ? 99 : 249;
     tg.showConfirm(`Купить кейс за ${price} ₽?`, async (confirmed) => {
@@ -218,7 +218,7 @@ async function openCase(type) {
         } else { tg.showAlert(data.error); animDiv.style.display = 'none'; }
     } catch(e) { tg.showAlert("Ошибка сервера"); animDiv.style.display = 'none'; }
 }
-// ЧАТ
+
 async function loadChat() {
     try {
         const res = await fetch(`${API_URL}/api/chat`, { headers: { "X-Telegram-Init-Data": tg.initData } });
@@ -247,7 +247,6 @@ async function sendChatMessage() {
     loadChat();
 }
 
-// АПГРЕЙД
 function selectSlot(slotNum) {
     if(myAccounts.length === 0) return tg.showAlert("У вас нет аккаунтов для апгрейда.");
     let msg = "Выберите аккаунт:\n";
@@ -301,7 +300,6 @@ async function startUpgrade() {
         } catch(e) { tg.showAlert("Ошибка сервера"); }
     });
 }
-// ТИКЕТЫ И ПОДДЕРЖКА
 async function createTicket() {
     const text = document.getElementById('ticket-input').value.trim();
     if(!text) return tg.showAlert("Напишите вопрос!");
@@ -334,7 +332,6 @@ async function replyTicket(id) {
     const data = await res.json(); tg.showAlert(data.message || data.error); loadData();
 }
 
-// АДМИНКА
 async function adminAction(action) {
     const resDiv = document.getElementById('admin-result');
     resDiv.innerText = "Загрузка...";
@@ -373,7 +370,6 @@ async function clearEvents() {
     } catch(e) { resDiv.innerText = "Ошибка"; }
 }
 
-// ИНФО И ПРОМОКОДЫ
 function openInfo(type) {
     if (type === 'promo') {
         document.getElementById('info-title').innerText = "🎁 Промокод";
@@ -381,30 +377,10 @@ function openInfo(type) {
         showScreen('screen-info'); return;
     }
     const infoTexts = {
-        reviews: { 
-            title: "⭐ Отзывы", 
-            text: "<p>Почитай отзывы наших клиентов или оставь свой в нашем канале!</p><p>Мы ценим каждого покупателя и всегда рады обратной связи. Ваше мнение помогает нам становиться лучше. Все отзывы реальные, без обмана.</p>", 
-            btn: "Перейти в канал", 
-            action: "https://t.me/sciptyyrewievs" 
-        },
-        about: { 
-            title: "ℹ️ О нас", 
-            text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выдача.<br>✅ Работаем без обмана и скрытых комиссий.</p><p>Нам доверяют сотни клиентов по всему миру!</p>", 
-            btn: "Назад", 
-            action: "back" 
-        },
-        terms: { 
-            title: "📜 Соглашение", 
-            text: "<p>Покупая товар в нашем магазине, вы автоматически соглашаетесь со всеми правилами Telegram и нашего бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Мы гарантируем качество товара, но не несем ответственности за дальнейшее использование аккаунтов.</p><p>Возврат средств за цифровые товары не предусмотрен.</p>", 
-            btn: "Назад", 
-            action: "back" 
-        },
-        privacy: { 
-            title: "📄 Политика", 
-            text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ваш ID и имя для отображения в профиле.</p><p>Мы никогда не передаем ваши данные третьим лицам. Все транзакции защищены.</p>", 
-            btn: "Назад", 
-            action: "back" 
-        }
+        reviews: { title: "⭐ Отзывы", text: "<p>Почитай отзывы наших клиентов или оставь свой в нашем канале!</p><p>Мы ценим каждого покупателя и всегда рады обратной связи. Ваше мнение помогает нам становиться лучше. Все отзывы реальные, без обмана.</p>", btn: "Перейти в канал", action: "https://t.me/sciptyyrewievs" },
+        about: { title: "ℹ️ О нас", text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выдача.<br>✅ Работаем без обмана и скрытых комиссий.</p><p>Нам доверяют сотни клиентов по всему миру!</p>", btn: "Назад", action: "back" },
+        terms: { title: "📜 Соглашение", text: "<p>Покупая товар в нашем магазине, вы автоматически соглашаетесь со всеми правилами Telegram и нашего бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Мы гарантируем качество товара, но не несем ответственности за дальнейшее использование аккаунтов.</p><p>Возврат средств за цифровые товары не предусмотрен.</p>", btn: "Назад", action: "back" },
+        privacy: { title: "📄 Политика", text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ваш ID и имя для отображения в профиле.</p><p>Мы никогда не передаем ваши данные третьим лицам. Все транзакции защищены.</p>", btn: "Назад", action: "back" }
     };
     const data = infoTexts[type];
     document.getElementById('info-title').innerText = data.title;
@@ -414,31 +390,57 @@ function openInfo(type) {
     document.getElementById('info-content').appendChild(btn);
     showScreen('screen-info');
 }
-
 async function activatePromo() {
     const code = document.getElementById('promo-input').value.trim().toUpperCase();
     if (!code) return tg.showAlert("Введите код!");
-    const res = await fetch(`${API_URL}/api/promo`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ code }) });
-    const data = await res.json(); tg.showAlert(data.status === 'ok' ? `✅ ${data.message}` : `❌ ${data.error}`); if (data.status === 'ok') loadData();
-}
-
-function showTopupModal() { document.getElementById('modal-topup').style.display = 'flex'; }
-function closeTopup() { document.getElementById('modal-topup').style.display = 'none'; }
-async function topupBalance() {
-    const amount = parseFloat(document.getElementById('topup-amount').value);
-    if (!amount || amount < 50) return tg.showAlert("Минимум 50 ₽");
-    closeTopup(); tg.showAlert("Создаем счет...");
     try {
-        const res = await fetch(`${API_URL}/api/topup`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ amount }) });
+        const res = await fetch(`${API_URL}/api/promo`, { 
+            method: 'POST', 
+            headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, 
+            body: JSON.stringify({ code }) 
+        });
         const data = await res.json(); 
-        if (data.url) tg.openLink(data.url); else tg.showAlert("Ошибка: " + data.error);
+        tg.showAlert(data.status === 'ok' ? `✅ ${data.message}` : `❌ ${data.error}`); 
+        if (data.status === 'ok') loadData();
     } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
 
-// ИНИЦИАЛИЗАЦИЯ
+function showTopupModal() { 
+    document.getElementById('modal-topup').style.display = 'flex'; 
+}
+
+function closeTopup() { 
+    document.getElementById('modal-topup').style.display = 'none'; 
+}
+
+async function topupBalance() {
+    const amount = parseFloat(document.getElementById('topup-amount').value);
+    if (!amount || amount < 50) return tg.showAlert("Минимум 50 ₽");
+    
+    closeTopup(); 
+    tg.showAlert("Создаем счет...");
+    
+    try {
+        const res = await fetch(`${API_URL}/api/topup`, { 
+            method: 'POST', 
+            headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, 
+            body: JSON.stringify({ amount }) 
+        });
+        const data = await res.json(); 
+        if (data.url) {
+            tg.openLink(data.url); 
+        } else {
+            tg.showAlert("Ошибка: " + data.error);
+        }
+    } catch(e) { 
+        tg.showAlert("Ошибка сервера"); 
+    }
+}
+
+// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАПУСКЕ
 if (tg) { 
     tg.ready(); 
     loadData(); 
     loadEvents(); 
     setInterval(loadData, 15000); 
-            }
+}
