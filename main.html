@@ -15,26 +15,34 @@
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
         
-        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 10px; margin-bottom: 15px; overflow: hidden; position: relative; z-index: 2; display: flex; align-items: center;">
+        <!-- Бегущая строка (с тыквой и паутиной) -->
+        <div class="ticker-container" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 10px; margin-bottom: 15px; overflow: hidden; position: relative; z-index: 2; display: flex; align-items: center;">
             <span style="font-size: 14px; margin-right: 5px;">🔥</span>
-            <div id="ticker-track" style="display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; color: #00d2ff; font-size: 11px; font-weight: bold;">
+            <div id="ticker-track" style="display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; color: #00d2ff; font-size: 11px; font-weight: bold; position: relative; z-index: 2;">
                 Загрузка событий...
             </div>
         </div>
 
+        <!-- Карусель баннеров (с пауками) -->
         <div style="position: relative; overflow: hidden; width: 100%; border-radius: 20px; margin-bottom: 20px; height: 170px;">
             <div id="banner-track" style="display: flex; width: 200%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);">
-                <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; padding: 20px;" onclick="window.open('https://t.me/sciptyystore', '_blank')">
+                
+                <!-- Баннер 1: Канал (Короткий текст) -->
+                <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; padding: 20px; position: relative;" onclick="window.open('https://t.me/sciptyystore', '_blank')">
                     <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
+                    <div style="position: absolute; bottom: 10px; right: 10px; font-size: 25px; opacity: 0.6;">🎃</div>
                     <div class="banner-content">
                         <span style="font-size:9px; font-weight:800; color:#ffd700; background:rgba(0,0,0,0.5); padding:3px 6px; border-radius:6px; text-transform: uppercase;">Официальный канал</span>
                         <h3 class="banner-title" style="font-size: 18px; margin-top: 5px;">Sciptyy Store News</h3>
-                        <p class="banner-subtitle" style="font-size: 10px; line-height: 1.4;">Тут выходят новые аккаунты, проходят розыгрыши и публикуются эксклюзивные промокоды!</p>
+                        <p class="banner-subtitle" style="font-size: 10px; line-height: 1.4;">Новые аккаунты, розыгрыши и промокоды!</p>
                         <button class="buy-btn" style="margin-top: 10px; padding: 6px 12px; font-size: 11px;">Подписаться</button>
                     </div>
                 </div>
-                <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; background: #111;" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')">
+
+                <!-- Баннер 2: Админы -->
+                <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; background: #111; position: relative;" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')">
                     <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow" style="opacity: 0.4;"></div>
+                    <div style="position: absolute; bottom: 10px; right: 10px; font-size: 25px; opacity: 0.6;">🎃</div>
                     <div class="banner-content">
                         <h3 class="banner-title" style="font-size: 16px;">👑 Администрация</h3>
                         <div style="display: flex; gap: 10px; margin-top: 5px;">
@@ -89,6 +97,7 @@
     <div id="screen-profile" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Мой профиль</h2></div>
+        
         <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px; text-align: center; position: relative; z-index: 2; margin-bottom: 20px;">
             <div id="user-avatar" style="width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #00d2ff, #8a2be2); margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; color: #fff; background-size: cover; background-position: center; box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);"></div>
             <h2 id="user-name" style="font-size: 18px; font-weight: 800; margin-bottom: 3px;">Пользователь</h2>
@@ -98,6 +107,7 @@
                 <div id="profile-balance" style="font-size: 22px; font-weight: 900; color: #00d2ff;">0 ₽</div>
             </div>
         </div>
+
         <h3 style="position: relative; z-index: 2; margin-bottom: 10px; font-size: 16px;">История покупок:</h3>
         <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
     </div>
@@ -124,7 +134,7 @@
             <div id="roll-result" style="margin-top:20px; font-size:20px; font-weight:800; text-align:center; color:#00d2ff; min-height:30px;"></div>
         </div>
     </div>
-        <!-- КЕЙСЫ -->
+       <!-- КЕЙСЫ -->
     <div id="screen-cases" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -138,6 +148,8 @@
             <div class="menu-btn" id="open-normal-case" style="display:none; background: rgba(0, 210, 255, 0.1);" onclick="openCase('normal')"><span class="btn-text">🎁 Открыть Обычный</span></div>
             <div class="menu-btn" id="open-vip-case" style="display:none; background: rgba(255, 215, 0, 0.1);" onclick="openCase('vip')"><span class="btn-text">🎁 Открыть VIP</span></div>
         </div>
+        
+        <!-- 3D Сундук -->
         <div class="chest-container" id="case-animation" style="display: none;">
             <div class="chest" id="chest"><div class="chest-lid"></div>🔒</div>
             <div id="case-prize-text" style="font-size:20px; font-weight:800; color:#ffd700; margin-top:30px; text-align:center; text-shadow:0 0 10px #ffd700; min-height:30px;"></div>
@@ -152,24 +164,53 @@
             <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
         </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Поддержка</h2></div>
+        
         <div class="info-container" style="min-height: auto;">
             <p style="margin-bottom: 15px; font-weight: bold; color: #00d2ff;">🆘 Частые вопросы:</p>
+            
             <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
-                <summary style="font-weight: bold; font-size: 14px;">Не видно номеров?</summary>
-                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Подождите 1 минуту и обновите. Если не помогло — напишите нам.</p>
+                <summary style="font-weight: bold; font-size: 14px;">Не видно номеров в разделе Аккаунтов?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Подождите около 1 минуты (серверу нужно проснуться) и обновите страницу. Если товары так и не появились — напишите в поддержку.</p>
             </details>
+
             <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
-                <summary style="font-weight: bold; font-size: 14px;">Не пришел аккаунт?</summary>
-                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Выдача ручная, от 5 до 15 минут. Если больше — напишите в поддержку.</p>
+                <summary style="font-weight: bold; font-size: 14px;">Купил аккаунт, но не пришел?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Все товары выдаются вручную. Обычно это занимает от 5 до 15 минут. Если прошло больше времени, напишите в поддержку с номером транзакции (он есть в вашем профиле).</p>
             </details>
-            <p style="margin-top: 20px; font-weight: bold; color: #00d2ff;">Не нашли ответ?</p>
-            <textarea id="ticket-input" placeholder="Опишите проблему..." style="width:100%; height:80px; background:rgba(255,255,255,0.05); border:1px solid #333; color:white; border-radius:10px; padding:10px; margin-bottom:10px; margin-top: 10px; resize:none;"></textarea>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Как работает Рулетка?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Крутить рулетку можно раз в 24 часа. Вы можете выиграть от 1 до 3 рублей на баланс или промокод на скидку.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Не работает Промокод?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Убедитесь, что срок действия кода не истек и вы ввели его правильно (без пробелов). Один промокод можно активировать только один раз.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Как оплатить?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Вы можете оплатить с баланса (кнопка «Пополнить баланс») или звездами Telegram (кнопка «Купить за звезды»).</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Кейсы не открываются?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Убедитесь, что у вас куплен кейс (нажмите «Открыть» на странице кейсов). Если кнопка пропала — значит, кейсов нет, купите новый.</p>
+            </details>
+
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
+                <summary style="font-weight: bold; font-size: 14px;">Как получить подарок за пополнение?</summary>
+                <p style="margin-top: 10px; font-size: 12px; color: #aaa;">Пополните баланс на 500 ₽ или больше. Обычный кейс придет автоматически в раздел «Кейсы».</p>
+            </details>
+
+            <p style="margin-top: 20px; font-weight: bold; color: #00d2ff;">Не нашли ответ на свой вопрос?</p>
+            
+            <textarea id="ticket-input" placeholder="Опишите вашу проблему подробно..." style="width:100%; height:100px; background:rgba(255,255,255,0.05); border:1px solid #333; color:white; border-radius:10px; padding:10px; margin-bottom:10px; margin-top: 10px; resize:none;"></textarea>
             <button class="info-btn" onclick="createTicket()">Написать в поддержку</button>
             <div id="ticket-list" style="margin-top:20px;"></div>
         </div>
     </div>
-
-    <!-- ТИКЕТЫ АДМИН -->
+        <!-- ТИКЕТЫ АДМИН -->
     <div id="screen-admin-tickets" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800; color:#00d2ff;">Тикеты</h2></div>
