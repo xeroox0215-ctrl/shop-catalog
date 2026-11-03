@@ -84,7 +84,6 @@ function showScreen(id) {
     document.getElementById(id).classList.add('active');
     if(id === 'screen-profile' || id === 'screen-main' || id === 'screen-admin-tickets') loadData();
 }
-
 // КАТАЛОГ (СО СКИДКАМИ)
 function openCatalog() {
     const grid = document.getElementById('catalog-grid');
@@ -161,7 +160,6 @@ async function buyItem(method) {
         } else { tg.showAlert(`❌ ${data.error}`); }
     } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
-
 let isSpinning = false;
 async function spinWheel() {
     if (isSpinning) return;
@@ -227,18 +225,20 @@ async function buyCase(type) {
     });
 }
 
+// НОВАЯ АНИМАЦИЯ КЕЙСА
 async function openCase(type) {
     const animDiv = document.getElementById('case-animation');
-    const card = document.getElementById('case-card');
+    const track = document.getElementById('roulette-track');
+    const winContainer = document.getElementById('win-card-container');
+    const winContent = document.getElementById('win-card-content');
     const prizeText = document.getElementById('case-prize-text');
-    const lootContainer = document.getElementById('loot-container');
     
-    animDiv.style.display = 'flex';
-    card.style.display = 'flex';
-    prizeText.innerText = "";
-    lootContainer.innerHTML = "";
-    card.classList.add('case-shake');
-
+    animDiv.style.display = 'block';
+    winContainer.style.display = 'none';
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0)';
+    track.innerHTML = '';
+    
     try {
         const res = await fetch(`${API_URL}/api/case/open`, {
             method: 'POST',
@@ -248,63 +248,74 @@ async function openCase(type) {
         const data = await res.json();
         
         if (data.status === 'ok') {
-            setTimeout(() => {
-                card.classList.remove('case-shake');
-                card.style.opacity = '0';
-                card.style.transform = 'scale(1.5)';
-                
-                const icons = ['🇺🇸', '🇷🇺', '🇰🇿', '💰', '🎁', '💳'];
-                for (let i = 0; i < 8; i++) {
-                    const loot = document.createElement('div');
-                    loot.className = 'loot-card';
-                    loot.style.left = '50%';
-                    loot.style.top = '50%';
-                    loot.style.transform = 'translate(-50%, -50%)';
-                    loot.innerText = icons[Math.floor(Math.random() * icons.length)];
-                    
-                    const angle = (i / 8) * Math.PI * 2;
-                    const distance = 100 + Math.random() * 50;
-                    const targetX = Math.cos(angle) * distance;
-                    const targetY = Math.sin(angle) * distance;
-                    
-                    loot.animate([
-                        { transform: 'translate(-50%, -50%) scale(0.5)', opacity: 1 },
-                        { transform: `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY}px)) scale(1) rotate(${Math.random()*360}deg)`, opacity: 1 },
-                        { transform: `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY}px)) scale(0)`, opacity: 0 }
-                    ], { duration: 1500, easing: 'ease-out', fill: 'forwards' });
-                    
-                    lootContainer.appendChild(loot);
+            const winIndex = 25; 
+            let itemsHTML = '';
+            
+            for (let i = 0; i < 30; i++) {
+                if (i === winIndex) {
+                    if (data.prize.type === 'money') {
+                        itemsHTML += `<div class="roulette-item money">💰<br>${data.prize.value}</div>`;
+                    } else if (data.prize.type === 'promo') {
+                        itemsHTML += `<div class="roulette-item promo">🎁<br>Скидка</div>`;
+                    } else {
+                        itemsHTML += `<div class="roulette-item account">🌍<br>${data.prize.value}</div>`;
+                    }
+                } else {
+                    const rnd = Math.random();
+                    if (rnd < 0.4) itemsHTML += `<div class="roulette-item money">💰<br>Рубли</div>`;
+                    else if (rnd < 0.7) itemsHTML += `<div class="roulette-item promo">🎁<br>Промо</div>`;
+                    else itemsHTML += `<div class="roulette-item account">🌍<br>Аккаунт</div>`;
                 }
+            }
+            track.innerHTML = itemsHTML;
+            
+            setTimeout(() => {
+                track.style.transition = 'transform 5s cubic-bezier(0.1, 0.8, 0.1, 1)';
+                const cardWidth = 100; 
+                const screenCenter = window.innerWidth / 2;
+                const randomOffset = Math.floor(Math.random() * 40) - 20; 
+                const finalX = -((winIndex * cardWidth) - screenCenter + 45 + randomOffset);
+                track.style.transform = `translateX(${finalX}px)`;
                 
                 setTimeout(() => {
                     let prizeStr = "";
-                    if (data.prize.type === 'money') prizeStr = `🎉 Вы выиграли: ${data.prize.value}`;
-                    if (data.prize.type === 'promo') prizeStr = `🎉 Выиграли: ${data.prize.value}\nКод: ${data.prize.code}`;
-                    if (data.prize.type === 'account') prizeStr = `🎉 Выиграли: ${data.prize.value}\n\nНапишите в поддержку!`;
+                    let icon = "";
                     
+                    if (data.prize.type === 'money') {
+                        prizeStr = `Вы выиграли ${data.prize.value}!`;
+                        icon = "💰";
+                    }
+                    if (data.prize.type === 'promo') {
+                        prizeStr = `Промокод: ${data.prize.code}\nНа ${data.prize.value}`;
+                        icon = "🎁";
+                    }
+                    if (data.prize.type === 'account') {
+                        prizeStr = `Аккаунт ${data.prize.value}\n\nНапишите в поддержку!`;
+                        icon = "🌍";
+                    }
+                    
+                    winContent.innerHTML = `
+                        <div class="win-icon">${icon}</div>
+                        <div class="win-title">ПОЗДРАВЛЯЕМ!</div>
+                    `;
                     prizeText.innerText = prizeStr;
+                    winContainer.style.display = 'flex';
+                    
                     tg.showAlert(prizeStr);
                     loadData();
                     loadEvents();
-                    
-                    setTimeout(() => {
-                        animDiv.style.display = 'none';
-                        card.style.opacity = '1';
-                        card.style.transform = 'scale(1)';
-                    }, 3000);
-                }, 1500);
-            }, 2000);
+                }, 5200); 
+                
+            }, 100);
         } else {
             tg.showAlert(data.error);
             animDiv.style.display = 'none';
-            card.classList.remove('case-shake');
         }
     } catch(e) {
         tg.showAlert("Ошибка сервера");
         animDiv.style.display = 'none';
-        card.classList.remove('case-shake');
     }
-                }
+}
 // ТИКЕТЫ
 async function createTicket() {
     const text = document.getElementById('ticket-input').value.trim();
@@ -360,7 +371,7 @@ async function replyTicket(id) {
     loadData();
 }
 
-// АДМИНКА (С РАССЫЛКОЙ)
+// АДМИНКА
 async function adminAction(action) {
     const resDiv = document.getElementById('admin-result');
     resDiv.innerText = "Загрузка...";
@@ -396,19 +407,18 @@ async function adminAction(action) {
     if (action === 'broadcast') {
         const text = prompt("Введите текст рассылки:");
         if (!text) { resDiv.innerText = ""; return; }
-        const minutes = prompt("На сколько минут показать в событиях?", "60");
-        if (!minutes) { resDiv.innerText = ""; return; }
+        const minutes = 60; // Время зафиксировано на 60 минут
         
         resDiv.innerText = "Отправка...";
         try {
             const res = await fetch(`${API_URL}/api/admin/broadcast`, {
                 method: 'POST',
                 headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-                body: JSON.stringify({ text: text, minutes: parseInt(minutes) })
+                body: JSON.stringify({ text: text, minutes: minutes })
             });
             const data = await res.json();
             resDiv.innerText = data.message || data.error;
-            loadEvents(); // Обновляем бегущую строку сразу
+            loadEvents(); 
         } catch (e) {
             resDiv.innerText = "Ошибка отправки";
         }
@@ -432,8 +442,8 @@ function openInfo(type) {
     const infoTexts = {
         reviews: { title: "⭐ Отзывы", text: "<p>Почитай отзывы наших клиентов или оставь свой в нашем канале!</p>", btn: "Перейти в канал", action: "https://t.me/sciptyyrewievs" },
         about: { title: "ℹ️ О нас", text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выдача.<br>✅ Работаем без обмана и скрытых комиссий.</p><p>Нам доверяют сотни клиентов!</p>", btn: "Назад", action: "back" },
-        terms: { title: "📜 Соглашение", text: "<p>Покупая товар в нашем магазине, вы автоматически соглашаетесь со всеми правилами Telegram и нашего бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Мы гарантируем качество товара, но не несем ответственности за дальнейшее использование аккаунтов.</p><p>Мы ничего не нарушаем и работаем строго по правилам.</p>", btn: "Назад", action: "back" },
-        privacy: { title: "📄 Политика", text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ваш ID и username для выдачи товаров и работы реферальной системы.</p><p>Ваши данные <b>защищены</b> и никогда не передаются третьим лицам. Мы не нарушаем законы и правила Telegram.</p>", btn: "Назад", action: "back" }
+        terms: { title: "📜 Соглашение", text: "<p>Покупая товар в нашем магазине, вы автоматически соглашаетесь со всеми правилами Telegram и нашего бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Мы гарантируем качество товара, но не несем ответственности за дальнейшее использ", btn: "Назад", action: "back" },
+        privacy: { title: "📄 Политика", text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ваш ID и ис", btn: "Назад", action: "back" }
     };
     const data = infoTexts[type];
     document.getElementById('info-title').innerText = data.title;
@@ -494,4 +504,12 @@ async function topupBalance() {
     } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
 
-loadData();
+// ИНИЦИАЛИЗАЦИЯ
+if (tg) {
+    tg.ready();
+    loadData();
+    loadEvents();
+    
+    // Автообновление профиля каждые 15 секунд
+    setInterval(loadData, 15000);
+}
