@@ -280,7 +280,7 @@ function checkUpgrade() {
 }
 
 async function startUpgrade() {
-    tg.showConfirm("Вы уверены? Аккаунты сгорят!", async (confirmed) => {
+    tg.showConfirm("Вы уверены? Аккаунты могут сгореть!", async (confirmed) => {
         if(!confirmed) return;
         tg.showAlert("Апгрейд запущен...");
         try {
@@ -289,14 +289,22 @@ async function startUpgrade() {
                 body: JSON.stringify({ acc1: upgradeSlot1, acc2: upgradeSlot2 })
             });
             const data = await res.json();
+            
             if(data.status === 'ok') {
-                tg.showAlert(`🎉 ${data.message}`);
+                if(data.success) {
+                    tg.showAlert(`🎉 ${data.message}`);
+                } else {
+                    tg.showAlert(`😢 ${data.message}`);
+                }
+                
                 upgradeSlot1 = null; upgradeSlot2 = null;
                 document.getElementById('slot-1').innerHTML = '<div style="font-size:30px; margin-bottom:10px;">➕</div><div style="font-size:12px; color:#888;">Аккаунт 1</div>';
                 document.getElementById('slot-2').innerHTML = '<div style="font-size:30px; margin-bottom:10px;">➕</div><div style="font-size:12px; color:#888;">Аккаунт 2</div>';
                 document.getElementById('slot-1').classList.remove('filled'); document.getElementById('slot-2').classList.remove('filled');
                 checkUpgrade(); loadData();
-            } else { tg.showAlert(`❌ ${data.error}`); }
+            } else { 
+                tg.showAlert(`❌ ${data.error}`); 
+            }
         } catch(e) { tg.showAlert("Ошибка сервера"); }
     });
 }
