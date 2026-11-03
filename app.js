@@ -28,11 +28,21 @@ async function loadData() {
             document.getElementById('profile-balance').innerText = `${userProfile.balance.toFixed(2)} ₽`;
             
             const pDiv = document.getElementById('profile-purchases');
-            pDiv.innerHTML = data.purchases.length > 0 ? data.purchases.map(p => `
+            pDiv.innerHTML = data.purchases.length > 0 ? data.purchases.map(p => {
+                let copyBtn = '';
+                if (p.name.includes('Промокод')) {
+                    const codeMatch = p.name.match(/Промокод ([A-Z0-9-]+)/);
+                    if (codeMatch && codeMatch[1]) {
+                        copyBtn = `<button onclick="navigator.clipboard.writeText('${codeMatch[1]}'); tg.showAlert('Код скопирован: ${codeMatch[1]}');" style="background:#00d2ff; border:none; color:black; border-radius:5px; padding:5px; font-size:10px; margin-top:5px; cursor:pointer;">Скопировать код</button>`;
+                    }
+                }
+                return `
                 <div class="purchase-item">
                     <div style="font-weight: bold; color: #00d2ff;">${p.name}</div>
                     <div style="color: #888;">${p.price} ₽ • ${p.date.split(' ')[0]}</div>
-                </div>`).join('') : '<div style="color:#888;">Покупок нет</div>';
+                    ${copyBtn}
+                </div>`;
+            }).join('') : '<div style="color:#888;">Покупок нет</div>';
                 
             renderTickets(data.tickets);
         }
@@ -228,7 +238,7 @@ async function openCase(type) {
         tg.showAlert("Ошибка сервера");
         animDiv.style.display = 'none';
     }
-    }
+}
 async function createTicket() {
     const text = document.getElementById('ticket-input').value.trim();
     if(!text) return tg.showAlert("Напишите вопрос!");
