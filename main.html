@@ -9,34 +9,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- НОВАЯ ЗАСТАВКА (Кладбище + Космос) -->
+        <!-- ЗАСТАВКА -->
     <div id="splash-screen">
-        <div class="splash-space"></div>
-        <div class="splash-graveyard">
-            <div class="tombstone" style="left: 10%; bottom: 20%;">R.I.P</div>
-            <div class="tombstone" style="left: 70%; bottom: 15%;">R.I.P</div>
-            <div class="pumpkin" style="left: 40%; bottom: 10%;">🎃</div>
-        </div>
-        <div class="spider-web"></div>
-        <div class="spider">🕷️</div>
+        <div class="splash-bg-bats"></div>
+        <div class="splash-moon"></div>
+        <img src="web.png" class="splash-web" alt="web">
+        <img src="pumpkin.png" class="splash-pumpkin" alt="pumpkin">
         <div class="splash-card">
             <span>🇷🇺</span>
             <p>Аккаунт РФ</p>
         </div>
     </div>
-
-    <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
-
-    <div id="screen-main" class="screen active">
-        <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
-        <h1 class="glow-title">SCIPTYY<br>STORE</h1>
-        
-        <div class="ticker-container" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 10px; margin-bottom: 15px; display: flex; align-items: center; z-index: 2; position: relative;">
-            <span style="font-size: 14px; margin-right: 5px; z-index: 2;">🔥</span>
-            <div id="ticker-track" style="display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; color: #00d2ff; font-size: 11px; font-weight: bold; z-index: 2;">
-                Загрузка событий...
-            </div>
-        </div>
 
         <div style="position: relative; overflow: hidden; width: 100%; border-radius: 20px; margin-bottom: 20px; height: 170px;">
             <div id="banner-track" style="display: flex; width: 200%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);">
