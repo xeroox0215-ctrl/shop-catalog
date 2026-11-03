@@ -89,3 +89,53 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
     0% { transform: translateX(100%); }
     100% { transform: translateX(-100%); }
   }
+/* Анимация для карточек (переливы) */
+.product-card {
+    position: relative;
+    overflow: hidden;
+}
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,210,255,0.2), transparent);
+    transform: skewX(-20deg);
+    animation: cardShimmer 4s infinite;
+}
+@keyframes cardShimmer {
+    0% { left: -100%; }
+    50%, 100% { left: 200%; }
+}
+
+/* Паутина на карточках */
+.product-card::after {
+    content: '🕸️';
+    position: absolute;
+    top: -5px; right: -5px;
+    font-size: 30px;
+    opacity: 0.3;
+    transform: rotate(45deg);
+}
+
+/* Паутина и тыква на баннере событий */
+.ticker-container {
+    position: relative;
+    overflow: hidden;
+}
+.ticker-container::before {
+    content: '🕸️';
+    position: absolute;
+    top: -10px; left: -10px;
+    font-size: 40px;
+    opacity: 0.2;
+    z-index: 0;
+}
+.ticker-container::after {
+    content: '🎃';
+    position: absolute;
+    bottom: -10px; right: -10px;
+    font-size: 30px;
+    opacity: 0.3;
+    z-index: 0;
+    animation: floatPumpkin 6s ease-in-out infinite;
+}
