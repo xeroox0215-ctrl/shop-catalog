@@ -2,11 +2,6 @@ const tg = window.Telegram?.WebApp;
 if (tg) tg.expand();
 const API_URL = "https://sciptyy-api.onrender.com";
 
-// Скрываем заставку сразу, чтобы она не перекрывала экран
-if (document.getElementById('splash-screen')) {
-    document.getElementById('splash-screen').style.display = 'none';
-}
-
 let userProfile = { balance: 0, cases: 0, vip_cases: 0, discount: 0 };
 let accountsData = []; 
 let myAccounts = []; 
@@ -79,8 +74,8 @@ async function loadNews() {
                     </div>
                     <div class="news-content" style="padding:15px;">
                         <div style="font-size:10px; color:#00d2ff; font-weight:bold; margin-bottom:5px;">${n.date}</div>
-                        <h3 style="color:#fff; margin-bottom:10px; font-family:Unbounded;">${n.title}</h3>
-                        <p style="color:#ccc; font-size:12px; line-height:1.6; font-family:Unbounded; white-space: pre-wrap;">${n.text}</p>
+                        <h3 style="color:#fff; margin-bottom:10px;">${n.title}</h3>
+                        <p style="color:#ccc; font-size:12px; line-height:1.6; white-space: pre-wrap;">${n.text}</p>
                     </div>
                 </div>
             `).join('');
@@ -95,9 +90,7 @@ function showScreen(id) {
     document.getElementById(id).classList.add('active');
     
     document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-    const screensMap = {
-        'screen-main': 0, 'screen-cases': 1, 'screen-roll': 2, 'screen-profile': 3, 'screen-news': 4
-    };
+    const screensMap = { 'screen-main': 0, 'screen-cases': 1, 'screen-roll': 2, 'screen-profile': 3, 'screen-news': 4 };
     if (screensMap[id] !== undefined) {
         const navItems = document.querySelectorAll('.nav-item');
         if(navItems[screensMap[id]]) navItems[screensMap[id]].classList.add('active');
@@ -178,8 +171,6 @@ async function spinWheel() {
             if (data.amount === 3) targetDeg = 360 - 135;
             
             const randomOffset = Math.floor(Math.random() * 40) - 20;
-            
-            // Накопление угла (чтобы колесо всегда крутилось вперед)
             currentWheelDeg += 1440 + targetDeg + randomOffset;
             wheel.style.transform = `rotateX(20deg) rotate(${currentWheelDeg}deg)`;
             
@@ -490,17 +481,15 @@ function closePrompt() {
     promptCallback = null;
 }
 
-// Звук при нажатии
 function playClickSound() {
     const audio = document.getElementById('click-sound');
     if (audio) {
         audio.currentTime = 0;
-        audio.volume = 0.3; // Громкость 30% (поменяй на 0.1, если громко)
+        audio.volume = 0.3;
         audio.play().catch(e => console.log("Звук заблокирован"));
     }
 }
 
-// Навешиваем звук и вибрацию на все кнопки
 document.addEventListener('DOMContentLoaded', () => {
     const clickable = document.querySelectorAll('.menu-btn, .buy-btn, .info-btn, .roll-btn, .upgrade-slot, .nav-item');
     clickable.forEach(el => {
@@ -513,5 +502,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Глобальный запуск
 if (tg) { tg.ready(); loadData(); loadEvents(); setInterval(loadData, 15000); }
