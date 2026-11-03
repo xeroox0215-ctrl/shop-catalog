@@ -10,12 +10,19 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 .stars { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 10% 20%, white, transparent), radial-gradient(2px 2px at 40% 70%, white, transparent); background-size: 200px 200px; animation: twinkle 4s infinite alternate; opacity: 0.5; }
 @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.8; } }
 
-/* Экраны */
+/* Декор */
+.halloween-decor { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+.decor-web { position: absolute; top: -20px; left: -20px; width: 120px; height: 120px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.15)" fill="none" stroke-width="1"/></svg>'); background-size: cover; transform: rotate(180deg); opacity: 0.6; animation: floatWeb 8s ease-in-out infinite alternate; }
+.decor-spider { position: absolute; top: 0; left: 40px; font-size: 24px; animation: spiderDrop 4s ease-in-out infinite; z-index: 1; }
+.decor-pumpkin { position: absolute; bottom: 10px; right: 20px; font-size: 30px; opacity: 0.3; animation: floatPumpkin 6s ease-in-out infinite; }
+@keyframes floatWeb { 0% { transform: rotate(170deg) scale(1); } 100% { transform: rotate(190deg) scale(1.1); } }
+@keyframes spiderDrop { 0%, 100% { transform: translateY(10px); } 50% { transform: translateY(25px); } }
+@keyframes floatPumpkin { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* Экраны и меню */
 .screen { display: none; padding: 30px 20px; min-height: 100vh; animation: fadeIn 0.5s ease; position: relative; }
 .screen.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Меню */
 .glow-title { font-size: 46px; line-height: 1.1; font-weight: 900; text-align: center; margin-top: 20px; margin-bottom: 25px; background: linear-gradient(90deg, #ffffff, #00d2ff, #8a2be2, #ffffff); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: textShimmer 8s linear infinite; position: relative; z-index: 2; }
 @keyframes textShimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
 .main-menu-grid { display: flex; flex-direction: column; gap: 15px; position: relative; z-index: 2; }
@@ -25,6 +32,7 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 
 /* Бегущая строка */
 .ticker-container { background: rgba(20, 10, 30, 0.6); border: 1px solid rgba(255, 140, 0, 0.3); backdrop-filter: blur(10px); border-radius: 12px; padding: 10px 15px; margin-bottom: 20px; display: flex; align-items: center; position: relative; z-index: 2; overflow: hidden; box-shadow: 0 0 15px rgba(255, 140, 0, 0.1); }
+.ticker-decor { position: absolute; top: 0; right: 10px; font-size: 20px; opacity: 0.3; z-index: 0; }
 .ticker-content { display: flex; align-items: center; width: 100%; z-index: 1; overflow: hidden; }
 .ticker-icon { font-size: 16px; margin: 0 8px; }
 .ticker-track { white-space: nowrap; animation: ticker 20s linear infinite; background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 12px; font-weight: 800; }
@@ -40,10 +48,11 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 .banner-content { position: relative; z-index: 3; width: 100%; }
 .banner-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; }
 .banner-subtitle { font-size: 11px; color: #eee; }
-
-/* Каталог */
+/* Каталог товаров */
 .catalog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: relative; z-index: 2; }
-.product-card { background: rgba(20, 20, 20, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.product-card { background: rgba(20, 20, 20, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+.product-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); transform: skewX(-20deg); animation: cardShimmer 5s infinite; }
+@keyframes cardShimmer { 0% { left: -100%; } 40%, 100% { left: 200%; } }
 .product-name { font-size: 14px; font-weight: 800; margin-bottom: 5px; }
 .product-price { color: #aaa; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
 .buy-btn { background: linear-gradient(90deg, #0052ff, #00d2ff, #0052ff); background-size: 200% auto; border: none; color: white; padding: 12px; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; animation: btnShimmer 3s linear infinite; margin-top: 10px; }
@@ -63,6 +72,7 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 /* Профиль */
 .balance-card { background: linear-gradient(135deg, #00d2ff, #8a2be2); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; position: relative; z-index: 2; }
 .purchase-item { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 12px; border: 1px solid rgba(255,255,255,0.05); }
+
 /* Кейсы (Рулетка) */
 .case-roulette-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
 .case-banner-bg { background: linear-gradient(135deg, #2a0845, #6441A5, #ff416c, #2a0845); background-size: 300% 300%; animation: bgGradient 4s ease infinite; border: 2px solid #ffd700; border-radius: 20px; padding: 20px; width: 100%; box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), inset 0 0 20px rgba(0,0,0,0.8); position: relative; overflow: hidden; }
@@ -95,6 +105,8 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 /* Инфо-страницы */
 .info-container { background: rgba(20, 20, 20, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 25px 20px; font-size: 14px; line-height: 1.6; color: #ddd; display: flex; flex-direction: column; min-height: 250px; position: relative; z-index: 2; }
 .info-btn { display: block; width: 100%; background: linear-gradient(90deg, #00d2ff, #8a2be2); color: white; text-align: center; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 16px; margin-top: auto; border: none; cursor: pointer; }
+details { transition: 0.3s; }
+details[open] summary { color: #00d2ff; margin-bottom: 5px; }
 
 /* Модалки */
 #modal-buy, #modal-topup { backdrop-filter: blur(5px); }
@@ -106,36 +118,7 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #00d2ff; }
 
-/* ================= НИЖНЯЯ ПАНЕЛЬ ================= */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 70px;
-    background: rgba(15, 10, 25, 0.85);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 1000;
-    padding-bottom: env(safe-area-inset-bottom);
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
-}
-.nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; cursor: pointer; transition: all 0.3s ease; flex: 1; height: 100%; }
-.nav-item:active { transform: scale(0.9); }
-.nav-item.active { color: #00d2ff; }
-.nav-icon { font-size: 22px; margin-bottom: 4px; filter: drop-shadow(0 0 5px rgba(0, 210, 255, 0.3)); }
-.nav-text { font-size: 10px; font-weight: 800; font-family: 'Unbounded', sans-serif; }
-
-/* Фикс, чтобы контент не залезал под нижнюю панель */
-.screen {
-    padding-bottom: 100px !important;
-}
-
-/* ================= КАРТОЧКИ НОВОСТЕЙ ================= */
+/* ================= СТИЛИ ДЛЯ НОВОСТЕЙ ================= */
 .news-card {
     background: rgba(20, 20, 20, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
