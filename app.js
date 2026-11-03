@@ -218,6 +218,7 @@ async function buyCase(type) {
             const data = await res.json();
             tg.showAlert(data.message || data.error);
             loadData();
+            loadEvents(); // Обновляем бегущую строку
         } catch(e) { tg.showAlert("Ошибка сервера"); }
     });
 }
