@@ -9,6 +9,23 @@ let selectedPrice = 0;
 let isAdmin = false;
 
 async function loadData() {
+    // Подтягиваем данные профиля из Телеграма (аватарка, ник)
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const u = tg.initDataUnsafe.user;
+        document.getElementById('user-name').innerText = u.first_name + (u.last_name ? ' ' + u.last_name : '');
+        let idText = `ID: ${u.id}`;
+        if (u.username) idText += ` | @${u.username}`;
+        document.getElementById('user-id').innerText = idText;
+
+        const avatarDiv = document.getElementById('user-avatar');
+        if (u.photo_url) {
+            avatarDiv.style.backgroundImage = `url('${u.photo_url}')`;
+            avatarDiv.innerText = '';
+        } else {
+            avatarDiv.innerText = u.first_name.charAt(0).toUpperCase();
+        }
+    }
+
     try {
         const res = await fetch(`${API_URL}/api/profile`, { headers: { "X-Telegram-Init-Data": tg.initData } });
         const data = await res.json();
@@ -22,6 +39,7 @@ async function loadData() {
                 document.getElementById('admin-tickets-btn').style.display = 'block';
             }
             
+            // Управление кнопками кейсов
             if (userProfile.cases > 0) document.getElementById('open-normal-case').style.display = 'block';
             if (userProfile.vip_cases > 0) document.getElementById('open-vip-case').style.display = 'block';
             
@@ -48,6 +66,19 @@ async function loadData() {
         }
     } catch(e) { console.log(e); }
 }
+
+// Бегущая строка
+async function loadEvents() {
+    try {
+        const res = await fetch(`${API_URL}/api/events`);
+        const data = await res.json();
+        if (data.status === 'ok' && data.events.length > 0) {
+            document.getElementById('ticker-track').innerText = data.events.join('  •  ') + '  •  ';
+        }
+    } catch(e) { console.log(e); }
+}
+setInterval(loadEvents, 10000);
+loadEvents();
 
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -116,6 +147,7 @@ async function buyItem(method) {
         if (data.status === 'ok') {
             tg.showAlert(`✅ Деньги списаны! Номер скоро выдадут.\nЕсли долго — напишите в поддержку.`);
             loadData();
+            loadEvents(); // Обновляем бегущую строку
         } else { tg.showAlert(`❌ ${data.error}`); }
     } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
@@ -131,6 +163,9 @@ async function spinWheel() {
     btn.innerText = "Крутим...";
     resDiv.innerText = "";
     
+    // Добавляем эффект матрицы (свечение)
+    wheel.style.boxShadow = "0 0 50px #00d2ff, inset 0 0 50px #00d2ff";
+    
     try {
         const res = await fetch(`${API_URL}/api/roll`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData } });
         const data = await res.json();
@@ -142,13 +177,17 @@ async function spinWheel() {
             if (data.amount === 3) targetDeg = 360 - 135;
             
             const randomOffset = Math.floor(Math.random() * 40) - 20;
-            wheel.style.transform = `rotate(${1440 + targetDeg + randomOffset}deg)`;
+            
+            // 3D Вращение с перспективой
+            wheel.style.transform = `rotateX(20deg) rotate(${1440 + targetDeg + randomOffset}deg)`;
             
             setTimeout(() => {
                 resDiv.innerText = `🎉 Вы выиграли: ${data.prize}`;
                 resDiv.style.color = "#ffd700";
                 btn.innerText = "Крутить";
                 isSpinning = false;
+                // Убираем свечение
+                wheel.style.boxShadow = "0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.2)"; 
                 loadData();
             }, 4000);
         } else {
@@ -156,11 +195,13 @@ async function spinWheel() {
             resDiv.style.color = "#ff4444";
             btn.innerText = "Крутить";
             isSpinning = false;
+            wheel.style.boxShadow = "0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.2)";
         }
     } catch(e) {
         resDiv.innerText = "Ошибка сервера";
         btn.innerText = "Крутить";
         isSpinning = false;
+        wheel.style.boxShadow = "0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.2)";
     }
 }
 
@@ -180,25 +221,15 @@ async function buyCase(type) {
         } catch(e) { tg.showAlert("Ошибка сервера"); }
     });
 }
-
 async function openCase(type) {
     const animDiv = document.getElementById('case-animation');
-    const itemsContainer = document.getElementById('case-items-container');
+    const chest = document.getElementById('chest');
     const prizeText = document.getElementById('case-prize-text');
     
     animDiv.style.display = 'flex';
+    chest.classList.remove('chest-opened');
+    chest.classList.add('chest-opening');
     prizeText.innerText = "";
-    itemsContainer.innerHTML = "";
-    itemsContainer.style.transition = "none";
-    itemsContainer.style.transform = "translateX(0)";
-    
-    const icons = ['🇺🇸', '🇨🇦', '💰', '🎁', '🇬🇧', '🇩🇪', '🇫🇷', '🇵🇱'];
-    for (let i = 0; i < 40; i++) {
-        const el = document.createElement('div');
-        el.className = 'case-item';
-        el.innerText = icons[Math.floor(Math.random() * icons.length)];
-        itemsContainer.appendChild(el);
-    }
 
     try {
         const res = await fetch(`${API_URL}/api/case/open`, {
@@ -209,11 +240,10 @@ async function openCase(type) {
         const data = await res.json();
         
         if (data.status === 'ok') {
+            // Тряска сундука 1.5 секунды, потом взрыв
             setTimeout(() => {
-                const randomStop = Math.floor(Math.random() * (30 - 10) + 10);
-                const moveX = -(randomStop * 90) + 150; 
-                itemsContainer.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)";
-                itemsContainer.style.transform = `translateX(${moveX}px)`;
+                chest.classList.remove('chest-opening');
+                chest.classList.add('chest-opened');
                 
                 setTimeout(() => {
                     let prizeStr = "";
@@ -224,12 +254,15 @@ async function openCase(type) {
                     prizeText.innerText = prizeStr;
                     tg.showAlert(prizeStr);
                     loadData();
+                    loadEvents(); // Обновляем бегущую строку
                     
+                    // Прячем сундук через 4 секунды
                     setTimeout(() => {
                         animDiv.style.display = 'none';
-                    }, 3000);
-                }, 4200);
-            }, 100);
+                        chest.classList.remove('chest-opened');
+                    }, 4000);
+                }, 1000);
+            }, 1500);
         } else {
             tg.showAlert(data.error);
             animDiv.style.display = 'none';
@@ -239,6 +272,8 @@ async function openCase(type) {
         animDiv.style.display = 'none';
     }
 }
+
+// ТИКЕТЫ
 async function createTicket() {
     const text = document.getElementById('ticket-input').value.trim();
     if(!text) return tg.showAlert("Напишите вопрос!");
@@ -293,6 +328,7 @@ async function replyTicket(id) {
     loadData();
 }
 
+// АДМИНКА
 async function adminAction(action) {
     const resDiv = document.getElementById('admin-result');
     resDiv.innerText = "Загрузка...";
@@ -327,6 +363,7 @@ async function adminAction(action) {
     }
 }
 
+// ИНФО
 function openInfo(type) {
     if (type === 'promo') {
         document.getElementById('info-title').innerText = "🎁 Промокод";
@@ -384,6 +421,7 @@ async function activatePromo() {
     } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
 
+// ПОПОЛНЕНИЕ
 function showTopupModal() { document.getElementById('modal-topup').style.display = 'flex'; }
 function closeTopup() { document.getElementById('modal-topup').style.display = 'none'; }
 
