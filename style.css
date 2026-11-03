@@ -220,3 +220,25 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 }
 .upgrade-slot.active { border-color: #00d2ff; background: rgba(0,210,255,0.1); box-shadow: 0 0 15px rgba(0,210,255,0.3); }
 .upgrade-slot.filled { border-style: solid; border-color: #ffd700; }
+/* КРАСИВЫЙ БАННЕР КЕЙСОВ */
+.case-banner-bg { background: linear-gradient(135deg, #2a0845, #6441A5, #ff416c, #2a0845); background-size: 300% 300%; animation: bgGradient 4s ease infinite; border: 2px solid #ffd700; border-radius: 20px; padding: 20px; box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); }
+@keyframes bgGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.roulette-wrapper { position: relative; height: 120px; overflow: hidden; border-radius: 12px; background: rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; }
+.roulette-track { display: flex; gap: 10px; padding: 0 10px; position: absolute; left: 0; transition: transform 5s cubic-bezier(0.1, 0.8, 0.1, 1); }
+.roulette-item { width: 90px; height: 100px; flex-shrink: 0; background: rgba(26, 26, 26, 0.9); border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; text-align: center; padding: 5px; }
+.roulette-item.money { border: 2px solid #00d2ff; color: #00d2ff; box-shadow: 0 0 10px #00d2ff; }
+.roulette-item.promo { border: 2px solid #ff8c00; color: #ff8c00; box-shadow: 0 0 10px #ff8c00; }
+.roulette-item.account { border: 2px solid #ffd700; color: #ffd700; box-shadow: 0 0 10px #ffd700; }
+.win-card-container { margin-top: 20px; background: rgba(20, 10, 30, 0.9); border: 2px solid #ffd700; border-radius: 20px; padding: 20px; text-align: center; animation: popIn 0.5s forwards; width: 100%; max-width: 280px; }
+@keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* ЧАТ */
+.chat-msg { padding: 10px; border-radius: 10px; max-width: 80%; font-size: 13px; }
+.chat-msg.mine { background: rgba(0, 210, 255, 0.2); border: 1px solid #00d2ff; align-self: flex-end; }
+.chat-msg.other { background: rgba(255, 255, 255, 0.1); border: 1px solid #555; align-self: flex-start; }
+.chat-author { font-size: 10px; color: #ffd700; margin-bottom: 3px; }
+
+/* АПГРЕЙД */
+.upgrade-slot { width: 130px; height: 130px; background: rgba(255,255,255,0.05); border: 2px dashed #555; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+.upgrade-slot.active { border-color: #00d2ff; background: rgba(0,210,255,0.1); }
+.upgrade-slot.filled { border-style: solid; border-color: #ffd700; }
