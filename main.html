@@ -6,53 +6,15 @@
     <title>Sciptyy Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800;900&display=swap" rel="stylesheet">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Unbounded', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidden; position: relative; perspective: 1000px; }
-        
-        .space-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: #000; }
-        .nebula { position: absolute; width: 150vw; height: 150vw; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: rotateNebula 30s linear infinite; }
-        .nebula-1 { top: -50%; left: -50%; background: radial-gradient(circle, rgba(0, 210, 255, 0.4) 0%, transparent 60%); }
-        .nebula-2 { bottom: -50%; right: -50%; background: radial-gradient(circle, rgba(138, 43, 226, 0.4) 0%, transparent 60%); animation-direction: reverse; }
-        @keyframes rotateNebula { 0% { transform: rotate(0deg) scale(1); } 100% { transform: rotate(360deg) scale(1.2); } }
-        .stars { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 10% 20%, white, transparent), radial-gradient(2px 2px at 40% 70%, white, transparent); background-size: 200px 200px; animation: twinkle 4s infinite alternate; opacity: 0.5; }
-        @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.8; } }
-
-        .halloween-decor { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
-        .decor-web { position: absolute; top: -20px; left: -20px; width: 120px; height: 120px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.15)" fill="none" stroke-width="1"/></svg>'); background-size: cover; transform: rotate(180deg); opacity: 0.6; animation: floatWeb 8s ease-in-out infinite alternate; }
-        .decor-spider { position: absolute; top: 0; left: 40px; font-size: 24px; animation: spiderDrop 4s ease-in-out infinite; z-index: 1; }
-        .decor-pumpkin { position: absolute; bottom: 10px; right: 20px; font-size: 30px; opacity: 0.3; animation: floatPumpkin 6s ease-in-out infinite; }
-        @keyframes floatWeb { 0% { transform: rotate(170deg) scale(1); } 100% { transform: rotate(190deg) scale(1.1); } }
-        @keyframes spiderDrop { 0%, 100% { transform: translateY(10px); } 50% { transform: translateY(25px); } }
-        @keyframes floatPumpkin { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        /* 3D Анимации */
-        .chest-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 300px; perspective: 800px; }
-        .chest { width: 120px; height: 100px; background: linear-gradient(135deg, #5d4037, #3e2723); border-radius: 10px; position: relative; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(0,0,0,0.8); transition: 0.5s; display: flex; align-items: center; justify-content: center; font-size: 40px; border: 2px solid #8d6e63; transform-style: preserve-3d; }
-        .chest-lid { position: absolute; top: -10px; left: -2px; width: 120px; height: 30px; background: #4e342e; border-radius: 10px 10px 0 0; border: 2px solid #8d6e63; transition: 0.5s; transform-origin: bottom; }
-        .chest-opening { animation: chestShake 0.5s infinite; }
-        .chest-opened { transform: scale(1.2) rotateX(10deg); box-shadow: 0 0 50px rgba(255, 215, 0, 0.8); }
-        .chest-opened .chest-lid { transform: rotateX(90deg) translateY(-20px); opacity: 0; }
-        @keyframes chestShake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
-
-        /* 3D Рулетка */
-        .wheel-container { perspective: 1000px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 30px; }
-        .wheel-wrapper { position: relative; width: 280px; height: 280px; transform-style: preserve-3d; transform: rotateX(20deg); }
-        .wheel { width: 100%; height: 100%; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.2); transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(rgba(0, 210, 255, 0.6) 0deg 90deg, rgba(138, 43, 226, 0.6) 90deg 180deg, rgba(255, 65, 108, 0.6) 180deg 270deg, rgba(255, 215, 0, 0.6) 270deg 360deg); }
-        .wheel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: #111; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 10px #fff; }
-        .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 40px; z-index: 10; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
-        .roll-btn { margin-top: 40px; background: linear-gradient(90deg, #ff416c, #ff4b2b); color: white; border: none; padding: 18px 40px; border-radius: 50px; font-size: 18px; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(255, 65, 108, 0.5); z-index: 10; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
 
-    <!-- ГЛАВНЫЙ ЭКРАН -->
     <div id="screen-main" class="screen active">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
         
-        <!-- Бегущая строка событий -->
         <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 10px; margin-bottom: 15px; overflow: hidden; position: relative; z-index: 2; display: flex; align-items: center;">
             <span style="font-size: 14px; margin-right: 5px;">🔥</span>
             <div id="ticker-track" style="display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; color: #00d2ff; font-size: 11px; font-weight: bold;">
@@ -60,22 +22,17 @@
             </div>
         </div>
 
-        <!-- Карусель баннеров -->
         <div style="position: relative; overflow: hidden; width: 100%; border-radius: 20px; margin-bottom: 20px; height: 170px;">
             <div id="banner-track" style="display: flex; width: 200%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);">
-                
-                <!-- Баннер 1: Канал (Подробнее) -->
                 <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; padding: 20px;" onclick="window.open('https://t.me/sciptyystore', '_blank')">
                     <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
                     <div class="banner-content">
                         <span style="font-size:9px; font-weight:800; color:#ffd700; background:rgba(0,0,0,0.5); padding:3px 6px; border-radius:6px; text-transform: uppercase;">Официальный канал</span>
                         <h3 class="banner-title" style="font-size: 18px; margin-top: 5px;">Sciptyy Store News</h3>
-                        <p class="banner-subtitle" style="font-size: 10px; line-height: 1.4;">Тут выходят новые аккаунты, проходят розыгрыши и публикуются эксклюзивные промокоды на скидку!</p>
+                        <p class="banner-subtitle" style="font-size: 10px; line-height: 1.4;">Тут выходят новые аккаунты, проходят розыгрыши и публикуются эксклюзивные промокоды!</p>
                         <button class="buy-btn" style="margin-top: 10px; padding: 6px 12px; font-size: 11px;">Подписаться</button>
                     </div>
                 </div>
-
-                <!-- Баннер 2: Админы -->
                 <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; background: #111;" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')">
                     <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow" style="opacity: 0.4;"></div>
                     <div class="banner-content">
@@ -95,7 +52,6 @@
                         <button class="buy-btn" style="margin-top: 8px; padding: 5px 10px; font-size: 10px; background: linear-gradient(90deg, #ffd700, #ff8c00); color: #000;">⭐ Отзывы</button>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -118,8 +74,7 @@
             <div class="menu-btn" id="admin-tickets-btn" style="display: none; background: rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.3);" onclick="showScreen('screen-admin-tickets')"><span class="btn-text" style="color: #00d2ff;">📩 Тикеты</span></div>
         </div>
     </div>
-
-    <!-- КАТАЛОГ -->
+        <!-- КАТАЛОГ -->
     <div id="screen-catalog" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -130,11 +85,10 @@
         <div class="catalog-grid" id="catalog-grid"><div style="grid-column:span 2;">Загрузка...</div></div>
     </div>
 
-    <!-- ПРОФИЛЬ (Как в ТГ) -->
+    <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Мой профиль</h2></div>
-        
         <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px; text-align: center; position: relative; z-index: 2; margin-bottom: 20px;">
             <div id="user-avatar" style="width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #00d2ff, #8a2be2); margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; color: #fff; background-size: cover; background-position: center; box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);"></div>
             <h2 id="user-name" style="font-size: 18px; font-weight: 800; margin-bottom: 3px;">Пользователь</h2>
@@ -144,11 +98,11 @@
                 <div id="profile-balance" style="font-size: 22px; font-weight: 900; color: #00d2ff;">0 ₽</div>
             </div>
         </div>
-
         <h3 style="position: relative; z-index: 2; margin-bottom: 10px; font-size: 16px;">История покупок:</h3>
         <div id="profile-purchases" style="position: relative; z-index: 2;"></div>
     </div>
-        <!-- РУЛЕТКА -->
+
+    <!-- РУЛЕТКА -->
     <div id="screen-roll" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -170,8 +124,7 @@
             <div id="roll-result" style="margin-top:20px; font-size:20px; font-weight:800; text-align:center; color:#00d2ff; min-height:30px;"></div>
         </div>
     </div>
-
-    <!-- КЕЙСЫ -->
+        <!-- КЕЙСЫ -->
     <div id="screen-cases" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -185,8 +138,6 @@
             <div class="menu-btn" id="open-normal-case" style="display:none; background: rgba(0, 210, 255, 0.1);" onclick="openCase('normal')"><span class="btn-text">🎁 Открыть Обычный</span></div>
             <div class="menu-btn" id="open-vip-case" style="display:none; background: rgba(255, 215, 0, 0.1);" onclick="openCase('vip')"><span class="btn-text">🎁 Открыть VIP</span></div>
         </div>
-        
-        <!-- Новый 3D Сундук -->
         <div class="chest-container" id="case-animation" style="display: none;">
             <div class="chest" id="chest"><div class="chest-lid"></div>🔒</div>
             <div id="case-prize-text" style="font-size:20px; font-weight:800; color:#ffd700; margin-top:30px; text-align:center; text-shadow:0 0 10px #ffd700; min-height:30px;"></div>
@@ -201,7 +152,6 @@
             <div class="mini-banner-content"><span style="font-size:20px;">🎃</span><div><div class="mini-banner-title">Хэллоуин скидки!</div><div class="mini-banner-subtitle">Перейти в канал</div></div></div>
         </div>
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 style="font-size:20px; font-weight:800;">Поддержка</h2></div>
-        
         <div class="info-container" style="min-height: auto;">
             <p style="margin-bottom: 15px; font-weight: bold; color: #00d2ff;">🆘 Частые вопросы:</p>
             <details style="margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; cursor: pointer;">
@@ -244,7 +194,8 @@
         <div style="display:flex; gap:10px; margin-bottom:20px; position:relative; z-index:2;"><button class="menu-btn" style="padding:10px 15px;" onclick="showScreen('screen-main')">← Назад</button><h2 id="info-title" style="font-size:20px; font-weight:800;">Инфо</h2></div>
         <div class="info-container" id="info-content"></div>
     </div>
-        <!-- МОДАЛКА ПОКУПКИ -->
+
+    <!-- МОДАЛКА ПОКУПКИ -->
     <div id="modal-buy" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index: 999; padding:20px; flex-direction:column; justify-content:center;">
         <div style="background:#111; border:1px solid #333; padding:25px; border-radius:20px; text-align:center;">
             <h2 id="modal-title" style="font-size:22px; margin-bottom:10px;">Покупка</h2>
