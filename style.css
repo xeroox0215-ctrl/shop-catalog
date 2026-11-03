@@ -1,7 +1,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Unbounded', sans-serif; -webkit-tap-highlight-color: transparent; }
 body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidden; position: relative; }
 
-/* Космический фон для САЙТА (чтобы кнопки работали и всё было видно) */
+/* Космический фон для САМОГО САЙТА */
 .space-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background: #000; }
 .nebula { position: absolute; width: 150vw; height: 150vw; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: rotateNebula 30s linear infinite; }
 .nebula-1 { top: -50%; left: -50%; background: radial-gradient(circle, rgba(0, 210, 255, 0.4) 0%, transparent 60%); }
@@ -10,7 +10,7 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 .stars { position: absolute; width: 100%; height: 100%; background-image: radial-gradient(1px 1px at 10% 20%, white, transparent), radial-gradient(2px 2px at 40% 70%, white, transparent); background-size: 200px 200px; animation: twinkle 4s infinite alternate; opacity: 0.5; }
 @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.8; } }
 
-/* Декор для сайта (паутина на фоне) */
+/* Декор сайта (паутина, пауки, тыквы) */
 .halloween-decor { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
 .decor-web { position: absolute; top: -20px; left: -20px; width: 120px; height: 120px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.15)" fill="none" stroke-width="1"/></svg>'); background-size: cover; transform: rotate(180deg); opacity: 0.6; animation: floatWeb 8s ease-in-out infinite alternate; }
 .decor-spider { position: absolute; top: 0; left: 40px; font-size: 24px; animation: spiderDrop 4s ease-in-out infinite; z-index: 1; }
@@ -85,11 +85,11 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 .info-container { background: rgba(20, 20, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px 20px; font-size: 14px; line-height: 1.6; color: #ddd; display: flex; flex-direction: column; min-height: 250px; position: relative; z-index: 2; }
 .info-btn { display: block; width: 100%; background: linear-gradient(90deg, #00d2ff, #8a2be2); color: white; text-align: center; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 16px; margin-top: auto; border: none; cursor: pointer; }
 
-/* ================= ЗАСТАВКА ================= */
+/* ================= НОВАЯ ЗАСТАВКА ================= */
 #splash-screen {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: #000;
+    background: #000; /* Черный фон */
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -99,68 +99,102 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
     transition: opacity 1s ease-out, visibility 1s ease-out;
 }
 
-/* Космические звезды на заставке */
-.splash-stars {
+/* Космический фон на заставке */
+.splash-space-bg {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(0, 210, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.2) 0%, transparent 50%);
+    animation: pulseSpace 8s infinite alternate;
+    z-index: 1;
+}
+@keyframes pulseSpace {
+    0% { opacity: 0.5; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Звезды на заставке */
+.splash-nebula {
+    position: absolute;
+    width: 100%; height: 100%;
     background-image: radial-gradient(1px 1px at 10% 20%, white, transparent), radial-gradient(2px 2px at 40% 70%, white, transparent);
     background-size: 200px 200px;
     animation: twinkle 4s infinite alternate;
-}
-
-/* Паутина по углам */
-.splash-web-left, .splash-web-right {
-    position: absolute;
-    top: -50px;
-    font-size: 150px;
-    opacity: 0.3;
     z-index: 1;
 }
-.splash-web-left { left: -50px; }
-.splash-web-right { right: -50px; transform: scaleX(-1); }
 
-/* Тыква */
-.splash-pumpkin {
+/* Паутина, которая спускается */
+.splash-web-anim {
     position: absolute;
-    bottom: -30px;
-    font-size: 280px;
-    z-index: 2;
-    animation: pulsePumpkin 2s infinite alternate;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    height: 250px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,20 L80,100 M20,0 L100,80 M0,50 L50,100 M50,0 L100,50 M0,0 Q50,0 100,50 Q50,100 0,50" stroke="rgba(255,255,255,0.3)" fill="none" stroke-width="1"/></svg>');
+    background-size: cover;
+    z-index: 3;
+    animation: dropWeb 4s ease-out forwards;
+    opacity: 0;
 }
-@keyframes pulsePumpkin {
-    0% { filter: drop-shadow(0 0 20px #ff8c00); transform: scale(1); }
-    100% { filter: drop-shadow(0 0 60px #ffd700); transform: scale(1.05); }
+@keyframes dropWeb {
+    0% { transform: translateX(-50%) scaleY(0); opacity: 0; }
+    100% { transform: translateX(-50%) scaleY(1); opacity: 1; }
 }
 
-/* Баннер на заставке */
-.splash-banner {
+/* Реалистичная тыква (картинка) */
+.splash-pumpkin-img {
+    position: absolute;
+    bottom: -20px;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    z-index: 2;
+    animation: glowPumpkinImg 2s infinite alternate;
+}
+@keyframes glowPumpkinImg {
+    0% { filter: drop-shadow(0 0 20px #ff8c00); }
+    100% { filter: drop-shadow(0 0 60px #ffd700); }
+}
+
+/* Стеклянный баннер */
+.splash-glass-banner {
     position: relative;
     z-index: 10;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    border: 2px solid #ffd700;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
-    padding: 30px 20px;
+    padding: 30px 25px;
     text-align: center;
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
     width: 85%;
     max-width: 350px;
     animation: bannerFloat 3s infinite alternate;
 }
+
 @keyframes bannerFloat {
     0% { transform: translateY(0); }
     100% { transform: translateY(-10px); }
 }
 
-.splash-banner h2 {
+/* Переливающийся текст */
+.splash-glass-banner h2 {
     font-size: 24px;
-    color: #ffd700;
     font-weight: 900;
     margin-bottom: 10px;
-    text-shadow: 0 0 15px #ffd700;
+    background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmerText 3s linear infinite;
+}
+@keyframes shimmerText {
+    to { background-position: 200% center; }
 }
 
-.splash-banner p {
+.splash-glass-banner p {
     font-size: 14px;
     color: #fff;
     margin-bottom: 20px;
@@ -169,18 +203,8 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
 .splash-icons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     font-size: 30px;
-}
-.splash-icons span {
-    animation: jump 2s infinite alternate;
-}
-.splash-icons span:nth-child(2) { animation-delay: 0.5s; }
-.splash-icons span:nth-child(3) { animation-delay: 1s; }
-
-@keyframes jump {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-10px); }
 }
 
 /* Класс для скрытия заставки */
@@ -197,7 +221,7 @@ body { background-color: #000; color: #fff; min-height: 100vh; overflow-x: hidde
     box-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
 }
 
-/* Кастомный скроллбар (чтобы было красиво) */
+/* Кастомный скроллбар */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #000; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
