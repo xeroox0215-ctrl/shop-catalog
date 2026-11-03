@@ -9,25 +9,32 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- ЗАСТАВКА -->
+    <div id="splash-screen">
+        <div class="moon"></div>
+        <div class="splash-web"></div>
+        <div class="splash-card">
+            <span>🇷🇺</span>
+            <p>Аккаунт РФ</p>
+        </div>
+    </div>
+
     <div class="space-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="stars"></div></div>
 
     <div id="screen-main" class="screen active">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <h1 class="glow-title">SCIPTYY<br>STORE</h1>
         
-        <!-- Бегущая строка (с тыквой и паутиной) -->
-        <div class="ticker-container" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 10px; margin-bottom: 15px; overflow: hidden; position: relative; z-index: 2; display: flex; align-items: center;">
-            <span style="font-size: 14px; margin-right: 5px;">🔥</span>
-            <div id="ticker-track" style="display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; color: #00d2ff; font-size: 11px; font-weight: bold; position: relative; z-index: 2;">
+        <div class="ticker-container" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 10px; margin-bottom: 15px; display: flex; align-items: center; z-index: 2; position: relative;">
+            <span style="font-size: 14px; margin-right: 5px; z-index: 2;">🔥</span>
+            <div id="ticker-track" style="display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; color: #00d2ff; font-size: 11px; font-weight: bold; z-index: 2;">
                 Загрузка событий...
             </div>
         </div>
 
-        <!-- Карусель баннеров (с пауками) -->
         <div style="position: relative; overflow: hidden; width: 100%; border-radius: 20px; margin-bottom: 20px; height: 170px;">
             <div id="banner-track" style="display: flex; width: 200%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);">
                 
-                <!-- Баннер 1: Канал (Короткий текст) -->
                 <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; padding: 20px; position: relative;" onclick="window.open('https://t.me/sciptyystore', '_blank')">
                     <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow"></div>
                     <div style="position: absolute; bottom: 10px; right: 10px; font-size: 25px; opacity: 0.6;">🎃</div>
@@ -39,7 +46,6 @@
                     </div>
                 </div>
 
-                <!-- Баннер 2: Админы -->
                 <div class="halloween-banner" style="width: 100%; height: 100%; margin: 0; flex-shrink: 0; background: #111; position: relative;" onclick="window.open('https://t.me/sciptyyrewievs', '_blank')">
                     <div class="banner-spiderweb"></div><div class="banner-spider">🕷️</div><div class="banner-glow" style="opacity: 0.4;"></div>
                     <div style="position: absolute; bottom: 10px; right: 10px; font-size: 25px; opacity: 0.6;">🎃</div>
@@ -134,7 +140,7 @@
             <div id="roll-result" style="margin-top:20px; font-size:20px; font-weight:800; text-align:center; color:#00d2ff; min-height:30px;"></div>
         </div>
     </div>
-       <!-- КЕЙСЫ -->
+        <!-- КЕЙСЫ -->
     <div id="screen-cases" class="screen">
         <div class="halloween-decor"><div class="decor-web"></div><div class="decor-spider">🕷️</div><div class="decor-pumpkin">🎃</div></div>
         <div class="mini-banner" onclick="window.open('https://t.me/sciptyystore', '_blank')">
@@ -260,6 +266,14 @@
     </div>
 
     <script>
+        // Скрываем заставку через 5 секунд
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            if (splash) {
+                splash.classList.add('splash-hidden');
+            }
+        }, 5000);
+
         let currentBannerIndex = 0;
         const track = document.getElementById('banner-track');
         const totalBanners = 2;
