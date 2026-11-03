@@ -3,8 +3,12 @@ if (tg) tg.expand();
 const API_URL = "https://sciptyy-api.onrender.com";
 
 let userProfile = { balance: 0, cases: 0, vip_cases: 0, discount: 0 };
-let accountsData = []; let myAccounts = []; let selectedCountry = null; let isAdmin = false;
-let upgradeSlot1 = null; let upgradeSlot2 = null;
+let accountsData = []; 
+let myAccounts = []; 
+let selectedCountry = null; 
+let isAdmin = false;
+let upgradeSlot1 = null; 
+let upgradeSlot2 = null;
 
 async function loadData() {
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -19,13 +23,26 @@ async function loadData() {
         const res = await fetch(`${API_URL}/api/profile`, { headers: { "X-Telegram-Init-Data": tg.initData } });
         const data = await res.json();
         if (data.status === "ok") {
-            userProfile = data.profile; accountsData = data.shop; myAccounts = data.my_accounts || []; isAdmin = data.is_admin;
-            if (isAdmin) { document.getElementById('admin-btn').style.display = 'block'; document.getElementById('admin-tickets-btn').style.display = 'block'; }
+            userProfile = data.profile; 
+            accountsData = data.shop; 
+            myAccounts = data.my_accounts || []; 
+            isAdmin = data.is_admin;
+            
+            if (isAdmin) { 
+                document.getElementById('admin-btn').style.display = 'block'; 
+                document.getElementById('admin-tickets-btn').style.display = 'block'; 
+            }
             if (userProfile.cases > 0) document.getElementById('open-normal-case').style.display = 'block';
             if (userProfile.vip_cases > 0) document.getElementById('open-vip-case').style.display = 'block';
+            
             document.getElementById('profile-balance').innerText = `${userProfile.balance.toFixed(2)} ₽`;
+            
             const pDiv = document.getElementById('profile-purchases');
-            pDiv.innerHTML = data.purchases.length > 0 ? data.purchases.map(p => `<div class="purchase-item"><div style="font-weight: bold; color: #00d2ff;">${p.name}</div><div style="color: #888;">${p.price} ₽ • ${p.date.split(' ')[0]}</div></div>`).join('') : '<div style="color:#888;">Покупок нет</div>';
+            pDiv.innerHTML = data.purchases.length > 0 ? data.purchases.map(p => `
+                <div class="purchase-item">
+                    <div style="font-weight: bold; color: #00d2ff;">${p.name}</div>
+                    <div style="color: #888;">${p.price} ₽ • ${p.date.split(' ')[0]} • <span style="color:#aaa;">Заказ #${p.id}</span></div>
+                </div>`).join('') : '<div style="color:#888;">Покупок нет</div>';
             renderTickets(data.tickets);
         }
     } catch(e) { console.log(e); }
@@ -71,18 +88,36 @@ function closeModal() { document.getElementById('modal-buy').style.display = 'no
 
 async function buyItem(method) {
     closeModal();
+    if (method === 'stars') {
+        try {
+            const res = await fetch(`${API_URL}/api/buy_stars`, {
+                method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
+                body: JSON.stringify({ country: selectedCountry })
+            });
+            const data = await res.json();
+            if (data.status === 'ok') {
+                tg.openInvoice(data.url, (status) => {
+                    if (status === 'paid') { tg.showAlert("✅ Оплачено звездами!"); loadData(); }
+                });
+            } else { tg.showAlert(`❌ ${data.error}`); }
+        } catch(e) { tg.showAlert("Ошибка сервера"); }
+        return;
+    }
+    
     tg.showAlert("Списываем средства...");
     try {
         const res = await fetch(`${API_URL}/api/buy`, {
             method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" },
-            body: JSON.stringify({ country: selectedCountry })
+            body: JSON.stringify({ country: selectedCountry, method: "balance" })
         });
         const data = await res.json();
-        if (data.status === 'ok') { tg.showAlert("✅ Деньги списаны!"); loadData(); loadEvents(); }
+        if (data.status === 'ok') { 
+            tg.showAlert(`✅ ${data.message}`); // Тут будет номер транзакции
+            loadData(); loadEvents(); 
+        }
         else { tg.showAlert(`❌ ${data.error}`); }
     } catch(e) { tg.showAlert("Ошибка сервера"); }
 }
-
 let isSpinning = false;
 async function spinWheel() {
     if (isSpinning) return;
@@ -114,6 +149,7 @@ async function spinWheel() {
         }
     } catch(e) { resDiv.innerText = "Ошибка"; btn.innerText = "Крутить"; isSpinning = false; }
 }
+
 async function buyCase(type) {
     const price = type === 'normal' ? 99 : 249;
     tg.showConfirm(`Купить кейс за ${price} ₽?`, async (confirmed) => {
@@ -182,7 +218,7 @@ async function openCase(type) {
         } else { tg.showAlert(data.error); animDiv.style.display = 'none'; }
     } catch(e) { tg.showAlert("Ошибка сервера"); animDiv.style.display = 'none'; }
 }
-
+// ЧАТ
 async function loadChat() {
     try {
         const res = await fetch(`${API_URL}/api/chat`, { headers: { "X-Telegram-Init-Data": tg.initData } });
@@ -210,6 +246,7 @@ async function sendChatMessage() {
     });
     loadChat();
 }
+
 // АПГРЕЙД
 function selectSlot(slotNum) {
     if(myAccounts.length === 0) return tg.showAlert("У вас нет аккаунтов для апгрейда.");
@@ -264,8 +301,7 @@ async function startUpgrade() {
         } catch(e) { tg.showAlert("Ошибка сервера"); }
     });
 }
-
-// ТИКЕТЫ (ПОДДЕРЖКА)
+// ТИКЕТЫ И ПОДДЕРЖКА
 async function createTicket() {
     const text = document.getElementById('ticket-input').value.trim();
     if(!text) return tg.showAlert("Напишите вопрос!");
@@ -297,35 +333,32 @@ async function replyTicket(id) {
     });
     const data = await res.json(); tg.showAlert(data.message || data.error); loadData();
 }
+
 // АДМИНКА
 async function adminAction(action) {
     const resDiv = document.getElementById('admin-result');
     resDiv.innerText = "Загрузка...";
     try {
         if (action === 'money') {
-            const amount = prompt("Сколько рублей выдать?"); 
-            if (!amount) { resDiv.innerText = ""; return; }
+            const amount = prompt("Сколько рублей выдать?"); if (!amount) { resDiv.innerText = ""; return; }
             const res = await fetch(`${API_URL}/api/admin/money`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ amount: parseFloat(amount) }) });
             const data = await res.json(); resDiv.innerText = data.message || data.error; loadData();
         }
         if (action === 'promo') {
-            const code = prompt("Название промокода:"); 
-            if (!code) { resDiv.innerText = ""; return; }
+            const code = prompt("Название промокода:"); if (!code) { resDiv.innerText = ""; return; }
             const disc = prompt("Скидка (%):"); const limit = prompt("Лимит:");
             const res = await fetch(`${API_URL}/api/admin/promo`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ code, discount: parseInt(disc), limit: parseInt(limit) }) });
             const data = await res.json(); resDiv.innerText = data.message || data.error;
         }
         if (action === 'stock') {
             let list = "Код страны:\n"; accountsData.forEach(i => list += `${i.code} - ${i.name}\n`);
-            const country = prompt(list); 
-            if (!country) { resDiv.innerText = ""; return; }
+            const country = prompt(list); if (!country) { resDiv.innerText = ""; return; }
             const amount = prompt(`Сколько штук для ${country}?`);
             const res = await fetch(`${API_URL}/api/admin/stock`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ country: country.toLowerCase(), amount: parseInt(amount) }) });
             const data = await res.json(); resDiv.innerText = data.message || data.error; loadData();
         }
         if (action === 'broadcast') {
-            const text = prompt("Текст рассылки:"); 
-            if (!text) { resDiv.innerText = ""; return; }
+            const text = prompt("Текст рассылки:"); if (!text) { resDiv.innerText = ""; return; }
             const res = await fetch(`${API_URL}/api/admin/broadcast`, { method: 'POST', headers: { "X-Telegram-Init-Data": tg.initData, "Content-Type": "application/json" }, body: JSON.stringify({ text: text, minutes: 60 }) });
             const data = await res.json(); resDiv.innerText = data.message || data.error; loadEvents();
         }
@@ -348,10 +381,30 @@ function openInfo(type) {
         showScreen('screen-info'); return;
     }
     const infoTexts = {
-        reviews: { title: "⭐ Отзывы", text: "<p>Почитай отзывы наших клиентов или оставь свой в нашем канале!</p><p>Мы ценим каждого покупателя и всегда рады обратной связи.</p>", btn: "Перейти в канал", action: "https://t.me/sciptyyrewievs" },
-        about: { title: "ℹ️ О нас", text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выдача.<br>✅ Без обмана и скрытых комиссий.</p><p>Нам доверяют сотни клиентов!</p>", btn: "Назад", action: "back" },
-        terms: { title: "📜 Соглашение", text: "<p>Покупая товар, вы автоматически соглашаетесь с правилами Telegram и бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Возврат средств за цифровые товары не предусмотрен.</p>", btn: "Назад", action: "back" },
-        privacy: { title: "📄 Политика", text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ID и имя для отображения в профиле. Мы не передаем данные третьим лицам.</p>", btn: "Назад", action: "back" }
+        reviews: { 
+            title: "⭐ Отзывы", 
+            text: "<p>Почитай отзывы наших клиентов или оставь свой в нашем канале!</p><p>Мы ценим каждого покупателя и всегда рады обратной связи. Ваше мнение помогает нам становиться лучше. Все отзывы реальные, без обмана.</p>", 
+            btn: "Перейти в канал", 
+            action: "https://t.me/sciptyyrewievs" 
+        },
+        about: { 
+            title: "ℹ️ О нас", 
+            text: "<p>Sciptyy Store — это <b>самый лучший магазин</b> качественных аккаунтов Telegram.</p><p>✅ Работаем 24/7 без выходных.<br>✅ Мгновенная авто-выдача.<br>✅ Работаем без обмана и скрытых комиссий.</p><p>Нам доверяют сотни клиентов по всему миру!</p>", 
+            btn: "Назад", 
+            action: "back" 
+        },
+        terms: { 
+            title: "📜 Соглашение", 
+            text: "<p>Покупая товар в нашем магазине, вы автоматически соглашаетесь со всеми правилами Telegram и нашего бота.</p><p>Вы действуете <b>добровольно</b> и на свой страх и риск. Мы гарантируем качество товара, но не несем ответственности за дальнейшее использование аккаунтов.</p><p>Возврат средств за цифровые товары не предусмотрен.</p>", 
+            btn: "Назад", 
+            action: "back" 
+        },
+        privacy: { 
+            title: "📄 Политика", 
+            text: "<p>Мы ценим вашу конфиденциальность.</p><p>Бот собирает только ваш ID и имя для отображения в профиле.</p><p>Мы никогда не передаем ваши данные третьим лицам. Все транзакции защищены.</p>", 
+            btn: "Назад", 
+            action: "back" 
+        }
     };
     const data = infoTexts[type];
     document.getElementById('info-title').innerText = data.title;
@@ -369,7 +422,6 @@ async function activatePromo() {
     const data = await res.json(); tg.showAlert(data.status === 'ok' ? `✅ ${data.message}` : `❌ ${data.error}`); if (data.status === 'ok') loadData();
 }
 
-// ПОПОЛНЕНИЕ
 function showTopupModal() { document.getElementById('modal-topup').style.display = 'flex'; }
 function closeTopup() { document.getElementById('modal-topup').style.display = 'none'; }
 async function topupBalance() {
@@ -389,4 +441,4 @@ if (tg) {
     loadData(); 
     loadEvents(); 
     setInterval(loadData, 15000); 
-}
+            }
